@@ -1,22 +1,23 @@
-package model;
+package beans;
 
 import java.util.Date;
 
-public class Reservations {
+public class Reservations implements IIdentifiable<Long>{
 	
-	public String ReservatedApartment;
+	private long Id;
+	public Apartment ReservatedApartment;
 	public Date StartDate;
 	public int NumberOfStayingNights;
 	public double TotalPrise;
 	public String Message;
 	public Guest GuestWhoStays;
-	public enum Status { KREIRANA, ODBIJENA, ODUSTANAK, PRIHVACENA, ZAVRSENA }
+	public ReservationStatus Status;
 	
 	
 	public Reservations() {	}
 
-	public Reservations(String reservatedApartment, Date startDate, int numberOfStayingNights, double totalPrise,
-			String message, Guest guestWhoStays) {
+	public Reservations(Apartment reservatedApartment, Date startDate, int numberOfStayingNights, double totalPrise,
+			String message, Guest guestWhoStays, ReservationStatus status) {
 		super();
 		ReservatedApartment = reservatedApartment;
 		StartDate = startDate;
@@ -24,14 +25,15 @@ public class Reservations {
 		TotalPrise = totalPrise;
 		Message = message;
 		GuestWhoStays = guestWhoStays;
+		Status = status;
 	}
 	
 
-	public String getReservatedApartment() {
+	public Apartment getReservatedApartment() {
 		return ReservatedApartment;
 	}
 
-	public void setReservatedApartment(String reservatedApartment) {
+	public void setReservatedApartment(Apartment reservatedApartment) {
 		ReservatedApartment = reservatedApartment;
 	}
 
@@ -73,6 +75,24 @@ public class Reservations {
 
 	public void setGuestWhoStays(Guest guestWhoStays) {
 		GuestWhoStays = guestWhoStays;
+	}
+
+	public ReservationStatus getStatus() {
+		return Status;
+	}
+
+	public void setStatus(ReservationStatus status) {
+		Status = status;
+	}
+
+	@Override
+	public Long getId() {
+		return Id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		Id = id;
 	}
 	
 	

@@ -1,16 +1,17 @@
-package model;
+package beans;
 
-public class Address {
+public class Address implements IIdentifiable<Long>{
 	
+	private long Id;
 	public String Street;
-	public int StreetNumber;
+	public String StreetNumber;
 	public String City;
-	public int PostalCode;
+	public String PostalCode;
 	
 	
 	public Address() {}
 
-	public Address(String street, int streetNumber, String city, int postalCode) {
+	public Address(String street, String streetNumber, String city, String postalCode) {
 		super();
 		Street = street;
 		StreetNumber = streetNumber;
@@ -27,11 +28,11 @@ public class Address {
 		Street = street;
 	}
 
-	public int getStreetNumber() {
+	public String getStreetNumber() {
 		return StreetNumber;
 	}
 
-	public void setStreetNumber(int streetNumber) {
+	public void setStreetNumber(String streetNumber) {
 		StreetNumber = streetNumber;
 	}
 
@@ -43,12 +44,22 @@ public class Address {
 		City = city;
 	}
 
-	public int getPostalCode() {
+	public String getPostalCode() {
 		return PostalCode;
 	}
 
-	public void setPostalCode(int postalCode) {
+	public void setPostalCode(String postalCode) {
 		PostalCode = postalCode;
+	}
+
+	@Override
+	public Long getId() {
+		return Id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		Id = id;		
 	}
 
 }

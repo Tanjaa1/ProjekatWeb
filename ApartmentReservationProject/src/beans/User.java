@@ -1,23 +1,25 @@
-package model;
+package beans;
 
-public class User {
+public class User implements IIdentifiable<String>{
 	
 	public String Username;
 	public String Password;
 	public String Name;
 	public String Surname;	
-	
+	public Roles Role;
+	public Gender Gender;
 	
 	public User() { }
 
-	public User(String username, String password, String name, String surname) {
+	public User(String username, String password, String name, String surname, Roles role, Gender gender) {
 		super();
 		Username = username;
 		Password = password;
 		Name = name;
 		Surname = surname;
+		Role = role;
+		Gender = gender;
 	}
-	
 
 	public String getUsername() {
 		return Username;
@@ -51,4 +53,31 @@ public class User {
 		Surname = surname;
 	}
 	
+	public Roles getRole() {
+		return Role;
+	}
+
+	public void setRole(Roles role) {
+		Role = role;
+	}
+
+	public Gender getGender() {
+		return Gender;
+	}
+
+	public void setGender(Gender gender) {
+		Gender = gender;
+	}
+
+	@Override
+	public String getId() {
+		return Username;
+	}
+
+	@Override
+	public void setId(String id) {
+		setUsername(id);
+		
+	}
+
 }

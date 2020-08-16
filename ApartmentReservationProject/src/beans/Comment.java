@@ -1,7 +1,8 @@
-package model;
+package beans;
 
-public class Comment {
+public class Comment implements IIdentifiable<Long> {
 	
+	private long Id;
 	public Apartment CommentedApartment;
 	public Guest GuestWhoCommented;
 	public String CommentContent;
@@ -52,6 +53,14 @@ public class Comment {
 		ApartmentGrade = apartmentGrade;
 	}
 
-	
+	@Override
+	public Long getId() {
+		return Id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		Id = id;		
+	}	
 	
 }

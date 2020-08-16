@@ -1,7 +1,8 @@
-package model;
+package beans;
 
-public class Location extends Address {
+public class Location extends Address implements IIdentifiable<Long>{
 
+	private long LocationId;
 	public double Longitude;
 	public double Latitude;
 	
@@ -33,6 +34,18 @@ public class Location extends Address {
 
 	public void setLatitude(double latitude) {
 		Latitude = latitude;
+	}
+
+
+	@Override
+	public Long getId() {
+		return LocationId;
+	}
+
+
+	@Override
+	public void setId(Long id) {
+		LocationId = id;
 	}
 	
 }

@@ -1,37 +1,39 @@
-package model;
+package beans;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class Apartment {
+public class Apartment implements IIdentifiable<Long>{
 	
-	public enum ApartmentType { CEO_APARTMAN, SOBA }
+	private long Id;
+	public ApartmentType Type;
 	public int NumberOfRooms;
 	public int NumberOfGuests;
 	public Location LocationOfApartment;
-	public Date AvailableDatesForRent;
-	public Date Availability;
+	public List<Date> AvailableDatesForRent;
+	public List<Date> AvailableDates;
 	public Host ApartmentHost;
 	public Comment PostedComments;
 	public double PricePerStayingNight;
 	public Date CheckInTime;
 	public Date CheckOutTime;
 	public boolean isActive; //status => aktivno = true; neaktivno = false
-	public ArrayList<Amenities> AmenitiesList;
-	public ArrayList<Reservations> ListOfReservations;
+	public List<Amenities> AmenitiesList;
+	public List<Reservations> ListOfReservations;
 	
 	
 	public Apartment() { }	
 	
-	public Apartment(int numberOfRooms, int numberOfGuests, Location locationOfApartment, Date availableDatesForRent,
-			Date availability, Host apartmentHost, Comment postedComments, double pricePerStayingNight,
+	public Apartment(ApartmentType type, int numberOfRooms, int numberOfGuests, Location locationOfApartment, Host apartmentHost, Comment postedComments, double pricePerStayingNight,
 			Date checkInTime, Date checkOutTime, boolean isActive) {
 		super();
+		Type = type;
 		NumberOfRooms = numberOfRooms;
 		NumberOfGuests = numberOfGuests;
 		LocationOfApartment = locationOfApartment;
-		AvailableDatesForRent = availableDatesForRent;
-		Availability = availability;
+		AvailableDatesForRent = new ArrayList<Date>();
+		AvailableDates = new ArrayList<Date>();
 		ApartmentHost = apartmentHost;
 		PostedComments = postedComments;
 		PricePerStayingNight = pricePerStayingNight;
@@ -40,6 +42,14 @@ public class Apartment {
 		this.isActive = isActive;
 		AmenitiesList = new ArrayList<Amenities>();
 		ListOfReservations = new ArrayList<Reservations>();
+	}
+	
+	public ApartmentType getType() {
+		return Type;
+	}
+
+	public void setType(ApartmentType type) {
+		Type = type;
 	}
 
 	public int getNumberOfRooms() {
@@ -66,20 +76,20 @@ public class Apartment {
 		LocationOfApartment = locationOfApartment;
 	}
 
-	public Date getAvailableDatesForRent() {
+	public List<Date> getAvailableDatesForRent() {
 		return AvailableDatesForRent;
 	}
 
-	public void setAvailableDatesForRent(Date availableDatesForRent) {
+	public void setAvailableDatesForRent(List<Date> availableDatesForRent) {
 		AvailableDatesForRent = availableDatesForRent;
 	}
 
-	public Date getAvailability() {
-		return Availability;
+	public List<Date> getAvailableDates() {
+		return AvailableDates;
 	}
 
-	public void setAvailability(Date availability) {
-		Availability = availability;
+	public void setAvailableDates(List<Date> availableDates) {
+		AvailableDates = availableDates;
 	}
 
 	public Host getApartmentHost() {
@@ -130,20 +140,30 @@ public class Apartment {
 		this.isActive = isActive;
 	}
 
-	public ArrayList<Amenities> getAmenitiesList() {
+	public List<Amenities> getAmenitiesList() {
 		return AmenitiesList;
 	}
 
-	public void setAmenitiesList(ArrayList<Amenities> amenitiesList) {
+	public void setAmenitiesList(List<Amenities> amenitiesList) {
 		AmenitiesList = amenitiesList;
 	}
 
-	public ArrayList<Reservations> getListOfReservations() {
+	public List<Reservations> getListOfReservations() {
 		return ListOfReservations;
 	}
 
-	public void setListOfReservations(ArrayList<Reservations> listOfReservations) {
+	public void setListOfReservations(List<Reservations> listOfReservations) {
 		ListOfReservations = listOfReservations;
+	}
+
+	@Override
+	public Long getId() {
+		return Id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		Id = id;		
 	}
 	
 }
