@@ -12,7 +12,7 @@ import java.io.IOException;
 public class SparkMain {
 
 	public static void main(String[] args) throws IOException {
-		port(8085);
+		port(9000);
 		
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
