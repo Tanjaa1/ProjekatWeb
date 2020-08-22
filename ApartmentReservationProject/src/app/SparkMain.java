@@ -3,18 +3,16 @@ package app;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
-
 import static spark.Spark.staticFiles;
-import static spark.Spark.webSocket;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 
 import com.google.gson.Gson;
 
-import spark.Session;
-
 import beans.User;
+import spark.Session;
 
 
 public class SparkMain {
@@ -27,18 +25,9 @@ public class SparkMain {
 
 		get("/test", (req, res) -> {
 			return "Works";
-		});
+		});	
 		
-		post("/rest/demo/forma", (req, res) -> {
-			res.type("application/json");
-			String korisnkicko_ime = req.queryParams("korisnicko_ime");
-			String lozinka = req.queryParams("lozinka");
-			User s = new User(korisnkicko_ime, lozinka);
-			return g.toJson(s);
-		});
-		
-		
-		post("/rest/demo/login", (req, res) -> {
+		post("/login", (req, res) -> {
 			res.type("application/json");
 			String payload = req.body();
 			User u = g.fromJson(payload, User.class);
@@ -51,7 +40,7 @@ public class SparkMain {
 			return g.toJson(user);
 		});
 		
-		get("/rest/demo/logout", (req, res) -> {
+		get("/logout", (req, res) -> {
 			res.type("application/json");
 			Session ss = req.session(true);
 			User user = ss.attribute("user");

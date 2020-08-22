@@ -4,6 +4,25 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<!-- ODAVDE DO </SCRIPT-->
+	<script type="text/javascript">	
+		function login() {
+			var $form = $("#login"); <!-- POZIV FORME KOJA JE U STARTPAGE.JS -->
+			var data = getFormData($form);
+			var s = JSON.stringify(data);
+			$.ajax({
+				url: "login",
+				type:"POST",
+				data: s,
+				contentType:"application/json",
+				dataType:"json",
+				complete: function(data) {
+					$( "#resultLogin" ).html( data.responseText );
+				}
+			});
+		}
+	</script>
 
 	<title>Apartmani</title>
 	

@@ -7,18 +7,18 @@ Vue.component("start-page", {
 			<div class="navbar-nav action-buttons ml-auto">
 				<a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle mr-3">Prijavi se</a>
 				<div class="dropdown-menu login-form">
-					<form action="/examples/actions/confirmation.php" method="post">
+					<form id="login">
 						<div class="form-group">
 							<label>Korisničko ime</label>
-							<input type="text" class="form-control" required="required">
+							<input type="text" class="form-control" required="required" name="korisnicko_ime">
 						</div>
 						<div class="form-group">
 							<div class="clearfix">
 								<label>Šifra</label>
 							</div>                            
-							<input type="password" class="form-control" required="required">
+							<input type="password" class="form-control" required="required" name="lozinka">
 						</div>
-						<input type="submit" class="btn btn-primary btn-block" value="Prijava">
+						<input type="submit" onclick="login()" value="Prijava"> <!-- OVDE JE POZIV FUNKCIJE -->
 					</form>					
 				</div>			
 				<a href="#" class="btn btn-primary">Regustruj se</a>

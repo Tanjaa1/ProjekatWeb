@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.gson.reflect.TypeToken;
+
 import beans.User;
 
 public class UserRepository extends AbstractRepository<User, String>{
