@@ -16,6 +16,7 @@ public class User implements IIdentifiable<String>{
 		Username = username;
 		Password = password;
 	}
+
 	
 	public User(String username, String password, String name, String surname, Roles role, Gender gender) {
 		super();
