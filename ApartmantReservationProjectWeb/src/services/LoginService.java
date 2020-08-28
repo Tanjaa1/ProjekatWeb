@@ -18,7 +18,7 @@ import com.sun.org.apache.bcel.internal.generic.RETURN;
 import beans.User;
 import dao.UserDAO;
 
-@Path("")
+@Path("/users")
 public class LoginService {
 	
 	@Context
@@ -52,16 +52,23 @@ public class LoginService {
 //		request.getSession().setAttribute("user", loggedUser);
 //		return Response.status(200).build();
 //	}
+//	@GET
+//	@Path("/login")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public User login(@QueryParam("username") String username,@QueryParam("password") String passward){
+//		System.out.println("USLO JE");
+//		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
+//		User r=new User("Tanja","Drcelic");
+//		return r;
+//	}
 	@GET
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User login(@QueryParam("username") String username,@QueryParam("password") String passward){
-		System.out.println("USLO JE");
+	public User login(@QueryParam("username") String username,@QueryParam("password") String password){
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		User r=new User("Tanja","Drcelic");
-		return r;
+		User user=userDao.find(username, password);
+		return user;
 	}
-	
 	@POST
 	@Path("/logout")
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -11,10 +11,3 @@ var app = new Vue({
 	el: '#startPage',
 });
 
-//var login=new Vue({
-//	el:"#login",
-//	data:{
-//		loginInformation:{},
-//		user : null,
-//	},
-//})
