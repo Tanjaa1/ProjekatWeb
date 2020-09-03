@@ -1,6 +1,7 @@
 Vue.component("start-page", {	
 	data: function(){
 		return{
+			reg:false,
 			loginInformation:{}
 		}
 	},
@@ -13,21 +14,16 @@ Vue.component("start-page", {
 					<div class="dropdown-menu login-form">
 						<form id="login">
 							<div class="form-group">
-								<label>Korisničko ime</label>
-								<input type="text" class="form-control" required="required" name="korisnicko_ime" v-model="loginInformation.username">
+								<input type="text" class="form-control"  placeholder="Korisničko ime" required="required" name="korisnicko_ime" v-model="loginInformation.username">
 							</div>
-							<div class="form-group">
-								<div class="clearfix">
-									<label>Šifra</label>
-								</div>                            
-								<input type="password" class="form-control" required="required" name="lozinka" v-model="loginInformation.password">
+							<div class="form-group">                      
+								<input type="password" class="form-control" placeholder="Lozinka" required="required" name="lozinka" v-model="loginInformation.password">
 							</div>
 							<input type="submit" v-on:click="login(loginInformation)" value="Prijava">
 						</form>					
 					</div>	
-					<a href="#" class="btn btn-primary">Regustruj se</a>
+					<a href="#" class="btn btn-primary" v-on:click="registracija()">Regustruj se</a>
 				</div>
-			</div>
 		</nav>
 	`
 	,
@@ -43,6 +39,10 @@ Vue.component("start-page", {
 						alert("Nije uspesno!");
 					}
 				} )
+		},
+		registracija: function(){
+			alert("DADADAD");
+			reg=true;
 		}
 	}	
 });
