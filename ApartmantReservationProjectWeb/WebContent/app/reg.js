@@ -38,18 +38,21 @@ Vue.component("reg-page", {
             </label>
         </div>
     </div>
-    <input type="submit" class="search-btn" v-on:click="registracija()" value="Registruj se"/>
+    <input type="submit" class="search-btn" v-on:click="registracija(regInformation)" value="Registruj se"/>
 </div>
 	    </div>
     </form>
 </div>
 `,
 methods:{
-	registracija: function(){
-		alert("USLO JE HEHEHHE");
-		axios
-		.post("rest/users/add", {params: {name:regInformation.name,surname:regInformation.surname,username:regInformation.username,password:regInformation.password}})
+	registracija: function(regInformation){
 		
+		var user = {username : regInformation.username, password : regInformation.password, name : regInformation.name, surname : regInformation.surname};
+		axios
+		.post("rest/users/add",user)
+		.then(response => {
+			alert(response.data);
+		})
 	}
 }
 });

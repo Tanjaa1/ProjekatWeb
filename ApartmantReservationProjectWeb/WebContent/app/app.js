@@ -15,26 +15,23 @@ var app = new Vue({
 	router,
 	el: '#app',
 	data:{
-		reg:false,
+		regg:false,
 		loginInformation:{}
 	},
 	methods:{
 		login: function(loginInformation){
-			alert(loginInformation.username);
 			axios
-				.get("rest/users/login", {params: {username:loginInformation.username,password:loginInformation.password}})
+				.post("rest/users/login", {params: {username:loginInformation.username,password:loginInformation.password}})
 				.then(response => {
-					if(response.data.getUsername() !=""){				
+					alert("DING")
+					if(response.data.getUsername()!=""){
+						regg=true
 						alert("ULOGOVANI");
 					}else{
 						alert("Nije uspesno!");
 					}
 				} )
 		},
-		registracija: function(){
-			alert("DADADAD");
-			reg=true;
-		}
 	}	
 });
 

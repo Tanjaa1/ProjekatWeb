@@ -50,6 +50,7 @@ public class LoginService {
 	public User login(@QueryParam("username") String username,@QueryParam("password") String password){
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		User user=userDao.find(username, password);
+		System.out.println(username);
 		return user;
 	}
 	@POST
@@ -70,14 +71,14 @@ public class LoginService {
 	
 	@POST
 	@Path("/add")
-	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String add(@QueryParam("name") String name,@QueryParam("surname") String surname,@QueryParam("username") String username,@QueryParam("password") String password) throws JsonIOException, IOException{
-		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");		
-		if(userDao.find(username,password)!=null){
+	@Produces(MediaType.APPLICATION_JSON)
+	public String add(User user) throws JsonIOException, IOException{
+		
+		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
+		if(userDao.find(user.getUsername(),user.getPassword())!=null){
 			return "Veæ postoji";
 		}
-		User user=new User(name,surname,username,password, null, null);
 		userDao.save(user);
 		return "Usepsno dodato";
 		
