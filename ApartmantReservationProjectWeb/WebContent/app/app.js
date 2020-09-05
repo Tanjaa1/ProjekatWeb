@@ -18,11 +18,10 @@ var app = new Vue({
 	},
 	methods:{
 		login: function(loginInformation){
-			alert(loginInformation.username);
 			axios
 				.post("rest/users/login", {params: {username:loginInformation.username,password:loginInformation.password}})
 				.then(response => {
-					if(this.user.username!=""){				
+					if(response.data.username!=""){				
 						alert("ULOGOVANI");
 					}else{
 						alert("Nije uspesno!");

@@ -39,19 +39,6 @@ public class LoginService {
 		}
 	}
 	
-//	@POST
-//	@Path("/login")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response login(User user, @Context HttpServletRequest request) {
-//		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-//		User loggedUser = userDao.find(user.getUsername(), user.getPassword());
-//		if (loggedUser != null) {
-//			return Response.status(400).entity("Invalid username and/or password").build();
-//		}
-//		request.getSession().setAttribute("user", loggedUser);
-//		return Response.status(200).build();
-//	}
 
 	@POST
 	@Path("/login")
@@ -60,6 +47,7 @@ public class LoginService {
 	public User login(@QueryParam("username") String username,@QueryParam("password") String password){
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		User user=userDao.find(username, password);
+		System.out.println(user);
 		return user;
 	}
 	@POST
@@ -76,5 +64,16 @@ public class LoginService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public User login(@Context HttpServletRequest request) {
 		return (User) request.getSession().getAttribute("user");
+	}
+	
+	@POST
+	@Path("/add")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String add(User u) {
+//		getShoppingCart().addItem(getProducts().getProduct(p.id), p.count);
+//		System.out.println("Product " + getProducts().getProduct(p.id)
+//				+ " added with count: " + p.count);
+		return "OK";
 	}
 }

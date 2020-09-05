@@ -63,7 +63,9 @@ public class UserDAO {
 				if (line.equals("") || line.indexOf('#') == 0)
 					continue;
 				st = new StringTokenizer(line, ";");
-				while (st.hasMoreTokens()) {
+				while (st.hasMoreTokens()) {					
+					String name = st.nextToken().trim();
+					String surname = st.nextToken().trim();
 					String username = st.nextToken().trim();
 					String password = st.nextToken().trim();
 					users.put(username, new User(username,password));
