@@ -83,4 +83,7 @@ public class UserDAO {
 			}
 		}
 	}
+	public String addUser(User user){
+		return "Registracija je uspela";
+	}
 }

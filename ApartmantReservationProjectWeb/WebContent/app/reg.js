@@ -12,16 +12,16 @@ Vue.component("reg-page", {
 		</h1>
 		<div class="form-box">
 		<div class="form-group">
-        <input type="text" class="form-control" placeholder="Ime *" value="" />
+        <input type="text" class="form-control" placeholder="Ime *" value="" v-model="regInformation.name"/>
     </div>
     <div class="form-group">
-        <input type="text" class="form-control" placeholder="Prezime *" value="" />
+        <input type="text" class="form-control" placeholder="Prezime *" value=""  v-model="regInformation.surname"/>
     </div>
     <div class="form-group">
-        <input type="text" class="form-control" placeholder="Korisničko ime *" value="" />
+        <input type="text" class="form-control" placeholder="Korisničko ime *" value="" v-model="regInformation.username"/>
     </div>
     <div class="form-group">
-        <input type="password" class="form-control" placeholder="Lozinka *" value="" />
+        <input type="password" class="form-control" placeholder="Lozinka *" value="" v-model="regInformation.password"/>
     </div>
     <div class="form-group">
         <input type="password" class="form-control"  placeholder="Potvrda lozinke*" value="" />
@@ -38,10 +38,18 @@ Vue.component("reg-page", {
             </label>
         </div>
     </div>
-    <input type="submit" class="search-btn" value="Registruj se"/>
+    <input type="submit" class="search-btn" v-on:click="registracija()" value="Registruj se"/>
 </div>
 	    </div>
     </form>
 </div>
-`
+`,
+methods:{
+	registracija: function(){
+		alert("USLO JE HEHEHHE");
+		axios
+		.post("rest/users/add", {params: {name:regInformation.name,surname:regInformation.surname,username:regInformation.username,password:regInformation.password}})
+		
+	}
+}
 });
