@@ -4,7 +4,7 @@ const Search={template: '<search></search>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	   { path: '/', component: Search},
+	   { path: '/', component: Search}
 	   	//path: '/', component: AddApp},
 	   
 	  ]
