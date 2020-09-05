@@ -1,10 +1,11 @@
 const Search={template: '<search></search>'}
-const AddApp={template: '<addApartment></addApartment>'}
+//const AddApp={template: '<addApartment></addApartment>'}
+
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	   { //path: '/', component: Search},
-	   		path: '/', component: AddApp},
+	   { path: '/', component: Search},
+	   	//path: '/', component: AddApp},
 	   
 	  ]
 });
