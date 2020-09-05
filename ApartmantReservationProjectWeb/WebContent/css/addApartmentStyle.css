@@ -1,0 +1,36 @@
+body 
+{
+    font-family: 'Varela Round', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.add
+{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h3
+{
+    color: #5c6ac4;
+    padding-top: 8px;
+    vertical-align: middle;
+    padding-bottom: 6px;
+}
+
+.btn
+{
+    color: #fff;
+    background: #5c6ac4 !important;
+    padding-top: 8px;
+    padding-bottom: 6px;
+    border-radius: 4px;
+    vertical-align: middle;
+    border: none;
+    min-width: 120px;
+    margin: 2px 0;
+}
+
