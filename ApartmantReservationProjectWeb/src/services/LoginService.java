@@ -52,17 +52,10 @@ public class LoginService {
 //		request.getSession().setAttribute("user", loggedUser);
 //		return Response.status(200).build();
 //	}
-//	@GET
-//	@Path("/login")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public User login(@QueryParam("username") String username,@QueryParam("password") String passward){
-//		System.out.println("USLO JE");
-//		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-//		User r=new User("Tanja","Drcelic");
-//		return r;
-//	}
-	@GET
+
+	@POST
 	@Path("/login")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public User login(@QueryParam("username") String username,@QueryParam("password") String password){
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");

@@ -1,8 +1,10 @@
 const Search={template: '<search></search>'}
+const Registration={template: '<reg-page></reg-page>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
 	   { path: '/', component: Search},
+	   { path: '/reg', component: Registration},
 	   
 	  ]
 });
@@ -18,7 +20,7 @@ var app = new Vue({
 		login: function(loginInformation){
 			alert(loginInformation.username);
 			axios
-				.get("rest/users/login", {params: {username:loginInformation.username,password:loginInformation.password}})
+				.post("rest/users/login", {params: {username:loginInformation.username,password:loginInformation.password}})
 				.then(response => {
 					if(this.user.username!=""){				
 						alert("ULOGOVANI");

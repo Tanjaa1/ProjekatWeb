@@ -38,10 +38,10 @@
 							<div class="form-group">                      
 								<input type="password" class="form-control" placeholder="Lozinka" required="required" name="lozinka" v-model="loginInformation.password">
 							</div>
-							<input type="submit" v-on:click="login(loginInformation)" value="Prijava">
+							<input type="submit" class="search-btn" v-on:click="login(loginInformation)" value="Prijava">
 						</form>					
 					</div>	
-					<a href="#" class="btn btn-primary" v-on:click="registracija()">Regustruj se</a>
+					<a href="#/reg" class="btn btn-primary">Regustruj se</a>
 				</div>
 		</nav>
 		</div>
@@ -58,6 +58,7 @@
 	<script src="js/vue-router.js"></script>
 	<script src="app/search.js"></script>
 	<script src="app/app.js"></script>
+	<script src="app/reg.js"></script>
 	
   </body>
 </html>
