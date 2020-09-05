@@ -7,21 +7,37 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.io.IOException;
+import java.util.List;
+
+import com.google.gson.reflect.TypeToken;
 
 import beans.User;
 
-public class UserDAO {
+public class UserDAO extends AbstractDAO<User, String> {
 	private Map<String, User> users = new HashMap<>();
 	
 	
-	public UserDAO() {
+	public UserDAO(String path) {
+		super(path);
+	}
+	
+	@Override
+	public void init() {
+			try {
+				loadEntities(new TypeToken<List<User>>() {
+				}.getType());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		
 	}
 	
 	/***
 	 * @param contextPath Putanja do aplikacije u Tomcatu. Može se pristupiti samo iz servleta.
 	 */
-	public UserDAO(String contextPath) {
+	/*public UserDAO(String contextPath) {
 		loadUsers(contextPath);
 	}
 	
@@ -83,7 +99,10 @@ public class UserDAO {
 			}
 		}
 	}
+	
 	public String addUser(User user){
 		return "Registracija je uspela";
 	}
+
+	
 }

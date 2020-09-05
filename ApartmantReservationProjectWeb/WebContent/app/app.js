@@ -24,7 +24,7 @@ var app = new Vue({
 			axios
 				.get("rest/users/login", {params: {username:loginInformation.username,password:loginInformation.password}})
 				.then(response => {
-					if(this.user.username!=""){				
+					if(response.data.getUsername() !=""){				
 						alert("ULOGOVANI");
 					}else{
 						alert("Nije uspesno!");

@@ -1,5 +1,7 @@
 package services;
 
+import java.io.IOException;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +15,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.JsonIOException;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 
+import app.App;
 import beans.User;
 import dao.UserDAO;
 
@@ -34,8 +38,7 @@ public class LoginService {
 		// Ovaj objekat se instancira viï¿½e puta u toku rada aplikacije
 		// Inicijalizacija treba da se obavi samo jednom
 		if (ctx.getAttribute("userDAO") == null) {
-	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("userDAO", new UserDAO(contextPath));
+			ctx.setAttribute("userDAO", new UserDAO(App.USERS_PATH));
 		}
 	}
 	
@@ -69,12 +72,14 @@ public class LoginService {
 	@Path("/add")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String add(@QueryParam("name") String name,@QueryParam("surname") String surname,@QueryParam("username") String username,@QueryParam("password") String password){
+	public String add(@QueryParam("name") String name,@QueryParam("surname") String surname,@QueryParam("username") String username,@QueryParam("password") String password) throws JsonIOException, IOException{
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");		
-		if(userDao.find(username,password)==null){
+		if(userDao.find(username,password)!=null){
 			return "Veæ postoji";
 		}
 		User user=new User(name,surname,username,password, null, null);
-		return userDao.addUser(user);
+		userDao.save(user);
+		return "Usepsno dodato";
+		
 	}
 }
