@@ -44,14 +44,13 @@ public class LoginService {
 	}
 	
 
-	@POST
+	@GET
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public User login(@QueryParam("username") String username,@QueryParam("password") String password){
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		User user=userDao.find(username, password);
-		System.out.println(username);
 		return user;
 	}
 	@POST

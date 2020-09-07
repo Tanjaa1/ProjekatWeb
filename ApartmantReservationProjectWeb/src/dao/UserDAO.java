@@ -48,6 +48,7 @@ public class UserDAO extends AbstractDAO<User, String> {
 	 * @return
 	 */
 	public User find(String username, String password) {
+		System.out.println(users.size());
 		if (!users.containsKey(username)) {
 			return null;
 		}

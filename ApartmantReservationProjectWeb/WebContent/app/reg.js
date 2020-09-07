@@ -45,13 +45,16 @@ Vue.component("reg-page", {
 `,
 methods:{
 	registracija: function(regInformation){
-		if(regInformation.username!="" && regInformation.surname!="" && regInformation.name!="" && regInformation.password!="" && regInformation.passwordControl!="" && regInformation.gender!=""){
+		if(this.regInformation.username!=null && this.regInformation.surname!=null && this.regInformation.name!=null && this.regInformation.password!=null && this.regInformation.passwordControl!=null && this.regInformation.gender!=null){
+			alert("da");
 			var user = {username : regInformation.username, password : regInformation.password, name : regInformation.name, surname : regInformation.surname};
 			axios
 			.post("rest/users/add",user,{params : {gender:regInformation.gender}})
 			.then(response => {
 				alert(response.data);
 			})
+		}else{
+			alert("greskaa");
 		}
 	}
 }

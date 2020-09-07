@@ -21,19 +21,19 @@ var app = new Vue({
 		loginInformation:{}
 	},
 	methods:{
-		login: function(loginInformation){		
-			alert("l");
+		login: function(loginInformation){
+			alert(loginInformation.password);
 			axios
-				.post("rest/users/login", {params: {username:loginInformation.username,password:loginInformation.password}})
+				.get("rest/users/login", {params: {username : this.loginInformation.username,password : this.loginInformation.password}})
 				.then(response => {
 					if(response.data.getUsername()!=""){
-						regg=true;
+						regg=true
 						alert("ULOGOVANI");
 					}else{
 						alert("Nije uspesno!");
 					}
 				} )
-		}
+		},
 	}	
 });
 
