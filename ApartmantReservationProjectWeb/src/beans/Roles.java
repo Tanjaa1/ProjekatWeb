@@ -1,7 +1,19 @@
 package beans;
 
+import com.sun.org.apache.regexp.internal.recompile;
+
 public enum Roles {
 	Administrator, 
 	Guest, 
-	Host
+	Host;
+
+	public Roles getRole(String role) {
+		if(role.equals("Administrator"))
+			return Roles.Administrator;
+		else if(role.equals("Guest"))
+			return Roles.Guest;
+		else if(role.equals("Host"))
+			return Roles.Host;
+		return null;
+	}
 }

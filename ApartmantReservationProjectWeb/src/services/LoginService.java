@@ -19,6 +19,7 @@ import com.google.gson.JsonIOException;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import app.App;
+import beans.Gender;
 import beans.User;
 import dao.UserDAO;
 
@@ -73,10 +74,10 @@ public class LoginService {
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String add(User user) throws JsonIOException, IOException{
-		
+	public String add(User user,@QueryParam("gender") String gender) throws JsonIOException, IOException{
+		user.setGender(Gender.getGender(gender));
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		if(userDao.find(user.getUsername(),user.getPassword())!=null){
+		if(userDao.find(user.getUsername(),user.getPassword())!=null){			
 			return "Veæ postoji";
 		}
 		userDao.save(user);
