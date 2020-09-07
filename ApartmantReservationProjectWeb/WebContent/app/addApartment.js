@@ -12,7 +12,7 @@ Vue.component("addApartment", {
             </h3>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputTip">Tip sobe</label>
+                    <label for="inputTip">Tip objekta</label>
                     <select class="custom-select">
                         <option selected>Izaberite tip</option>
                         <option value="1">Ceo apartman</option>
