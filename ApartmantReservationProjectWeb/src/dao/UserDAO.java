@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 import java.io.IOException;
 import java.util.List;
 
+import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 import beans.User;
@@ -48,6 +49,7 @@ public class UserDAO extends AbstractDAO<User, String> {
 	 * @return
 	 */
 	public User find(String username, String password) {
+		System.out.println(users.size());
 		if (!users.containsKey(username)) {
 			return null;
 		}
@@ -67,42 +69,6 @@ public class UserDAO extends AbstractDAO<User, String> {
 	 * Kljuè je korisnièko ime korisnika.
 	 * @param contextPath Putanja do aplikacije u Tomcatu
 	 */
-	private void loadUsers(String contextPath) {
-		BufferedReader in = null;
-		try {
-			File file = new File(contextPath + "/users.txt");
-			in = new BufferedReader(new FileReader(file));
-			String line;
-			StringTokenizer st;
-			while ((line = in.readLine()) != null) {
-				line = line.trim();
-				if (line.equals("") || line.indexOf('#') == 0)
-					continue;
-				st = new StringTokenizer(line, ";");
-				while (st.hasMoreTokens()) {					
-					String name = st.nextToken().trim();
-					String surname = st.nextToken().trim();
-					String username = st.nextToken().trim();
-					String password = st.nextToken().trim();
-					users.put(username, new User(username,password));
-				}
-				
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				}
-				catch (Exception e) { }
-			}
-		}
-	}
 	
-	public String addUser(User user){
-		return "Registracija je uspela";
-	}
-
 	
 }

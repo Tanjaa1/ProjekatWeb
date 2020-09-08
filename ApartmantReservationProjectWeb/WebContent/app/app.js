@@ -24,14 +24,11 @@ var app = new Vue({
 	methods:{
 		login: function(loginInformation){
 			axios
-				.post("rest/users/login", {params: {username:loginInformation.username,password:loginInformation.password}})
+				.get("rest/users/login", {params: {username : this.loginInformation.username,password : this.loginInformation.password}})
 				.then(response => {
-					alert("DING")
 					if(response.data.getUsername()!=""){
 						regg=true
-						alert("ULOGOVANI");
 					}else{
-						alert("Nije uspesno!");
 					}
 				} )
 		},

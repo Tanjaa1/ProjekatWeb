@@ -28,6 +28,14 @@ public class User implements IIdentifiable<String>{
 		Gender = gender;
 	}
 
+	public User(String username, String password, String name, String surname,Gender gender) {
+		super();
+		Username = username;
+		Password = password;
+		Name = name;
+		Surname = surname;
+		Gender=gender;
+	}
 	public String getUsername() {
 		return Username;
 	}
@@ -73,7 +81,7 @@ public class User implements IIdentifiable<String>{
 	}
 
 	public void setGender(Gender gender) {
-		Gender = gender;
+		Gender=gender;
 	}
 
 	@Override
