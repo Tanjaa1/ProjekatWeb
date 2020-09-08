@@ -22,15 +22,12 @@ var app = new Vue({
 	},
 	methods:{
 		login: function(loginInformation){
-			alert(loginInformation.password);
 			axios
 				.get("rest/users/login", {params: {username : this.loginInformation.username,password : this.loginInformation.password}})
 				.then(response => {
 					if(response.data.getUsername()!=""){
 						regg=true
-						alert("ULOGOVANI");
 					}else{
-						alert("Nije uspesno!");
 					}
 				} )
 		},
