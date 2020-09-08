@@ -2,6 +2,7 @@ package dao;
 import java.io.IOException;
 import java.util.List;
 
+import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 import beans.Guest;
@@ -20,5 +21,6 @@ public class GuestDAO extends AbstractDAO<Guest, String>{
 			e.printStackTrace();
 		}		
 	}
+
 
 }

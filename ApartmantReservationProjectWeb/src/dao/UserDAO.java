@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 import java.io.IOException;
 import java.util.List;
 
+import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 import beans.User;

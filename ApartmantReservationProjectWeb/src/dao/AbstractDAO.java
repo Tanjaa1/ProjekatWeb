@@ -72,5 +72,9 @@ public abstract class AbstractDAO<T extends IIdentifiable<ID>, ID> implements ID
 		EntityMap.remove(id);
 		saveAll();
 	}
+	@Override
+	public void update(T entity) throws JsonIOException, IOException {
+		EntityMap.replace(entity.getId(), entity);
+	}
 
 }

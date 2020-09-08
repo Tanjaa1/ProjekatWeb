@@ -19,5 +19,7 @@ public interface IDAO<T, ID> {
 	public Map<ID, T> getAll();
 
 	public void delete(ID id) throws JsonIOException, IOException;
+	
+	public void update(T entity) throws JsonIOException, IOException;
 
 }
