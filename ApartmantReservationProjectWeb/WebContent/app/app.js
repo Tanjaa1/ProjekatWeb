@@ -1,11 +1,12 @@
 const Search={template: '<search></search>'}
 const SideBar={template: '<side-bar></side-bar>'}
-//const AddApp={template: '<addApartment></addApartment>'}
+const ApartmentView={template: '<apartment></apartment>'}
+const AddApp={template: '<addApartment></addApartment>'}
 const Registration={template: '<reg-page></reg-page>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	   { path: '/', component: SideBar},
+	   { path: '/', component: Search},
 	   { path: '/reg', component: Registration}
 
 	   	//path: '/', component: AddApp},
