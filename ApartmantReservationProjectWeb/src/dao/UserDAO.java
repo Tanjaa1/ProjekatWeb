@@ -35,12 +35,6 @@ public class UserDAO extends AbstractDAO<User, String> {
 		
 	}
 	
-	/***
-	 * @param contextPath Putanja do aplikacije u Tomcatu. Može se pristupiti samo iz servleta.
-	 */
-	/*public UserDAO(String contextPath) {
-		loadUsers(contextPath);
-	}
 	
 	/**
 	 * Vraæa korisnika za prosleðeno korisnièko ime i šifru. Vraæa null ako korisnik ne postoji
@@ -63,12 +57,6 @@ public class UserDAO extends AbstractDAO<User, String> {
 	public Collection<User> findAll() {
 		return users.values();
 	}
-	
-	/**
-	 * Uèitava korisnike iz WebContent/users.txt fajla i dodaje ih u mapu {@link #users}.
-	 * Kljuè je korisnièko ime korisnika.
-	 * @param contextPath Putanja do aplikacije u Tomcatu
-	 */
 	
 	
 }

@@ -1,3 +1,6 @@
+
+
+
 Vue.component("user-info", {	
 	data: function(){
 		return{

@@ -71,7 +71,14 @@ public class User implements IIdentifiable<String>{
 	public Roles getRole() {
 		return Role;
 	}
-
+	public String getRoleString() {
+		if(Role.equals("Administrator"))
+			return "Administrator";
+		else if(Role.equals("Guest"))
+			return "Guest";
+		else
+			return "Host";
+	}
 	public void setRole(Roles role) {
 		Role = role;
 	}
@@ -79,7 +86,12 @@ public class User implements IIdentifiable<String>{
 	public Gender getGender() {
 		return Gender;
 	}
-
+	public String getGenderString() {
+		if(Gender.equals("Male"))
+			return "Male";
+		else
+			return "Female";
+	}
 	public void setGender(Gender gender) {
 		Gender=gender;
 	}

@@ -15,4 +15,6 @@ public enum Roles {
 			return Roles.Host;
 		return null;
 	}
+	
+
 }
