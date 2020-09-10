@@ -99,9 +99,10 @@ methods:{
 			document.getElementById("nemaPol").style.visibility = "hidden";
 		}
 		if(ime.value!="" && prezime.value!="" && korisnicko_ime!="" && lozinka!="" && this.regInformation.gender!=null){		
-			//var user = {username : regInformation.username, password : regInformation.password, name : regInformation.name, surname : regInformation.surname};
+			
+			var user = {username : regInformation.username, password : regInformation.password, name : regInformation.name, surname : regInformation.surname};
 			axios
-				.post("rest/users/add",regInformation,{params : {gender:regInformation.gender}})
+				.post("rest/users/add",user,{params : {gender:this.regInformation.gender}})
 				.then(response => {
 					if(response.data=="Već postoji"){
 						korisnicko_ime.style.borderColor ="red";

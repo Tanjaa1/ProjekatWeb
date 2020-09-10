@@ -4,12 +4,14 @@ const ApartmentView={template: '<apartment></apartment>'}
 const AddApp={template: '<addApartment></addApartment>'}
 const Registration={template: '<reg-page></reg-page>'}
 const Profile={template: '<user-info></user-info>'}
+const Users={template: '<users></users>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
 	   { path: '/', component: Search},
 	   { path: '/reg', component: Registration},
-	   { path: '/profile', component: Profile}
+	   { path: '/profile', component: Profile},
+	   { path: '/users', component: Users}
 
 	   	//path: '/', component: AddApp},
 	   

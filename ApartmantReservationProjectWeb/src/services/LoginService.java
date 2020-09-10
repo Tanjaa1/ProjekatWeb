@@ -24,6 +24,7 @@ import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import app.App;
 import beans.Gender;
+import beans.Roles;
 import beans.User;
 import dao.UserDAO;
 import javafx.print.Collation;
@@ -83,9 +84,10 @@ public class LoginService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String add(User user,@QueryParam("gender") String gender) throws JsonIOException, IOException{
-		user.setGender(Gender.getGender(gender));
+		user.setGender(Gender.getGenderS(gender));
+		user.setRole(Roles.Guest);
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		if(userDao.find(user.getUsername(),user.getPassword())!=null){			
+		if(userDao.find(user.getUsername(),user.getPassword())!=null){	
 			return "Veæ postoji";
 		}
 		userDao.save(user);
@@ -109,35 +111,39 @@ public class LoginService {
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<User> seach(String search){
-		String[] splits = search.split(";");		
+	public Collection<User> search(String search){
+		
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		Collection<User> listapretraga= new ArrayList<User>();
 		Collection<User> svi=userDao.findAll();
-		
-		if(splits[0]!="" && splits[1]!="" && splits[2]!=""){
-			for(User u:svi){
-				if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]) && u.getRoleString().contains(splits[2]))
-					listapretraga.add(u);
-			}
-		}else if(splits[0]!="" && splits[1]!=""){
-			for(User u:svi){
-				if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]))
-					listapretraga.add(u);
-			}
-		}else if(splits[1]!="" && splits[2]!=""){
-			for(User u:svi){
-				if(u.getUsername().contains(splits[1]) && u.getGenderString().contains(splits[2]))
-					listapretraga.add(u);
-			}
-		}else if(splits[0]!="" && splits[2]!=""){
-			for(User u:svi){
-				if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[2]))
-					listapretraga.add(u);
-			}
-		}else
-			return null;
-		
-		return listapretraga;
+		try {
+			String[] splits = search.split(";");
+			if(splits[0]!="" && splits[1]!="" && splits[2]!=""){
+				for(User u:svi){
+					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]) && u.getRoleString().contains(splits[2]))
+						listapretraga.add(u);
+				}
+			}else if(splits[0]!="" && splits[1]!=""){
+				for(User u:svi){
+					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]))
+						listapretraga.add(u);
+				}
+			}else if(splits[1]!="" && splits[2]!=""){
+				for(User u:svi){
+					if(u.getUsername().contains(splits[1]) && u.getGenderString().contains(splits[2]))
+						listapretraga.add(u);
+				}
+			}else if(splits[0]!="" && splits[2]!=""){
+				for(User u:svi){
+					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[2]))
+						listapretraga.add(u);
+				}
+			}else
+				return listapretraga;
+		} catch (Exception e) {
+			System.out.println(svi.size());
+			return svi;
+		}
+		return svi;
 	}
 }

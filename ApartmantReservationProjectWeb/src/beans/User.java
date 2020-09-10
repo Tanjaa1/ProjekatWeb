@@ -35,6 +35,7 @@ public class User implements IIdentifiable<String>{
 		Name = name;
 		Surname = surname;
 		Gender=gender;
+		Role=Roles.Host;
 	}
 	public String getUsername() {
 		return Username;
