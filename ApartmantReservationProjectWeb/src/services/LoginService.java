@@ -61,6 +61,9 @@ public class LoginService {
 		if (find == null) {
 			return Response.status(400).entity("Invalid username and/or password").build();
 		}
+		if(find.getBlock().equals("yes")){
+			return Response.status(400).entity("User blocked").build();
+		}
 		request.getSession().setAttribute("user", user);
 		return Response.status(200).build();
 	}
@@ -87,6 +90,7 @@ public class LoginService {
 	public String add(User user,@QueryParam("gender") String gender) throws JsonIOException, IOException{
 		user.setGender(Gender.getGenderS(gender));
 		user.setRole(Roles.Guest);
+		user.setBlock("no");
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		if(userDao.find(user.getUsername(),user.getPassword())!=null){	
 			return "Veæ postoji";
@@ -96,13 +100,28 @@ public class LoginService {
 		
 	}
 	
-	@PUT
+	@GET
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public void update(User user) throws JsonIOException, IOException{
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		if(userDao.find(user.getUsername(),user.getPassword())!=null){			
+			userDao.update(user);
+		}
+		
+	}
+	
+	@GET
+	@Path("/block")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void block(@QueryParam("username") String username,@QueryParam("password") String password) throws JsonIOException, IOException{
+		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
+
+		User u=userDao.find(username,password);
+		if(u!=null){
+			User user=userDao.block(u);
 			userDao.update(user);
 		}
 		

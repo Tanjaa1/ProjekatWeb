@@ -1,7 +1,9 @@
 Vue.component("users", {	
 	data: function(){
 		return{
-			users:null
+			users:null,
+			selectedUser:{},
+			can:false
 		}
 	},
 	template: `
@@ -56,14 +58,16 @@ Vue.component("users", {
 		<td><b>Uloga</b></th>
 	</tr>
 		
-	<tr v-for="p in users">
-		<td>{{p.username }}</td>
-		<td>{{p.name}}</td>
-		<td>{{p.surname}}</td>
-		<td>{{p.gender}}</td>
-		<td>{{p.role}}</td>
+	<tr v-for="u in users" v-on:click="selectUser(u)" v-bind:class="{selected : selectedUser.username===u.username}">
+		<td>{{u.username }}</td>
+		<td>{{u.name}}</td>
+		<td>{{u.surname}}</td>
+		<td>{{u.gender}}</td>
+		<td>{{u.role}}</td>
 	</tr>
 </table>
+
+<button v-on:click="blokiraj" v-bind:disabled="!can">Blokiraj korisnika</button><br />
 </div>		  
 `,
 methods:{
@@ -86,6 +90,19 @@ methods:{
 	    .then(response => {
 	    	this.users = response.data;
 	    	})
+	},
+	selectUser : function(user) {
+			this.selectedUser = user;
+			if(user.role!="Administrator")
+				this.can=true;
+	},
+	blokiraj: function(){
+		
+	    axios
+	    .get("rest/users/block",{params:{username: this.selectedUser.username,password:this.selectedUser.password}})
+	    .then(response =>{
+	    	alert("Blokirali ste korisnika");
+	    })
 	}
 },
 mounted() {

@@ -58,5 +58,10 @@ public class UserDAO extends AbstractDAO<User, String> {
 		return users.values();
 	}
 	
+	public User block(User user){
+		user.setBlock("yes");
+		return user;
+	}
+	
 	
 }

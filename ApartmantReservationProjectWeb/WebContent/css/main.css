@@ -129,3 +129,17 @@ body {
         display: block;
     }
 }
+
+tr.selected {
+	 background-color: #aaaaaa;
+}
+
+.table tr.alt td {
+    color: #000000;
+    background-color: #EAF2D3;
+}
+
+.table tr:hover {
+	 background-color: #ffff99;
+	 cursor: pointer;
+}

@@ -8,6 +8,7 @@ public class User implements IIdentifiable<String>{
 	public String Surname;	
 	public Roles Role;
 	public Gender Gender;
+	public String Block;
 	
 	public User() { }
 
@@ -15,6 +16,7 @@ public class User implements IIdentifiable<String>{
 		super();
 		Username = username;
 		Password = password;
+		Block="no";
 	}
 
 	
@@ -26,6 +28,7 @@ public class User implements IIdentifiable<String>{
 		Surname = surname;
 		Role = role;
 		Gender = gender;
+		Block="no";
 	}
 
 	public User(String username, String password, String name, String surname,Gender gender) {
@@ -36,6 +39,7 @@ public class User implements IIdentifiable<String>{
 		Surname = surname;
 		Gender=gender;
 		Role=Roles.Host;
+		Block="no";
 	}
 	public String getUsername() {
 		return Username;
@@ -96,7 +100,14 @@ public class User implements IIdentifiable<String>{
 	public void setGender(Gender gender) {
 		Gender=gender;
 	}
-
+	
+	public String getBlock(){
+		return Block;
+	}
+	
+	public void setBlock(String block){
+		Block=block;
+	}
 	@Override
 	public String getId() {
 		return Username;
