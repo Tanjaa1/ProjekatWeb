@@ -21,12 +21,13 @@ public class UserDAO extends AbstractDAO<User, String> {
 	
 	public UserDAO(String path) {
 		super(path);
+		init();
 	}
 	
 	@Override
 	public void init() {
 			try {
-				loadEntities(new TypeToken<List<User>>() {
+				users=loadEntities(new TypeToken<List<User>>() {
 				}.getType());
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -42,8 +43,7 @@ public class UserDAO extends AbstractDAO<User, String> {
 	 * @param password
 	 * @return
 	 */
-	public User find(String username, String password) {
-		System.out.println(users.size());
+	public User find(String username, String password){
 		if (!users.containsKey(username)) {
 			return null;
 		}

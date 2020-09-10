@@ -3,7 +3,7 @@ const SideBar={template: '<side-bar></side-bar>'}
 const ApartmentView={template: '<apartment></apartment>'}
 const AddApp={template: '<addApartment></addApartment>'}
 const Registration={template: '<reg-page></reg-page>'}
-const Profile={template: '<user-info></user-page>'}
+const Profile={template: '<user-info></user-info>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
@@ -21,19 +21,32 @@ var app = new Vue({
 	el: '#app',
 	data:{
 		regg:false,
-		loginInformation:{}
+		loginInformation:{},
+		user:null
 	},
+	
 	methods:{
 		login: function(loginInformation){
-			axios
-				.get("rest/users/login", {params: {username : this.loginInformation.username,password : this.loginInformation.password}})
-				.then(response => {
-					if(response.data.getUsername()!=""){
-						regg=true
-					}else{
-					}
-				} )
-		},
-	}	
+			$.post({
+				url: 'rest/users/login',
+				data: JSON.stringify({username: this.loginInformation.username, password: this.loginInformation.password}),
+				contentType: 'application/json',
+				success: function(product) {
+					$('#userInfo').show();
+					$('#users').show();
+					$('#rez').show();
+					$('#prijava').hide();
+				},
+				error: function(message) {
+					alert("Pogrešno ime ili lozinka!");
+				}
+			});
+		}
+	},
+	mounted() {
+		$('#userInfo').hide();
+		$('#users').hide();
+		$('#rez').hide();
+	}
 });
 

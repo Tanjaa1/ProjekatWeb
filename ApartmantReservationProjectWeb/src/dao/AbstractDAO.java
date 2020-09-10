@@ -43,7 +43,7 @@ public abstract class AbstractDAO<T extends IIdentifiable<ID>, ID> implements ID
 	}
 
 	@Override
-	public void loadEntities(Type type) throws IOException {
+	public Map<ID, T> loadEntities(Type type) throws IOException {
 		File file = new File(FilePath);
 
 		if (!file.exists()) {
@@ -59,6 +59,7 @@ public abstract class AbstractDAO<T extends IIdentifiable<ID>, ID> implements ID
 				EntityMap.put(entity.getId(), entity);
 			}
 		}
+		return EntityMap;
 
 	}
 

@@ -39,10 +39,13 @@
 		<div id="app">
 			<div>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a href="#" class="navbar-brand">Rezervacije<b>Apartmana</b></a>	
-				
+			<a href="#" class="navbar-brand">Rezervacije<b>Apartmana</b></a>			
+			<a id="users"><i class="fas fa-fw fa-users"> </i>  &nbsp Korisnici &nbsp &nbsp</a>
+			<a><i class="fas fa-fw fa-bed"> </i>  &nbsp Apartmani &nbsp &nbsp </a>
+			<a id="rez"><i class="fas fa-fw fa-flag"> </i> &nbsp  Rezervacije &nbsp &nbsp</a>
+			<a href="#/profile" id="userInfo"><i class="fas fa-fw fa-user-circle"></i> &nbsp Profil &nbsp &nbsp</a>
 				<div class="navbar-nav action-buttons ml-auto" >
-					<a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle mr-3" >Prijavi se</a>
+					<a id="prijava" href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle mr-3" >Prijavi se</a>
 					<div class="dropdown-menu login-form">
 						<form id="login">
 							<div class="form-group">
@@ -54,12 +57,13 @@
 							<button type="button" class="search-btn" v-on:click="login(loginInformation)">Prijava</button>
 						</form>					
 					</div>	
-					<a href="#/reg" class="btn btn-primary">Regustruj se</a>
+					<a href="#/reg" id="registr" class="btn btn-primary" v-if="!regg">Regustruj se</a>
+					<a href="#" id="odj" class="btn btn-primary" v-if="reg">Odjavi se</a>
 				</div>
 		</nav>
 		</div>
 			<router-view></router-view>
-		</div>
+	</div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

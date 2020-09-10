@@ -49,14 +49,18 @@ public class LoginService {
 	}
 	
 
-	@GET
+	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public User login(@QueryParam("username") String username,@QueryParam("password") String password){
+	public Response login(User user, @Context HttpServletRequest request){
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		User user=userDao.find(username, password);
-		return user;
+		User find=userDao.find(user.getUsername(), user.getPassword());
+		if (find == null) {
+			return Response.status(400).entity("Invalid username and/or password").build();
+		}
+		request.getSession().setAttribute("user", user);
+		return Response.status(200).build();
 	}
 	@POST
 	@Path("/logout")
