@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.JOptionPane;
+import javax.swing.plaf.synth.SynthSpinnerUI;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -111,39 +112,40 @@ public class LoginService {
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<User> search(String search){
+	public Collection<User> search(@QueryParam("search") String search){
 		
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		Collection<User> listapretraga= new ArrayList<User>();
 		Collection<User> svi=userDao.findAll();
 		try {
 			String[] splits = search.split(";");
+			
 			if(splits[0]!="" && splits[1]!="" && splits[2]!=""){
 				for(User u:svi){
 					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]) && u.getRoleString().contains(splits[2]))
 						listapretraga.add(u);
 				}
-			}else if(splits[0]!="" && splits[1]!=""){
+			}else if(splits[0]!=" " && splits[1]!=" "){
 				for(User u:svi){
 					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]))
 						listapretraga.add(u);
 				}
-			}else if(splits[1]!="" && splits[2]!=""){
+			}else if(splits[1]!=" " && splits[2]!=" "){
 				for(User u:svi){
 					if(u.getUsername().contains(splits[1]) && u.getGenderString().contains(splits[2]))
 						listapretraga.add(u);
 				}
-			}else if(splits[0]!="" && splits[2]!=""){
+			}else if(splits[0]!=" " && splits[2]!=" "){
 				for(User u:svi){
 					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[2]))
 						listapretraga.add(u);
 				}
 			}else
 				return listapretraga;
+			
 		} catch (Exception e) {
-			System.out.println(svi.size());
 			return svi;
 		}
-		return svi;
+		return listapretraga;
 	}
 }

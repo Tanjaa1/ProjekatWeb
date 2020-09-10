@@ -73,9 +73,9 @@ public class User implements IIdentifiable<String>{
 		return Role;
 	}
 	public String getRoleString() {
-		if(Role.equals("Administrator"))
+		if(Role.getRole()==0)
 			return "Administrator";
-		else if(Role.equals("Guest"))
+		else if(Role.getRole()==1)
 			return "Guest";
 		else
 			return "Host";
@@ -88,7 +88,7 @@ public class User implements IIdentifiable<String>{
 		return Gender;
 	}
 	public String getGenderString() {
-		if(Gender.equals("Male"))
+		if(Gender.getGender()==0)
 			return "Male";
 		else
 			return "Female";
