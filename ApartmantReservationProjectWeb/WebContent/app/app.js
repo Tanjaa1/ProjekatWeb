@@ -50,7 +50,6 @@ var app = new Vue({
 		axios
 		.post("rest/users/logout")
 		.then(response => {
-
 			$('#userInfo').hide();
 			$('#users').hide();
 			$('#rez').hide();

@@ -1,7 +1,7 @@
 Vue.component("user-info", {	
 	data: function(){
 		return{
-			currentUser:{}
+			currentUser:null
 		}
 	},
 template: `
@@ -159,6 +159,13 @@ methods:{
 },
 	mounted() {
 		document.getElementById("sacuvaj").className="search-btn-dis";
-		//currentUser
+		axios
+		.get('rest/users/currentUser')
+		.then(response => {
+			this.currentUser=response.data;
+		})
+		.catch(error =>{
+			alert("Doslo je do greske");
+		})
     }
 });

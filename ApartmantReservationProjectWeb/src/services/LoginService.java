@@ -36,6 +36,9 @@ public class LoginService {
 	@Context
 	ServletContext ctx;
 	
+	@Context
+	HttpServletRequest request;
+	
 	public LoginService() {
 		
 	}
@@ -55,7 +58,7 @@ public class LoginService {
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(User user, @Context HttpServletRequest request){
+	public Response login(User user){
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		User find=userDao.find(user.getUsername(), user.getPassword());
 		if (find == null) {
@@ -64,14 +67,14 @@ public class LoginService {
 		if(find.getBlock().equals("yes")){
 			return Response.status(400).entity("User blocked").build();
 		}
-		request.getSession().setAttribute("user", user);
+		request.getSession().setAttribute("user", find);
 		return Response.status(200).build();
 	}
 	@POST
 	@Path("/logout")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void logout(@Context HttpServletRequest request) {
+	public void logout() {
 		request.getSession().invalidate();
 	}
 	
@@ -79,7 +82,7 @@ public class LoginService {
 	@Path("/currentUser")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public User login(@Context HttpServletRequest request) {
+	public User login() {
 		return (User) request.getSession().getAttribute("user");
 	}
 	
