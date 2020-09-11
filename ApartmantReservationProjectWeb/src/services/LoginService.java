@@ -82,17 +82,21 @@ public class LoginService {
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String add(User user,@QueryParam("gender") String gender) throws JsonIOException, IOException{
+	public Response add(User user,@QueryParam("gender") String gender) throws JsonIOException, IOException{
 		user.setGender(Gender.getGenderS(gender));
-		user.setRole(Roles.Guest);
+		User curuser=(User) request.getSession().getAttribute("user");
+		if(curuser!=null)
+			user.setRole(Roles.Host);
+		else
+			user.setRole(Roles.Guest);
 		user.setBlock("no");
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		if(userDao.find(user.getUsername(),user.getPassword())!=null){	
-			return "Veæ postoji";
+			return Response.status(400).build();
 		}
 		userDao.save(user);
-		return "Usepsno dodato";
-		
+		login(user);
+		return Response.status(200).build();		
 	}
 	
 	@GET

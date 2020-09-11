@@ -70,7 +70,7 @@ Vue.component("users", {
 </table>
 
 <button v-on:click="blokiraj" v-bind:disabled="!can" class="btn btn-primary">Blokiraj korisnika</button>
-<button v-on:click="dodaj" class="btn btn-primary">Dodaj novog domaćina</button>
+<button v-on:click="dodaj" onclick="location.href='#/reg'" class="btn btn-primary">Dodaj novog domaćina</button>
 </div>		  
 `,
 methods:{
