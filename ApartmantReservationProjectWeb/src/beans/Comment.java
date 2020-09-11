@@ -1,8 +1,9 @@
 package beans;
 
-public class Comment implements IIdentifiable<Long> {
+public class Comment implements IIdentifiable<Long>, IDelete {
 	
 	private long Id;
+	private boolean Deleted = false;
 	public Apartment CommentedApartment;
 	public Guest GuestWhoCommented;
 	public String CommentContent;
@@ -61,6 +62,17 @@ public class Comment implements IIdentifiable<Long> {
 	@Override
 	public void setId(Long id) {
 		Id = id;		
+	}
+
+	@Override
+	public boolean getDeleted() {
+		return Deleted;
+	}
+
+	@Override
+	public void setDeleted(boolean b) {
+		Deleted = b;
+		
 	}	
 	
 }

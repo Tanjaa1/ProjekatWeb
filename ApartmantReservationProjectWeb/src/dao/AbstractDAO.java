@@ -14,9 +14,10 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
+import beans.IDelete;
 import beans.IIdentifiable;
 
-public abstract class AbstractDAO<T extends IIdentifiable<ID>, ID> implements IDAO<T, ID> {
+public abstract class AbstractDAO<T extends IIdentifiable<ID> & IDelete, ID> implements IDAO<T, ID> {
 	private Gson Gson;
 	private Map<ID, T> EntityMap;
 	private String FilePath;
@@ -32,7 +33,7 @@ public abstract class AbstractDAO<T extends IIdentifiable<ID>, ID> implements ID
 	public T save(T entity) throws JsonIOException, IOException {
 		EntityMap.put(entity.getId(), entity);
 		saveAll();
-		return null;
+		return entity;
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public abstract class AbstractDAO<T extends IIdentifiable<ID>, ID> implements ID
 	}
 
 	@Override
-	public void loadEntities(Type type) throws IOException {
+	public Map<ID, T> loadEntities(Type type) throws IOException {
 		File file = new File(FilePath);
 
 		if (!file.exists()) {
@@ -59,6 +60,7 @@ public abstract class AbstractDAO<T extends IIdentifiable<ID>, ID> implements ID
 				EntityMap.put(entity.getId(), entity);
 			}
 		}
+		return EntityMap;
 
 	}
 
@@ -68,13 +70,20 @@ public abstract class AbstractDAO<T extends IIdentifiable<ID>, ID> implements ID
 	}
 
 	@Override
-	public void delete(ID id) throws JsonIOException, IOException {
-		EntityMap.remove(id);
+	public T deleteLogical(ID id) throws JsonIOException, IOException {
+		EntityMap.get(id).setDeleted(true);
 		saveAll();
+		return EntityMap.get(id);
 	}
+	
 	@Override
 	public void update(T entity) throws JsonIOException, IOException {
 		EntityMap.replace(entity.getId(), entity);
 	}
 
+	@Override
+	public T getById(ID id) {
+		return EntityMap.get(id);
+		
+	}
 }

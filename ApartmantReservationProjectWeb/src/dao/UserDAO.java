@@ -1,33 +1,28 @@
 package dao;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.io.IOException;
 import java.util.List;
 
-import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 import beans.User;
 
-public class UserDAO extends AbstractDAO<User, String> {
+public class UserDAO extends AbstractDAO<User,String> {
 	private Map<String, User> users = new HashMap<>();
 	
 	
 	public UserDAO(String path) {
 		super(path);
+		init();
 	}
 	
 	@Override
 	public void init() {
 			try {
-				loadEntities(new TypeToken<List<User>>() {
-				}.getType());
+				loadEntities(new TypeToken<List<User>>() {}.getType());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

@@ -1,8 +1,31 @@
 Vue.component("apartment", {
 	data: function () {
 		return {
+				id : this.$route.params.id,
+				apartment : Object,
+				address : Object,
+				location : Object
 		}
 	},
+	mounted(){
+		axios
+		.get('rest/apartment/'+this.id)
+		.then(response=>{
+			this.apartment=response.data
+			this.address=response.data.ApartmentAddress
+			this.location=response.data.LocationOfApartment
+		})
+	},
+	computed:
+		{
+		apartmentType(){
+			if(this.apartment.Type=="Room")
+				return "Soba"
+			else
+				return "Ceo apartman"
+		}
+		
+		},
     template: ` 
 
     <div class="apartment">
@@ -34,36 +57,39 @@ Vue.component("apartment", {
             </div>        
 
             <div class="col-md-3 col-sm-12 mt-4 mb-4">
-                <h4 style="text-align:center">Apartman 1</h4>
+                <h4 style="text-align:center"> Naziv apartmana</h4>
+                <h5 style="text-align:left">Domaćin: {{apartment.ApartmentHost}}</h5>
                 <div class="border mt-2 mb-2 ml-2 mr-2">
                     <p class=" mt-2 mx-2"> 
                         <label>Tip objekta:</label>
-                        <label>Soba</label>
+                        <label>{{apartmentType}}</label>
                     </p>
                     <p class="mx-2">
                         <label>Broj soba:</label>
-                        <label>Tri</label>
+                        <label>{{apartment.NumberOfRooms}}</label>
                     </p>
                     <p class="mx-2">
                         <label>Broj godtiju:</label>
-                        <label>Dve</label>
+                        <label>{{apartment.NumberOfGuests}}</label>
                     </p>
                     <p class="mx-2">
-                        <label>Adresa objekta:</label>
-                        <p class="mx-2">Ulica 1</p>
-                        <p class="mx-2">Grad</p>
-                        <p class="mx-2">Postanski broj</p>
+                        <label>Adresa objekta</label>
+                        <p class="mx-2">Ulica i broj: {{address.Street}} {{address.StreetNumber}}</p>
+                        <p class="mx-2">Grad: {{address.City}}</p>
+                        <p class="mx-2">Postanski broj: {{address.postalCode}} </p>
                         <p class="mx-2">Koordinate</p>
+                        <p class="mx-2">Geografska širina: {{location.Longitude}}</p>
+                        <p class="mx-2">Geografska dužina: {{location.Latitude}} </p>
                     </p>
                     <p class="mx-2">
                         <label>Dostupni datumi:</label>
                     </p>
                     <p class="mx-2">
-                        <label>Cena po noći:</label>
+                        <label>Cena po noći: {{apartment.PricePerStayingNight}}</label>
                     </p>
                     
-                    <p class="mx-2">Vreme za prijavu: 2PM</p>
-                    <p class="mx-2">Vreme za odjavu: 10AM</p>
+                    <p class="mx-2">Vreme za prijavu: {{apartment.CheckInTime}}</p>
+                    <p class="mx-2">Vreme za odjavu: {{apartment.CheckOutTime}}</p>
                     </p>
                 </div>
             </div>

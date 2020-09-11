@@ -5,23 +5,23 @@ import java.util.List;
 
 import com.google.gson.reflect.TypeToken;
 
-import beans.Amenities;
+import beans.Address;
 import dao.sequencer.LongSequencer;
 
-public class AmenitiesDAO extends AbstractLongDAO<Amenities>{
+public class AddressDAO extends AbstractLongDAO<Address>{
 
-	public AmenitiesDAO(String path) {
+	public AddressDAO(String path) {
 		super(path, new LongSequencer());
 	}
 
 	@Override
 	public void init() {
 		try {
-			loadEntities(new TypeToken<List<Amenities>>() {}.getType());
+			loadEntities(new TypeToken<List<Address>>() {}.getType());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
-
+	
 }

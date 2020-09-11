@@ -6,10 +6,10 @@ const Registration={template: '<reg-page></reg-page>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	   { path: '/', component: Search},
-	   { path: '/reg', component: Registration}
-
-	   	//path: '/', component: AddApp},
+	   { path: '/', component: AddApp},
+	   { path: '/reg', component: Registration},
+	   {path:'/apartment/:id',component:ApartmentView}
+	   //{ path: '/addApartment', component: AddApp}
 	   
 	  ]
 });

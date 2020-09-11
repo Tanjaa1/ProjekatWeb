@@ -1,7 +1,8 @@
 package beans;
 
-public class User implements IIdentifiable<String>{
+public class User implements IIdentifiable<String>, IDelete{
 	
+	private boolean Deleted = false;
 	public String Username;
 	public String Password;
 	public String Name;
@@ -93,6 +94,16 @@ public class User implements IIdentifiable<String>{
 	public void setId(String id) {
 		setUsername(id);
 		
+	}
+
+	@Override
+	public boolean getDeleted() {
+		return Deleted;
+	}
+
+	@Override
+	public void setDeleted(boolean b) {
+		Deleted = b;
 	}
 
 }

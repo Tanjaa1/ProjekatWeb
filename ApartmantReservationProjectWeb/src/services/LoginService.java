@@ -14,11 +14,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonIOException;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-
 import app.App;
 import beans.Gender;
 import beans.User;

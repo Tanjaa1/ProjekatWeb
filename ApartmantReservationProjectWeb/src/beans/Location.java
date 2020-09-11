@@ -1,6 +1,6 @@
 package beans;
 
-public class Location extends Address implements IIdentifiable<Long>{
+public class Location extends Address implements IIdentifiable<Long>, IDelete{
 
 	private long LocationId;
 	public double Longitude;
@@ -46,6 +46,17 @@ public class Location extends Address implements IIdentifiable<Long>{
 	@Override
 	public void setId(Long id) {
 		LocationId = id;
+	}
+	
+	@Override
+	public boolean getDeleted() {
+		return Deleted;
+	}
+
+	@Override
+	public void setDeleted(boolean b) {
+		Deleted = b;
+		
 	}
 	
 }

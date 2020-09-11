@@ -2,9 +2,10 @@ package beans;
 
 import java.util.Date;
 
-public class Reservations implements IIdentifiable<Long>{
+public class Reservations implements IIdentifiable<Long>, IDelete{
 	
 	private long Id;
+	private boolean Deleted = false;
 	public Apartment ReservatedApartment;
 	public Date StartDate;
 	public int NumberOfStayingNights;
@@ -93,6 +94,16 @@ public class Reservations implements IIdentifiable<Long>{
 	@Override
 	public void setId(Long id) {
 		Id = id;
+	}
+
+	@Override
+	public boolean getDeleted() {
+		return Deleted;
+	}
+
+	@Override
+	public void setDeleted(boolean b) {
+		Deleted = b;
 	}
 	
 	

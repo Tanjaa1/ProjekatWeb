@@ -1,8 +1,9 @@
 package beans;
 
-public class Address implements IIdentifiable<Long>{
+public class Address implements IIdentifiable<Long>, IDelete{
 	
 	private long Id;
+	protected boolean Deleted = false;
 	public String Street;
 	public String StreetNumber;
 	public String City;
@@ -60,6 +61,17 @@ public class Address implements IIdentifiable<Long>{
 	@Override
 	public void setId(Long id) {
 		Id = id;		
+	}
+
+	@Override
+	public boolean getDeleted() {
+		return Deleted;
+	}
+
+	@Override
+	public void setDeleted(boolean b) {
+		Deleted = b;
+		
 	}
 
 }

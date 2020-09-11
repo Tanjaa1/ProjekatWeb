@@ -14,12 +14,14 @@ public interface IDAO<T, ID> {
 
 	public void saveAll() throws JsonIOException, IOException;
 
-	public void loadEntities(Type type) throws IOException;
+	public Map<ID, T> loadEntities(Type type) throws IOException;
 
 	public Map<ID, T> getAll();
-
-	public void delete(ID id) throws JsonIOException, IOException;
 	
 	public void update(T entity) throws JsonIOException, IOException;
+	
+	public T getById(ID id);
+	
+	public T deleteLogical(ID id) throws JsonIOException, IOException;
 
 }

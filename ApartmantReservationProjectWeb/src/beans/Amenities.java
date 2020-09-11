@@ -1,8 +1,9 @@
 package beans;
 
-public class Amenities implements IIdentifiable<Long>{
+public class Amenities implements IIdentifiable<Long>, IDelete{
 
 	private long Id;
+	private boolean Deleted = false;
 	public String AmenitiesName;
 	
 	
@@ -31,6 +32,16 @@ public class Amenities implements IIdentifiable<Long>{
 	@Override
 	public void setId(Long id) {
 		Id = id;		
+	}
+
+	@Override
+	public boolean getDeleted() {
+		return Deleted;
+	}
+
+	@Override
+	public void setDeleted(boolean b) {
+		Deleted = b;		
 	}
 	
 	

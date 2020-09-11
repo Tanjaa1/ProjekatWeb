@@ -5,23 +5,23 @@ import java.util.List;
 
 import com.google.gson.reflect.TypeToken;
 
-import beans.Administrator;
+import beans.Host;
 
 
-public class AdministratorDAO extends AbstractDAO<Administrator,String> {
+public class HostDAO extends AbstractDAO<Host,String> {
 
-	public AdministratorDAO(String path) {
+	public HostDAO(String path) {
 		super(path);
 	}
 
 	@Override
 	public void init() {
 		try {
-			loadEntities(new TypeToken<List<Administrator>>() {
-			}.getType());
+			loadEntities(new TypeToken<List<Host>>() {}.getType());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 }
