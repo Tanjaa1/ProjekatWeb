@@ -1,15 +1,29 @@
 package beans;
 
+
 public enum Gender {
-	Male, 
-	Female;
+	Male(0), 
+	Female(1);
+	private int Gender;
 	
-	Gender(){}
-	public static Gender getGender(String str){
+	Gender(){
+		Gender=0;
+	}
+	Gender(int g){
+		Gender=g;
+	}
+    public int getGender() {
+        return Gender;
+    }
+
+    public void setGender(int g) {
+    	Gender = g;
+    }
+	public static Gender getGenderS(String str){
 		if(str.equals("male"))
-			return Gender.Male;
+			return Male;
 		else if(str.equals("female"))
-			return Gender.Female;
+			return Female;
 		return null;
 	}
 }

@@ -8,16 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonIOException;
 import app.App;
 import beans.Gender;
+import beans.Roles;
 import beans.User;
 import dao.UserDAO;
 
@@ -26,6 +27,9 @@ public class LoginService {
 	
 	@Context
 	ServletContext ctx;
+	
+	@Context
+	HttpServletRequest request;
 	
 	public LoginService() {
 		
@@ -42,20 +46,27 @@ public class LoginService {
 	}
 	
 
-	@GET
+	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public User login(@QueryParam("username") String username,@QueryParam("password") String password){
+	public Response login(User user){
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		User user=userDao.find(username, password);
-		return user;
+		User find=userDao.find(user.getUsername(), user.getPassword());
+		if (find == null) {
+			return Response.status(400).entity("Invalid username and/or password").build();
+		}
+		if(find.getBlock().equals("yes")){
+			return Response.status(400).entity("User blocked").build();
+		}
+		request.getSession().setAttribute("user", find);
+		return Response.status(200).build();
 	}
 	@POST
 	@Path("/logout")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void logout(@Context HttpServletRequest request) {
+	public void logout() {
 		request.getSession().invalidate();
 	}
 	
@@ -63,7 +74,7 @@ public class LoginService {
 	@Path("/currentUser")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public User login(@Context HttpServletRequest request) {
+	public User login() {
 		return (User) request.getSession().getAttribute("user");
 	}
 	
@@ -72,9 +83,11 @@ public class LoginService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String add(User user,@QueryParam("gender") String gender) throws JsonIOException, IOException{
-		user.setGender(Gender.getGender(gender));
+		user.setGender(Gender.getGenderS(gender));
+		user.setRole(Roles.Guest);
+		user.setBlock("no");
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		if(userDao.find(user.getUsername(),user.getPassword())!=null){			
+		if(userDao.find(user.getUsername(),user.getPassword())!=null){	
 			return "Veæ postoji";
 		}
 		userDao.save(user);
@@ -82,15 +95,27 @@ public class LoginService {
 		
 	}
 	
-	@PUT
+	@GET
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void update(User user) throws JsonIOException, IOException{
+	public void update(@QueryParam("info") String info) throws JsonIOException, IOException{
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		if(userDao.find(user.getUsername(),user.getPassword())!=null){			
-			userDao.update(user);
+		System.out.println(info);
+		User user=login();
+		try {
+		String[] users=info.split(";");
+			if(users.length>1)
+				user.setName(users[0]);
+			user.setSurname(users[1]);
+			if(users[2].equals("Muško"))
+				user.setGender(Gender.Male);
+			else
+				user.setGender(Gender.Female);
+		} catch (Exception e) {
+			user.setPassword(info);
 		}
+			userDao.update(user);
 		
 	}
 }

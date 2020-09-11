@@ -3,14 +3,18 @@ const SideBar={template: '<side-bar></side-bar>'}
 const ApartmentView={template: '<apartment></apartment>'}
 const AddApp={template: '<addApartment></addApartment>'}
 const Registration={template: '<reg-page></reg-page>'}
+const Profile={template: '<user-info></user-info>'}
+const Users={template: '<users></users>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	   { path: '/', component: AddApp},
+	   { path: '/', component: Search},
 	   { path: '/reg', component: Registration},
-	   {path:'/apartment/:id',component:ApartmentView}
-	   //{ path: '/addApartment', component: AddApp}
-	   
+	   { path: '/profile', component: Profile},
+	   { path: '/users', component: Users},
+	   { path: '/apartment/:id', component:ApartmentView}
+
+	   	//path: '/', component: AddApp},
 	  ]
 });
 
@@ -19,19 +23,47 @@ var app = new Vue({
 	el: '#app',
 	data:{
 		regg:false,
-		loginInformation:{}
+		loginInformation:{},
+		user:null
 	},
+	
 	methods:{
 		login: function(loginInformation){
-			axios
-				.get("rest/users/login", {params: {username : this.loginInformation.username,password : this.loginInformation.password}})
-				.then(response => {
-					if(response.data.getUsername()!=""){
-						regg=true
-					}else{
-					}
-				} )
+			$.post({
+				url: 'rest/users/login',
+				data: JSON.stringify({username: this.loginInformation.username, password: this.loginInformation.password}),
+				contentType: 'application/json',
+				success: function(product) {
+					$('#userInfo').show();
+					$('#users').show();
+					$('#rez').show();
+					$('#prijava').hide();
+					$('#registr').hide();
+					$('#odj').show();
+				},
+				error: function(message) {
+					alert("Pogrešno ime ili lozinka!");
+				}
+			});
 		},
-	}	
+	Odjava: function(){
+		axios
+		.post("rest/users/logout")
+		.then(response => {
+			$('#userInfo').hide();
+			$('#users').hide();
+			$('#rez').hide();
+			$('#odj').hide();
+			$('#registr').show();
+			$('#prijava').show();
+		})
+	}
+},
+mounted() {
+	$('#userInfo').hide();
+	$('#users').hide();
+	$('#rez').hide();
+	$('#odj').hide();
+}
 });
 

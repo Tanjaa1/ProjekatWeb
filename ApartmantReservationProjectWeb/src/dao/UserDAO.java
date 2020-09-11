@@ -22,7 +22,8 @@ public class UserDAO extends AbstractDAO<User,String> {
 	@Override
 	public void init() {
 			try {
-				loadEntities(new TypeToken<List<User>>() {}.getType());
+				users=loadEntities(new TypeToken<List<User>>() {
+				}.getType());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -30,12 +31,6 @@ public class UserDAO extends AbstractDAO<User,String> {
 		
 	}
 	
-	/***
-	 * @param contextPath Putanja do aplikacije u Tomcatu. Može se pristupiti samo iz servleta.
-	 */
-	/*public UserDAO(String contextPath) {
-		loadUsers(contextPath);
-	}
 	
 	/**
 	 * Vraæa korisnika za prosleðeno korisnièko ime i šifru. Vraæa null ako korisnik ne postoji
@@ -43,8 +38,7 @@ public class UserDAO extends AbstractDAO<User,String> {
 	 * @param password
 	 * @return
 	 */
-	public User find(String username, String password) {
-		System.out.println(users.size());
+	public User find(String username, String password){
 		if (!users.containsKey(username)) {
 			return null;
 		}
@@ -59,11 +53,10 @@ public class UserDAO extends AbstractDAO<User,String> {
 		return users.values();
 	}
 	
-	/**
-	 * Uèitava korisnike iz WebContent/users.txt fajla i dodaje ih u mapu {@link #users}.
-	 * Kljuè je korisnièko ime korisnika.
-	 * @param contextPath Putanja do aplikacije u Tomcatu
-	 */
+	public User block(User user){
+		user.setBlock("yes");
+		return user;
+	}
 	
 	
 }

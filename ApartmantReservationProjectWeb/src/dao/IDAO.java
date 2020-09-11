@@ -14,7 +14,7 @@ public interface IDAO<T, ID> {
 
 	public void saveAll() throws JsonIOException, IOException;
 
-	public Map<ID, T> loadEntities(Type type) throws IOException;
+	public  Map<ID, T> loadEntities(Type type) throws IOException;
 
 	public Map<ID, T> getAll();
 	
