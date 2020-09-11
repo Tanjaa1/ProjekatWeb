@@ -1,7 +1,11 @@
 Vue.component("user-info", {	
 	data: function(){
 		return{
-			currentUser:null
+			currentUser:null,
+			kime:"",
+			ime:"",
+			prezime:"",
+			pol:""			
 		}
 	},
 template: `
@@ -17,7 +21,7 @@ template: `
     <!-- Tab panes -->
     <div class="tab-content">
     	<div id="profil" class="container tab-pane active"><br>
-    		<h3>Podaci o korisniku:</h3>
+    		<h3>Podaci o korisniku {{kime}}:</h3>
     		<div class="form-group">	
     			<label>Ime:</label>
     			<input id="ime" type="text" class="form-control" placeholder="Ime *" value="" disabled="disabled"/>
@@ -85,11 +89,10 @@ methods:{
 		else if(document.getElementById("radio1").checked && !document.getElementById("radio2").checked)
 			pol=document.getElementById("radio2").value;
 		if(ime.value!="" && prezime.value!="" && pol!=""){
-			
-			var user={username:"AVA",name:ime.value,surname:prezime.value};
+			var info=ime.value+";"+prezime.value+";"+pol;
 			axios
-			.put("rest/users/update", user)
-			.then(response => {			
+			.get("rest/users/update",{params:{info: info}})
+			.then(response => {	
 			} )
 		}else{
 			if(ime.value==""){
@@ -116,7 +119,7 @@ methods:{
 	},
 	SacuvajLozinku: function(){
 		var stara_lozinka=document.getElementById("passOld"),nova_lozinka=document.getElementById("passNew"),kontrolna_lozinka=document.getElementById("passC");
-		if(stara_lozinka.value==""){
+		if(stara_lozinka.value=="" || stara_lozinka.value!=this.currentUser.password){
 			stara_lozinka.style.borderColor ="red";
 			document.getElementById("nemaPassOld").style.visibility = "visible";
 		}else{
@@ -141,6 +144,14 @@ methods:{
 			}else{
 				kontrolna_lozinka.style.borderColor ="grey";
 				document.getElementById("nemaPassC").style.visibility = "hidden";
+				if(stara_lozinka.value==this.currentUser.password){
+					var nl=nova_lozinka.value;
+						axios
+						.get("rest/users/update",{params:{info: nl}})
+						.then(response => {
+							alert("Lozinka je uspešno promenjena");
+						} )
+				}
 			}
 		}
 	},
@@ -158,11 +169,21 @@ methods:{
 	}
 },
 	mounted() {
+		var ime=document.getElementById("ime"),prezime=document.getElementById("prezime"),pol="";
+		
 		document.getElementById("sacuvaj").className="search-btn-dis";
 		axios
 		.get('rest/users/currentUser')
 		.then(response => {
 			this.currentUser=response.data;
+			this.kime=response.data.username;
+			ime.value=response.data.name;
+			prezime.value=response.data.surname;
+			if(response.data.gender=="Male")
+				document.getElementById("radio1").checked=true;
+			else
+				document.getElementById("radio2").checked=true;
+				
 		})
 		.catch(error =>{
 			alert("Doslo je do greske");

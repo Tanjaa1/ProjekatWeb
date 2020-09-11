@@ -107,11 +107,23 @@ public class LoginService {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void update(User user) throws JsonIOException, IOException{
+	public void update(@QueryParam("info") String info) throws JsonIOException, IOException{
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		if(userDao.find(user.getUsername(),user.getPassword())!=null){			
-			userDao.update(user);
+		System.out.println(info);
+		User user=login();
+		try {
+		String[] users=info.split(";");
+			if(users.length>1)
+				user.setName(users[0]);
+			user.setSurname(users[1]);
+			if(users[2].equals("Muško"))
+				user.setGender(Gender.Male);
+			else
+				user.setGender(Gender.Female);
+		} catch (Exception e) {
+			user.setPassword(info);
 		}
+			userDao.update(user);
 		
 	}
 }

@@ -68,7 +68,6 @@ public class AdministratorService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void block(@QueryParam("username") String username,@QueryParam("password") String password) throws JsonIOException, IOException{
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-
 		User u=userDao.find(username,password);
 		if(u!=null){
 			User user=userDao.block(u);
