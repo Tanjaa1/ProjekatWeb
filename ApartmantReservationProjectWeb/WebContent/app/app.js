@@ -38,17 +38,33 @@ var app = new Vue({
 					$('#users').show();
 					$('#rez').show();
 					$('#prijava').hide();
+					$('#registr').hide();
+					$('#odj').show();
 				},
 				error: function(message) {
 					alert("Pogrešno ime ili lozinka!");
 				}
 			});
-		}
-	},
-	mounted() {
-		$('#userInfo').hide();
-		$('#users').hide();
-		$('#rez').hide();
+		},
+	Odjava: function(){
+		axios
+		.post("rest/users/logout")
+		.then(response => {
+
+			$('#userInfo').hide();
+			$('#users').hide();
+			$('#rez').hide();
+			$('#odj').hide();
+			$('#registr').show();
+			$('#prijava').show();
+		})
 	}
+},
+mounted() {
+	$('#userInfo').hide();
+	$('#users').hide();
+	$('#rez').hide();
+	$('#odj').hide();
+}
 });
 

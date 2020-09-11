@@ -7,7 +7,7 @@ Vue.component("users", {
 		}
 	},
 	template: `
-	<div>
+	<div class="tabelaa">
 	<br>
 	<section class="search-sec">
     <div class="container">
@@ -56,6 +56,7 @@ Vue.component("users", {
 		<td><b>Prezime</b></th>
 		<td><b>Pol</b></th>
 		<td><b>Uloga</b></th>
+		<td><b>Blokiran</b></th>
 	</tr>
 		
 	<tr v-for="u in users" v-on:click="selectUser(u)" v-bind:class="{selected : selectedUser.username===u.username}">
@@ -64,29 +65,32 @@ Vue.component("users", {
 		<td>{{u.surname}}</td>
 		<td>{{u.gender}}</td>
 		<td>{{u.role}}</td>
+		<td>{{u.block}}</td>
 	</tr>
 </table>
 
-<button v-on:click="blokiraj" v-bind:disabled="!can">Blokiraj korisnika</button><br />
+<button v-on:click="blokiraj" v-bind:disabled="!can" class="btn btn-primary">Blokiraj korisnika</button>
+<button v-on:click="dodaj" class="btn btn-primary">Dodaj novog domaćina</button>
 </div>		  
 `,
 methods:{
 	pretrazi: function(){
-		var pol="",uloga="";
+		var pol=" ",uloga=" ";
 		if(document.getElementById("pol_p").value=="Muško")
 			pol="Male";
 		else if(document.getElementById("pol_p").value=="Žensko")
 			pol="Female";
+		
 		if(document.getElementById("uloga_p").value=="Administrator")
 			uloga="Administrator";
 		else if(document.getElementById("uloga_p").value=="Gost")
 			uloga="Guest";
 		else if(document.getElementById("uloga_p").value=="Domaćin")
-			uloga="Host"
+			uloga="Host";
 		
 		var search=document.getElementById("kime_p").value+";"+pol+";"+uloga;
 	    axios
-	    .get('rest/users/search',{params :{search: search}})
+	    .get('rest/admin/search',{params :{search: search}})
 	    .then(response => {
 	    	this.users = response.data;
 	    	})
@@ -99,16 +103,17 @@ methods:{
 	blokiraj: function(){
 		
 	    axios
-	    .get("rest/users/block",{params:{username: this.selectedUser.username,password:this.selectedUser.password}})
+	    .get("rest/admin/block",{params:{username: this.selectedUser.username,password:this.selectedUser.password}})
 	    .then(response =>{
 	    	alert("Blokirali ste korisnika");
 	    })
-	}
+	},
+	dodaj:function(){}
 },
 mounted() {
 	var search="";
     axios
-    .get('rest/users/search',{params :{search: search}})
+    .get('rest/admin/search',{params :{search: search}})
     .then(response => {
     	this.users = response.data;
     	})
