@@ -1,6 +1,7 @@
 package services;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -51,6 +52,14 @@ public class ApartmentService {
 	public Apartment getById(@PathParam("id")Long id) {
 		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
 		return apartmentDao.getById(id);
+	}
+	
+	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection <Apartment> getAll() {
+		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
+		return  apartmentDao.getAll().values();
 	}
 
 }

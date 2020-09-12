@@ -1,7 +1,25 @@
 Vue.component("side-bar", {
 	data: function () {
 		return {
+			apartments : []
 		}
+	},
+	mounted(){
+		axios
+		.get('rest/apartment')
+		.then(response => {
+			this.apartments = response.data
+		})
+		
+	},
+	computed:{
+	apartmentType(apartment){
+		if(apartment.Type=="Room")
+			return "Soba"
+		else
+			return "Ceo apartman"
+	}
+	
 	},
 	template: ` 
 	<div class = "sidebar" >
@@ -115,7 +133,7 @@ Vue.component("side-bar", {
 			<div class="col-md-1"></div>
 
 			<div class="col-md-5 col-sm-12"> 
-				<div class="border mt-2">
+				<div class="border mt-2" v-for="a in apartments">
 					<div class="row">
 						<div class="ml-4 mr-4 mt-4">
 							<div class="gallery">
@@ -125,15 +143,15 @@ Vue.component("side-bar", {
 							</div>
 						</div>
 						<div class="ml-4 mr-4 mt-4">
-							<h5 style="text-align:center">Apartman 1</h5>
+							<h5 style="text-align:center">{{a.NameOfApartment}}</h5>
 							<p class="mb-1 mx-2"> Tip apartmana: </p>
-							<label class="mx-2"> Soba </label>
+							<label class="mx-2"> {{a.Type}}</label>
 							<p class="mb-1 mx-2"> Cena: </p>
-							<label class="mx-2">10 000</label>
+							<label class="mx-2">{{a.PricePerStayingNight}}</label>
 							
 						</div>
 						<div class="center ml-10">
-							<button class="search-btn mx-10" type="button">
+							<button v-on:click="detalji(a.id)" class="search-btn mx-10" type="button">
 							Prikaži detaljnije
 							</button>
 						</div>
@@ -142,59 +160,8 @@ Vue.component("side-bar", {
 
 				</div>		
 
-				<div class="border mt-2">
-					<div class="row">
-						<div class="ml-4 mr-4 mt-4">
-							<div class="gallery">
-								<a target="_blank">
-									<img src="images/soba.jpg" alt="Izgled sobe" width="600" height="400">
-								</a>
-							</div>
-						</div>
-						<div class="ml-4 mr-4 mt-4">
-							<h5 style="text-align:center">Apartman 1</h5>
-							<p class="mb-1 mx-2"> Tip apartmana: </p>
-							<label class="mx-2"> Soba </label>
-							<p class="mb-1 mx-2"> Cena: </p>
-							<label class="mx-2">10 000</label>
-							
-						</div>
-						<div class="center ml-10">
-							<button class="search-btn mx-10" type="button">
-							Prikaži detaljnije
-							</button>
-						</div>
-						
-					</div>
-
-				</div>		
-
-				<div class="border mt-2">
-					<div class="row">
-						<div class="ml-4 mr-4 mt-4">
-							<div class="gallery">
-								<a target="_blank">
-									<img src="images/soba.jpg" alt="Izgled sobe" width="600" height="400">
-								</a>
-							</div>
-						</div>
-						<div class="ml-4 mr-4 mt-4">
-							<h5 style="text-align:center">Apartman 1</h5>
-							<p class="mb-1 mx-2"> Tip apartmana: </p>
-							<label class="mx-2"> Soba </label>
-							<p class="mb-1 mx-2"> Cena: </p>
-							<label class="mx-2">10 000</label>
-							
-						</div>
-						<div class="center ml-10">
-							<button class="search-btn mx-10" type="button">
-							Prikaži detaljnije
-							</button>
-						</div>
-						
-					</div>
-
-				</div>		
+				
+				
 			
 			</div>
 
@@ -203,7 +170,12 @@ Vue.component("side-bar", {
 	</div>
 	
 		
-	`
+	`,
+	methods:{
+		detalji:function(id){
+			window.location.href="#/apartment/"+id
+		}
+	}
 
 
 });
