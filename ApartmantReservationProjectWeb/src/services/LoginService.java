@@ -78,6 +78,17 @@ public class LoginService {
 		return (User) request.getSession().getAttribute("user");
 	}
 	
+	@GET
+	@Path("/getRole")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Roles getRole() {
+		User tmp= (User) request.getSession().getAttribute("user");
+		if(tmp==null)
+			return null;
+		return tmp.getRole();
+	}
+	
+	
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)

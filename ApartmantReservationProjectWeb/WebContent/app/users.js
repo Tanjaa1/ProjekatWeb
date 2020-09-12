@@ -3,8 +3,17 @@ Vue.component("users", {
 		return{
 			users:null,
 			selectedUser:{},
-			can:false
+			can:false,
+			res:''
 		}
+	},
+	beforeMount(){
+		axios
+		.get("rest/users/getRole")
+		.then(response=>{
+			if(response.data!="Administrator")
+				this.$router.push('forbidden')
+		})
 	},
 	template: `
 	<div class="tabelaa">

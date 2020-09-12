@@ -14,8 +14,8 @@ const router = new VueRouter({
 	   { path: '/users', component: Users},
 	   { path: '/addapartment', component: AddApp},
 	   { path: '/allapartments', component: SideBar,name:"allApartments"},
-	   { path: '/apartment/:id', component:ApartmentView}
-
+	   { path: '/apartment/:id', component:ApartmentView},
+	   { path: '/forbidden',name:"forbidden"}
 
 	  ]
 });
