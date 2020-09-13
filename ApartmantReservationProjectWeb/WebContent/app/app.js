@@ -42,6 +42,7 @@ var app = new Vue({
 					$('#prijava').hide();
 					$('#registr').hide();
 					$('#odj').show();
+					this.$router.push('allapartments');
 				},
 				error: function(message) {
 					alert("Pogrešno ime ili lozinka!");
@@ -68,9 +69,10 @@ var app = new Vue({
 		.get("rest/users/getRole")
 		.then(response => {
 
-			this.$router.push('allapartments');
-			if(response.data!="Administrator")
+			
+			if(response.data!="Administrator"){
 				$('#users').hide();
+			}
 		})
 	}
 },
