@@ -78,7 +78,6 @@ public abstract class AbstractDAO<T extends IIdentifiable<ID> & IDelete, ID> imp
 	
 	@Override
 	public void update(T entity) throws JsonIOException, IOException {
-		System.out.println("da");
 		EntityMap.replace(entity.getId(), entity);
 		FileWriter file = new FileWriter(FilePath);
 		file.write(Gson.toJson(EntityMap.values()));

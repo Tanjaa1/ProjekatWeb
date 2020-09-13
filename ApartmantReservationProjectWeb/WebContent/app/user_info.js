@@ -8,6 +8,15 @@ Vue.component("user-info", {
 			pol:"",
 			bool:true
 		}
+	},	
+	beforeMount(){
+		axios
+		.get("rest/users/getRole")
+		.then(response=>{
+			if(response.data!=null){
+				this.$router.push('forbidden');
+			}
+		})
 	},
 template: `
 <div class="container">
@@ -47,8 +56,12 @@ template: `
 		         </div>
 		         <span id="nemaPol" style="color:red; visibility:hidden"> Morate odabrati pol!</span><br>
 		         <button id="izmeni" type="button" class="search-btn" v-on:click="Izmeni()">Izmeni podatke</button>
-		         <button id="sacuvaj" type="button" disabled="disabled" class="search-btn" v-on:click="Sacuvaj()" >Potvrdi izmenu</button>
-		     </div>				     
+		         <button  id="sacuvaj" type="button" disabled="disabled" class="search-btn" v-on:click="Sacuvaj()" >Potvrdi izmenu</button>
+		         <br/> <br/>
+		         <p align="right">
+		         <button id="obrisi" type="button" class="search-btn" v-on:click="Obrisi()">Obriši profil</button>
+		         </p>
+		         </div>				     
 		  </div>
 		  <div id="lozinka" class="container tab-pane fade"><br>
 		  	<div class="form-group">
@@ -73,8 +86,8 @@ template: `
 `,
 methods:{
 	Izmeni: function(){
-		document.getElementById("izmeni").className="search-btn-dis"
-		document.getElementById("sacuvaj").className="search-btn"
+		document.getElementById("izmeni").className="search-btn-dis";
+		document.getElementById("sacuvaj").className="search-btn";
 		document.getElementById("sacuvaj").disabled=false;
 		document.getElementById("izmeni").disabled=true;
 		document.getElementById("ime").disabled=false;
@@ -179,6 +192,14 @@ methods:{
 			document.getElementById("radio1").disabled=true;
 			document.getElementById("radio2").disabled=true;
 		}
+	},
+	Obrisi: function(){
+		axios
+		.get("rest/users/delete")
+		.then(response => {
+			alert("Profil je uspesno obrisan!");
+			app.Odjava()
+		} )
 	}
 },
 	mounted() {

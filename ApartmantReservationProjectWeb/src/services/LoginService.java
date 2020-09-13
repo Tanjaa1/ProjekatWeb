@@ -21,6 +21,7 @@ import beans.Gender;
 import beans.Roles;
 import beans.User;
 import dao.UserDAO;
+import sun.dc.DuctusRenderingEngine;
 
 @Path("/users")
 public class LoginService {
@@ -56,6 +57,10 @@ public class LoginService {
 		if (find == null) {
 			return Response.status(400).entity("Invalid username and/or password").build();
 		}
+		if(find.getDeleted()){
+			request.getSession().invalidate();
+			return Response.status(400).entity("Invalid username and/or password").build();
+		}
 		if(find.getBlock().equals("yes")){
 			return Response.status(400).entity("User blocked").build();
 		}
@@ -75,7 +80,8 @@ public class LoginService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public User login() {
-		return (User) request.getSession().getAttribute("user");
+		User u= (User) request.getSession().getAttribute("user");
+		return u;
 	}
 	
 	@GET
@@ -88,6 +94,15 @@ public class LoginService {
 		return tmp.getRole();
 	}
 	
+	@GET
+	@Path("/delete")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void delete() throws JsonIOException, IOException {
+		User tmp= login();
+		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
+		userDao.deleteLogical(tmp.getId());
+		
+	}
 	
 	@POST
 	@Path("/add")
@@ -103,11 +118,13 @@ public class LoginService {
 		user.setBlock("no");
 		user.setDeleted(false);
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		if(userDao.find(user.getUsername(),user.getPassword())!=null){	
+		if(userDao.findForRef(user.getUsername(),user.getPassword())==true){
 			return Response.status(400).build();
 		}
 		userDao.save(user);
-		login(user);
+		if(curuser==null){
+			login(user);	
+		}
 		return Response.status(200).build();		
 	}
 	
@@ -117,7 +134,6 @@ public class LoginService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void update(@QueryParam("info") String info) throws JsonIOException, IOException{
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		System.out.println(info);
 		User user=login();
 		try {
 		String[] users=info.split(";");

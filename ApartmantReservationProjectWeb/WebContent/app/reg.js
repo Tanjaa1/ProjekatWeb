@@ -4,6 +4,19 @@ Vue.component("reg-page", {
 			regInformation:{}
 		}
 	},
+	beforeMount(){
+		
+		axios
+		.get("rest/users/currentUser")
+		.then(response=>{
+			if(response.data.name!=null){
+					if(response.data.role!="Administrator"){
+						this.$router.push('forbidden');
+					}
+			}
+		})
+
+	},
 	template: `
 <div class="header" >
 	<form>
@@ -55,6 +68,7 @@ methods:{
 		if(ime.value==""){
 			ime.style.borderColor ="red";
 			document.getElementById("nemaIme").style.visibility = "visible";
+			document.getElementById("nemaKIme").innerHTML = "Morate uneti korisničko ime!";
 		}else{
 			ime.style.borderColor="white";
 			document.getElementById("nemaIme").style.visibility = "hidden";
@@ -105,10 +119,26 @@ methods:{
 
 				.post("rest/users/add",user,{params : {gender:this.regInformation.gender}})
 				.then(response => {
-					if(response.data=="Već postoji"){
-						korisnicko_ime.style.borderColor ="red";
-						document.getElementById("nemaKIme").innerHTML = "Korisničko ime postoji!";
-					}
+				})
+			axios
+				.get("rest/users/getRole")
+				.then(response=>{
+						if(response.data!="Administrator" && response.data!=""){
+							$('#userInfo').show();
+							$('#users').show();
+							$('#rez').show();
+							$('#prijava').hide();
+							$('#registr').hide();
+							$('#odj').show();
+							$('#users').hide();
+							this.$router.push('allapartments');
+						}else if(response.data==""){
+							korisnicko_ime.style.borderColor ="red";
+							document.getElementById("nemaKIme").innerHTML = "Korisničko ime postoji!";
+							document.getElementById("nemaKIme").style.visibility = "visible";						
+						}else{
+							this.$router.push('users');
+						}
 				})
 		}
 	}

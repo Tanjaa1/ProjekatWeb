@@ -16,6 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.JsonIOException;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import app.App;
 import beans.Gender;
@@ -79,6 +80,19 @@ public class AdministratorService {
 	}
 	
 	@GET
+	@Path("/unblock")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void unblock(@QueryParam("username") String username,@QueryParam("password") String password) throws JsonIOException, IOException{
+		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
+		User u=userDao.find(username,password);
+		if(u!=null){
+			User user=userDao.unblock(u);
+			userDao.update(user);
+		}
+		
+	}
+	@GET
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -91,46 +105,59 @@ public class AdministratorService {
 			String[] splits = search.split(";");
 			if(!splits[0].equals(" ") && !splits[1].equals(" ") && !splits[2].equals(" ")){
 				for(User u:svi){
-					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]) && u.getRoleString().contains(splits[2]))
+					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]) && u.getRoleString().contains(splits[2]) && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else if(!splits[0].equals(" ") && !splits[1].equals(" ")){
 				for(User u:svi){
-					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]))
+					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]) && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else if(!splits[1].equals(" ") && !splits[2].equals(" ")){
 				for(User u:svi){
-					if(u.getUsername().contains(splits[1]) && u.getGenderString().contains(splits[2]))
+					if(u.getUsername().contains(splits[1]) && u.getGenderString().contains(splits[2])  && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else if(!splits[0].equals(" ") && !splits[2].equals(" ")){
 				for(User u:svi){
-					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[2]))
+					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[2])  && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else if(!splits[0].equals(" ")){
 				for(User u:svi){
-					if(u.getUsername().contains(splits[0]))
+					if(u.getUsername().contains(splits[0])  && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else if(!splits[1].equals(" ")){
 				for(User u:svi){
-					if(u.getGenderString().contains(splits[1]))
+					if(u.getGenderString().contains(splits[1]) && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else if(!splits[2].equals(" ")){
 				for(User u:svi){
-					if(u.getGenderString().contains(splits[2]))
+					if(u.getGenderString().contains(splits[2]) && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else{
 				return listapretraga;
 			}
-			System.out.println(listapretraga.size());
 			return listapretraga;
 		} catch (Exception e) {
-			return svi;
+			for(User u:svi){
+				if(!u.getDeleted())
+					listapretraga.add(u);
+			}
+			return listapretraga;
 		}
+	}
+	
+	@GET
+	@Path("/delete")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void delete(@QueryParam("username") String username) throws JsonIOException, IOException {
+		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
+		userDao.deleteLogical(username);
+		
 	}
 }

@@ -4,6 +4,8 @@ Vue.component("users", {
 			users:null,
 			selectedUser:{},
 			can:false,
+			can1:false,
+			can2:false,
 			res:''
 		}
 	},
@@ -11,8 +13,9 @@ Vue.component("users", {
 		axios
 		.get("rest/users/getRole")
 		.then(response=>{
-			if(response.data!="Administrator")
-				this.$router.push('forbidden')
+			if(response.data!="Administrator"){
+				this.$router.push('forbidden');
+			}
 		})
 	},
 	template: `
@@ -78,8 +81,11 @@ Vue.component("users", {
 	</tr>
 </table>
 
-<button v-on:click="blokiraj" v-bind:disabled="!can" class="btn btn-primary">Blokiraj korisnika</button>
-<button v-on:click="dodaj" onclick="location.href='#/reg'" class="btn btn-primary">Dodaj novog domaćina</button>
+<button v-on:click="blokiraj()" v-bind:disabled="!can1" class="btn btn-primary">Blokiraj korisnika</button>&nbsp
+<button v-on:click="odblokiraj()" v-bind:disabled="!can2" class="btn btn-primary">Odblokiraj korisnika</button>
+<br/><br/>
+<button  v-bind:disabled="!can" v-on:click="obrisi()" class="btn btn-primary">Obrisi korisnika</button>&nbsp
+<button v-on:click="dodaj()" onclick="location.href='#/reg'" class="btn btn-primary">Registruj domaćina</button>
 </div>		  
 `,
 methods:{
@@ -105,19 +111,55 @@ methods:{
 	    	})
 	},
 	selectUser : function(user) {
-			this.selectedUser = user;
-			if(user.role!="Administrator")
-				this.can=true;
+		this.selectedUser = user;
+		if(user.role!="Administrator"){
+			if(user.block=="yes"){
+				this.can2=true;
+				this.can1=false;
+			}else{
+				this.can2=false;	
+				this.can1=true;
+			}
+			this.can=true;
+		}
 	},
 	blokiraj: function(){
 		
 	    axios
 	    .get("rest/admin/block",{params:{username: this.selectedUser.username,password:this.selectedUser.password}})
 	    .then(response =>{
+			this.can2=true;
+			this.can1=false;
 	    	alert("Blokirali ste korisnika");
 	    })
+	    this.refresh();
 	},
-	dodaj:function(){}
+	odblokiraj: function(){
+
+	    axios
+	    .get("rest/admin/unblock",{params:{username: this.selectedUser.username,password:this.selectedUser.password}})
+	    .then(response =>{
+			this.can1=true;
+			this.can2=false;
+	    	alert("Odblokirali ste korisnika");
+	    })
+	    this.refresh();
+	},
+	obrisi: function(){
+	    axios
+		    .get("rest/admin/delete",{params:{username: this.selectedUser.username}})
+		    .then(response =>{
+		    	alert("Obrisali ste korisnika");
+	    })
+	    this.refresh();
+	},
+	refresh: function(){
+	     axios
+		    .get('rest/admin/search',{params :{search: ""}})
+		    .then(response => {
+		    	this.users = response.data;
+		    })
+	}
 },
 mounted() {
 	var search="";

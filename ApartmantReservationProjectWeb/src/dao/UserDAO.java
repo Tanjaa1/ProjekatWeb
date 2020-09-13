@@ -49,6 +49,13 @@ public class UserDAO extends AbstractDAO<User,String> {
 		return user;
 	}
 	
+	public Boolean findForRef(String username, String password){
+		if (users.containsKey(username)) {
+			return true;
+		}
+		return false;
+	}
+	
 	public Collection<User> findAll() {
 		return users.values();
 	}
@@ -57,6 +64,9 @@ public class UserDAO extends AbstractDAO<User,String> {
 		user.setBlock("yes");
 		return user;
 	}
-	
+	public User unblock(User user){
+		user.setBlock("no");
+		return user;
+	}
 	
 }

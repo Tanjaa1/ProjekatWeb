@@ -47,6 +47,8 @@ var app = new Vue({
 					alert("Pogrešno ime ili lozinka!");
 				}
 			});
+
+			this.Provera();
 		},
 	Odjava: function(){
 		axios
@@ -58,6 +60,17 @@ var app = new Vue({
 			$('#odj').hide();
 			$('#registr').show();
 			$('#prijava').show();
+		})
+		this.$router.push('/');
+	},
+	Provera: function(){
+		axios
+		.get("rest/users/getRole")
+		.then(response => {
+
+			this.$router.push('allapartments');
+			if(response.data!="Administrator")
+				$('#users').hide();
 		})
 	}
 },
