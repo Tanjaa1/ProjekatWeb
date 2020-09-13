@@ -90,6 +90,7 @@ public class LoginService {
 		else
 			user.setRole(Roles.Guest);
 		user.setBlock("no");
+		user.setDeleted(false);
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		if(userDao.find(user.getUsername(),user.getPassword())!=null){	
 			return Response.status(400).build();
