@@ -12,9 +12,11 @@ const router = new VueRouter({
 	   { path: '/reg', component: Registration},
 	   { path: '/profile', component: Profile},
 	   { path: '/users', component: Users},
-	   { path: '/apartment/:id', component:ApartmentView}
+	   { path: '/addapartment', component: AddApp},
+	   { path: '/allapartments', component: SideBar,name:"allApartments"},
+	   { path: '/apartment/:id', component:ApartmentView},
+	   { path: '/forbidden',name:"forbidden"}
 
-	   	//path: '/', component: AddApp},
 	  ]
 });
 
