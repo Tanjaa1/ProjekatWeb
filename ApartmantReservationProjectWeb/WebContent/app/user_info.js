@@ -5,7 +5,8 @@ Vue.component("user-info", {
 			kime:"",
 			ime:"",
 			prezime:"",
-			pol:""			
+			pol:"",
+			bool:true
 		}
 	},
 template: `
@@ -82,6 +83,7 @@ methods:{
 		document.getElementById("radio2").disabled=false;
 	},
 	Sacuvaj: function(currentUser){
+		this.bool=false;
 		var ime=document.getElementById("ime"),prezime=document.getElementById("prezime"),pol="";		
 		
 		if(!document.getElementById("radio1").checked && document.getElementById("radio2").checked)
@@ -89,11 +91,18 @@ methods:{
 		else if(document.getElementById("radio1").checked && !document.getElementById("radio2").checked)
 			pol=document.getElementById("radio2").value;
 		if(ime.value!="" && prezime.value!="" && pol!=""){
+			this.bool=true;
 			var info=ime.value+";"+prezime.value+";"+pol;
 			axios
 			.get("rest/users/update",{params:{info: info}})
 			.then(response => {	
 			} )
+
+			ime.style.borderColor ="grey";
+			document.getElementById("nemaIme").style.visibility = "hidden";
+			prezime.style.borderColor ="grey";
+			document.getElementById("nemaPrez").style.visibility = "hidden";
+			document.getElementById("nemaPol").style.visibility = "hidden";
 		}else{
 			if(ime.value==""){
 				ime.style.borderColor ="red";
@@ -113,6 +122,8 @@ methods:{
 				document.getElementById("nemaPol").style.visibility = "visible";
 			else
 				document.getElementById("nemaPol").style.visibility = "hidden";
+
+			
 			
 		}
 		this.prikaz();
@@ -156,16 +167,18 @@ methods:{
 		}
 	},
 	prikaz: function(){
-		document.getElementById("izmeni").className="search-btn";
-		document.getElementById("sacuvaj").className="search-btn-dis";
-		document.getElementById("sacuvajLozinku").className="search-btn";
-		
-		document.getElementById("sacuvaj").disabled=true;
-		document.getElementById("izmeni").disabled=false;
-		document.getElementById("ime").disabled=true;
-		document.getElementById("prezime").disabled=true;
-		document.getElementById("radio1").disabled=true;
-		document.getElementById("radio2").disabled=true;
+		if(this.bool){
+			document.getElementById("izmeni").className="search-btn";
+			document.getElementById("sacuvaj").className="search-btn-dis";
+			document.getElementById("sacuvajLozinku").className="search-btn";
+			
+			document.getElementById("sacuvaj").disabled=true;
+			document.getElementById("izmeni").disabled=false;
+			document.getElementById("ime").disabled=true;
+			document.getElementById("prezime").disabled=true;
+			document.getElementById("radio1").disabled=true;
+			document.getElementById("radio2").disabled=true;
+		}
 	}
 },
 	mounted() {
