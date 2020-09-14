@@ -3,9 +3,6 @@ Vue.component("user-info", {
 		return{
 			currentUser:null,
 			kime:"",
-			ime:"",
-			prezime:"",
-			pol:"",
 			bool:true
 		}
 	},	
@@ -35,12 +32,12 @@ template: `
     		<div class="form-group">	
     			<label>Ime:</label>
     			<input id="ime" type="text" class="form-control" placeholder="Ime *" value="" disabled="disabled"/>
-    			<span id="nemaIme" style="color:red; visibility:hidden"> Morate uneti ime!</span>
+    			<span id="nemaIme" style="color:red; visibility:hidden"></span>
     		</div>
     		<div class="form-group">
 				<label>Prezime:</label>
 				<input id="prezime" type="text" class="form-control" placeholder="Prezime *" value="" disabled="disabled"/>
-				<span id="nemaPrez" style="color:red; visibility:hidden"> Morate uneti prezime!</span>
+				<span id="nemaPrez" style="color:red; visibility:hidden"></span>
 			</div>
 			<div class="form-group">
 				<label>Pol:</label>
@@ -57,6 +54,7 @@ template: `
 		         <span id="nemaPol" style="color:red; visibility:hidden"> Morate odabrati pol!</span><br>
 		         <button id="izmeni" type="button" class="search-btn" v-on:click="Izmeni()">Izmeni podatke</button>
 		         <button  id="sacuvaj" type="button" disabled="disabled" class="search-btn" v-on:click="Sacuvaj()" >Potvrdi izmenu</button>
+		         <button  id="otkazi" type="button" disabled="disabled" class="search-btn" v-on:click="Otkazi()" >Otkaži izmenu</button>
 		         <br/> <br/>
 		         <p align="right">
 		         <button id="obrisi" type="button" class="search-btn" v-on:click="Obrisi()">Obriši profil</button>
@@ -72,12 +70,12 @@ template: `
 			<div class="form-group">
 				<label>Nova lozinka:</label>
 				<input id="passNew" type="password" class="form-control"  placeholder="Potvrda lozinke*" value="" />
-				<span id="nemaPassNew" style="color:red; visibility:hidden"> Morate uneti novu lozinku!</span>
+				<span id="nemaPassNew" style="color:red; visibility:hidden"></span>
 			</div>
 			<div class="form-group">
 				<label>Potvrdi lozinku:</label>
 				<input id="passC" type="password" class="form-control"  placeholder="Potvrda lozinke*" value="" />
-				<span id="nemaPassC" style="color:red; visibility:hidden"> Morate potvrditi lozinku!</span>
+				<span id="nemaPassC" style="color:red; visibility:hidden"></span>
 			</div>				
 			<button id="sacuvajLozinku" type="button" class="search-btn" v-on:click="SacuvajLozinku()">Potvrdi izmenu</button>
 		</div>
@@ -89,6 +87,8 @@ methods:{
 		document.getElementById("izmeni").className="search-btn-dis";
 		document.getElementById("sacuvaj").className="search-btn";
 		document.getElementById("sacuvaj").disabled=false;
+		document.getElementById("otkazi").className="search-btn";
+		document.getElementById("otkazi").disabled=false;
 		document.getElementById("izmeni").disabled=true;
 		document.getElementById("ime").disabled=false;
 		document.getElementById("prezime").disabled=false;
@@ -103,7 +103,7 @@ methods:{
 			pol=document.getElementById("radio1").value;
 		else if(document.getElementById("radio1").checked && !document.getElementById("radio2").checked)
 			pol=document.getElementById("radio2").value;
-		if(ime.value!="" && prezime.value!="" && pol!=""){
+		if(ime.value!="" && prezime.value!="" && pol!="" && ime.value.length>1 && prezime.value.length>1){
 			this.bool=true;
 			var info=ime.value+";"+prezime.value+";"+pol;
 			axios
@@ -120,6 +120,11 @@ methods:{
 			if(ime.value==""){
 				ime.style.borderColor ="red";
 				document.getElementById("nemaIme").style.visibility = "visible";
+				document.getElementById("nemaIme").innerHTML="Morate uneti ime!";
+			}else if(ime.value.length<2){
+				ime.style.borderColor ="red";
+				document.getElementById("nemaIme").style.visibility = "visible";
+				document.getElementById("nemaIme").innerHTML="Ime mora sadržati bar 2 znaka!";
 			}else{
 				ime.style.borderColor ="grey";
 				document.getElementById("nemaIme").style.visibility = "hidden";
@@ -127,6 +132,11 @@ methods:{
 			if(prezime.value==""){
 				prezime.style.borderColor ="red";
 				document.getElementById("nemaPrez").style.visibility = "visible";
+				document.getElementById("nemaPrez").innerHTML="Morate uneti prezime!";
+			}else if(prezime.value.length<2){
+				ime.style.borderColor ="red";
+				document.getElementById("nemaPrez").style.visibility = "visible";
+				document.getElementById("nemaPrez").innerHTML="Prezime mora sadržati bar 2 znaka!";
 			}else{
 				prezime.style.borderColor ="grey";
 				document.getElementById("nemaPrez").style.visibility = "hidden";
@@ -141,6 +151,26 @@ methods:{
 		}
 		this.prikaz();
 	},
+	Otkazi : function(){
+		var ime=document.getElementById("ime"),prezime=document.getElementById("prezime"),pol="";
+		
+		document.getElementById("sacuvaj").className="search-btn-dis";
+		document.getElementById("otkazi").className="search-btn-dis";
+		this.kime=this.currentUser.username;
+		ime.value=this.currentUser.name;
+		prezime.value=this.currentUser.surname;
+		if(this.currentUser.gender=="Male")
+			document.getElementById("radio1").checked=true;
+		else
+			document.getElementById("radio2").checked=true;
+		
+		ime.style.borderColor ="grey";
+		document.getElementById("nemaIme").style.visibility = "hidden";
+		prezime.style.borderColor ="grey";
+		document.getElementById("nemaPrez").style.visibility = "hidden";
+		document.getElementById("nemaPol").style.visibility = "hidden";
+		this.prikaz();
+	},
 	SacuvajLozinku: function(){
 		var stara_lozinka=document.getElementById("passOld"),nova_lozinka=document.getElementById("passNew"),kontrolna_lozinka=document.getElementById("passC");
 		if(stara_lozinka.value=="" || stara_lozinka.value!=this.currentUser.password){
@@ -153,6 +183,11 @@ methods:{
 		if(nova_lozinka.value==""){
 			nova_lozinka.style.borderColor ="red";
 			document.getElementById("nemaPassNew").style.visibility = "visible";
+			document.getElementById("nemaPassNew").innerHTML="Morate uneti novu lozinku!";
+		}else if(nova_lozinka.value.length<5){
+			ime.style.borderColor ="red";
+			document.getElementById("nemaPassNew").style.visibility = "visible";
+			document.getElementById("nemaPassNew").innerHTML="Lozinka mora sadržati bar 5 znakova!";
 		}else{
 			nova_lozinka.style.borderColor ="grey";
 			document.getElementById("nemaPassNew").style.visibility = "hidden";
@@ -160,6 +195,7 @@ methods:{
 		if(kontrolna_lozinka.value==""){
 			kontrolna_lozinka.style.borderColor ="red";
 			document.getElementById("nemaPassC").style.visibility = "visible";
+			document.getElementById("nemaPassC").innerHTML="Morate uneti kontrolnu lozinku!";
 		}else{
 			if(nova_lozinka.value!=kontrolna_lozinka.value){
 				lozinka.style.borderColor ="red";
@@ -168,7 +204,7 @@ methods:{
 			}else{
 				kontrolna_lozinka.style.borderColor ="grey";
 				document.getElementById("nemaPassC").style.visibility = "hidden";
-				if(stara_lozinka.value==this.currentUser.password){
+				if(stara_lozinka.value==this.currentUser.password && nova_lozinka.value.length>4){
 					var nl=nova_lozinka.value;
 						axios
 						.get("rest/users/update",{params:{info: nl}})
@@ -183,9 +219,11 @@ methods:{
 		if(this.bool){
 			document.getElementById("izmeni").className="search-btn";
 			document.getElementById("sacuvaj").className="search-btn-dis";
+			document.getElementById("otkazi").className="search-btn-dis";
 			document.getElementById("sacuvajLozinku").className="search-btn";
 			
 			document.getElementById("sacuvaj").disabled=true;
+			document.getElementById("otkazi").disabled=true;
 			document.getElementById("izmeni").disabled=false;
 			document.getElementById("ime").disabled=true;
 			document.getElementById("prezime").disabled=true;
@@ -206,6 +244,7 @@ methods:{
 		var ime=document.getElementById("ime"),prezime=document.getElementById("prezime"),pol="";
 		
 		document.getElementById("sacuvaj").className="search-btn-dis";
+		document.getElementById("otkazi").className="search-btn-dis";
 		axios
 		.get('rest/users/currentUser')
 		.then(response => {
