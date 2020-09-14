@@ -13,7 +13,7 @@ Vue.component("user-info", {
 		axios
 		.get("rest/users/getRole")
 		.then(response=>{
-			if(response.data!=null){
+			if(response.data==null){
 				this.$router.push('forbidden');
 			}
 		})
@@ -51,7 +51,7 @@ template: `
 		            </label>
 		            <label class="radio inline"> 
 		                <input id="radio2" type="radio" name="gender" value="female" disabled="disabled"/>
-		                <label>Žensko </span> 
+		                <span>Žensko </span> 
 		            </label>
 		         </div>
 		         <span id="nemaPol" style="color:red; visibility:hidden"> Morate odabrati pol!</span><br>

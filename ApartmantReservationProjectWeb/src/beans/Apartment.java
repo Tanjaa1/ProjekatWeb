@@ -11,7 +11,8 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 	public String NameOfApartment;
 	public ApartmentType Type;
 	public int NumberOfRooms;
-	public int NumberOfGuests;
+	public int NumberOfAdultGuests;
+	public int NumberOfKids;
 	public Location LocationOfApartment;
 	public Address ApartmentAddress;
 	public List<Date> AvailableDatesForRent;
@@ -19,8 +20,8 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 	public Host ApartmentHost;
 	public Comment PostedComments;
 	public double PricePerStayingNight;
-	public Date CheckInTime;
-	public Date CheckOutTime;
+	public String CheckInTime;
+	public String CheckOutTime;
 	public boolean isActive; //status => aktivno = true; neaktivno = false
 	public List<Amenities> AmenitiesList;
 	public List<Reservations> ListOfReservations;
@@ -28,13 +29,14 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 	
 	public Apartment() { }	
 		
-	public Apartment(String nameOfApartment, ApartmentType type, int numberOfRooms, int numberOfGuests, Location locationOfApartment, Address address, Host apartmentHost, Comment postedComments, double pricePerStayingNight,
-			Date checkInTime, Date checkOutTime, boolean isActive) {
+	public Apartment(String nameOfApartment, ApartmentType type, int numberOfRooms, int numberOfGuests, int numberOfKids, Location locationOfApartment, Address address, Host apartmentHost, Comment postedComments, double pricePerStayingNight,
+			String checkInTime, String checkOutTime, boolean isActive) {
 		super();
 		NameOfApartment = nameOfApartment;
 		Type = type;
 		NumberOfRooms = numberOfRooms;
-		NumberOfGuests = numberOfGuests;
+		NumberOfAdultGuests = numberOfGuests;
+		NumberOfKids = numberOfKids;
 		LocationOfApartment = locationOfApartment;
 		ApartmentAddress = address;
 		AvailableDatesForRent = new ArrayList<Date>();
@@ -72,15 +74,23 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 	public void setNumberOfRooms(int numberOfRooms) {
 		NumberOfRooms = numberOfRooms;
 	}
-
-	public int getNumberOfGuests() {
-		return NumberOfGuests;
-	}
-
-	public void setNumberOfGuests(int numberOfGuests) {
-		NumberOfGuests = numberOfGuests;
-	}
 	
+	public int getNumberOfAdultGuests() {
+		return NumberOfAdultGuests;
+	}
+
+	public void setNumberOfAdultGuests(int numberOfAdultGuests) {
+		NumberOfAdultGuests = numberOfAdultGuests;
+	}
+
+	public int getNumberOfKids() {
+		return NumberOfKids;
+	}
+
+	public void setNumberOfKids(int numberOfKids) {
+		NumberOfKids = numberOfKids;
+	}
+
 	public Address getApartmentAddress() {
 		return ApartmentAddress;
 	}
@@ -137,19 +147,19 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 		PricePerStayingNight = pricePerStayingNight;
 	}
 
-	public Date getCheckInTime() {
+	public String getCheckInTime() {
 		return CheckInTime;
 	}
 
-	public void setCheckInTime(Date checkInTime) {
+	public void setCheckInTime(String checkInTime) {
 		CheckInTime = checkInTime;
 	}
 
-	public Date getCheckOutTime() {
+	public String getCheckOutTime() {
 		return CheckOutTime;
 	}
 
-	public void setCheckOutTime(Date checkOutTime) {
+	public void setCheckOutTime(String checkOutTime) {
 		CheckOutTime = checkOutTime;
 	}
 

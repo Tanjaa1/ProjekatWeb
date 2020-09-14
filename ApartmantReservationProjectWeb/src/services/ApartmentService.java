@@ -21,7 +21,6 @@ import beans.Apartment;
 import dao.ApartmentDAO;
 
 
-
 @Path("/apartment")
 public class ApartmentService {
 	
@@ -61,5 +60,15 @@ public class ApartmentService {
 		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
 		return  apartmentDao.getAll().values();
 	}
-
+	
+	@POST
+	@Path("/update/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void update(@PathParam("id")Long id) throws JsonIOException, IOException{
+		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
+		Apartment a = apartmentDao.getById(id);
+		apartmentDao.update(a);
+		
+	}
 }

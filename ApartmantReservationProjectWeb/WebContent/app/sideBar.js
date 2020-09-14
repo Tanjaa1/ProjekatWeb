@@ -143,7 +143,7 @@ Vue.component("side-bar", {
 							</div>
 						</div>
 						<div class="ml-4 mr-4 mt-4">
-							<h5 style="text-align:center">{{a.NameOfApartment}}</h5>
+							<h5 style="color:#5c6ac4; text-align:center">{{a.NameOfApartment}}</h5>
 							<p class="mb-1 mx-2"> Tip apartmana: </p>
 							<label class="mx-2"> {{a.Type}}</label>
 							<p class="mb-1 mx-2"> Cena: </p>

@@ -5,14 +5,14 @@ body
     padding: 0;
 }
 
-.add
+.edit
 {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.add h3
+.edit h3
 {
     color: #5c6ac4;
     padding-top: 8px;
@@ -32,4 +32,3 @@ body
     min-width: 120px;
     margin: 2px 0;
 }
-

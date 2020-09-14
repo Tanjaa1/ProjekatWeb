@@ -21,7 +21,6 @@ import beans.Gender;
 import beans.Roles;
 import beans.User;
 import dao.UserDAO;
-import sun.dc.DuctusRenderingEngine;
 
 @Path("/users")
 public class LoginService {

@@ -1,7 +1,8 @@
 const Search={template: '<search></search>'}
 const SideBar={template: '<side-bar></side-bar>'}
 const ApartmentView={template: '<apartment></apartment>'}
-const AddApp={template: '<addApartment></addApartment>'}
+const AddAparment={template: '<addApartment></addApartment>'}
+const EditApartment={template: '<editApartment></editApartment>'}
 const Registration={template: '<reg-page></reg-page>'}
 const Profile={template: '<user-info></user-info>'}
 const Users={template: '<users></users>'}
@@ -12,8 +13,9 @@ const router = new VueRouter({
 	   { path: '/reg', component: Registration},
 	   { path: '/profile', component: Profile},
 	   { path: '/users', component: Users},
-	   { path: '/addapartment', component: AddApp},
-	   { path: '/allapartments', component: SideBar,name:"allApartments"},
+	   { path: '/addapartment', component: AddAparment},
+	   { path: '/editapartment/:id', component: EditApartment},
+	   { path: '/allapartments', component: SideBar, name:"allApartments"},
 	   { path: '/apartment/:id', component:ApartmentView},
 	   { path: '/forbidden',name:"forbidden"}
 
@@ -38,11 +40,12 @@ var app = new Vue({
 				success: function(product) {
 					$('#userInfo').show();
 					$('#users').show();
+					$('#apartments').show();
 					$('#rez').show();
 					$('#prijava').hide();
 					$('#registr').hide();
 					$('#odj').show();
-					this.$router.push('allapartments');
+					//this.$router.push('allapartments');
 				},
 				error: function(message) {
 					alert("Pogrešno ime ili lozinka!");
@@ -78,6 +81,7 @@ var app = new Vue({
 },
 mounted() {
 	$('#userInfo').hide();
+	$('#apartments').hide();
 	$('#users').hide();
 	$('#rez').hide();
 	$('#odj').hide();

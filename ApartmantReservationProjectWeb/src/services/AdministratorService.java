@@ -16,7 +16,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.JsonIOException;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import app.App;
 import beans.Gender;
