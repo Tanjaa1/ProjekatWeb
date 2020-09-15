@@ -4,7 +4,9 @@ Vue.component("editApartment", {
             id : this.$route.params.id,
             apartment : Object,
 			address : Object,
-            location : Object          
+            location : Object,
+            selected : "",
+            ret:Object
 		}
     },
     mounted(){
@@ -25,11 +27,11 @@ Vue.component("editApartment", {
             <div class="form-row mt-4">
                 <div class="form-group col-md-6">
                     <label>Naziv objekta:</label>
-                    <input type="text" class="form-control" id="inputName" v-model="apartment.NameOfApartment" disabled="disabled">
+                    <input type="text" class="form-control" id="inputName" v-model="apartment.nameOfApartment" disabled="disabled">
                 </div>
                 <div class="form-group col-md-6">
                     <label>Tip objekta:</label>
-                    <select class="custom-select" id="inputType" v-model="apartment.Type" disabled="disabled">
+                    <select class="custom-select" id="inputType" v-model="apartment.type" disabled="disabled">
                         <option disabled value="">Izaberite tip objekta</option>
                         <option value="ClassicApartment">Ceo apartman</option>
                         <option value="Room">Soba</option>
@@ -39,39 +41,39 @@ Vue.component("editApartment", {
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Broj soba:</label>
-                    <input type="number" min="1" class="form-control" id="inputNumOfRooms" v-model="apartment.NumberOfRooms" disabled="disabled">
+                    <input type="number" min="1" class="form-control" id="inputNumOfRooms" v-model="apartment.numberOfRooms" disabled="disabled">
                 </div>
                 <div class="form-group col-md-4">
                     <label>Broj odraslih gostiju:</label>
-                    <input type="number" min="1" class="form-control" id="inputnumOfGuests" v-model="apartment.NumberOfAdultGuests" disabled="disabled">
+                    <input type="number" min="1" class="form-control" id="inputnumOfGuests" v-model="apartment.numberOfAdultGuests" disabled="disabled">
                 </div>
                 <div class="form-group col-md-4">
                     <label>Broj dece:</label>
-                    <input type="number" min="0" class="form-control" id="inputnumOfKids" v-model="apartment.NumberOfKids" disabled="disabled">
+                    <input type="number" min="0" class="form-control" id="inputnumOfKids" v-model="apartment.numberOfKids" disabled="disabled">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Geografska širina:</label>
-                    <input type="text" class="form-control" id="inputLongitude" v-model="location.Longitude" disabled="disabled">
+                    <input type="text" class="form-control" id="inputLongitude" v-model="location.longitude" disabled="disabled">
                 </div>
                 <div class="form-group col-md-6">
                     <label>Geografska dužina:</label>
-                    <input type="text" class="form-control" id="inputLatitude" v-model="location.Latitude" disabled="disabled">
+                    <input type="text" class="form-control" id="inputLatitude" v-model="location.latitude" disabled="disabled">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label>Ulica:</label>
-                    <input type="text" class="form-control" id="inputStreet" v-model="address.Street" disabled="disabled">
+                    <input type="text" class="form-control" id="inputStreet" v-model="address.street" disabled="disabled">
                 </div>
                 <div class="form-group col-md-3">
                     <label>Broj:</label>
-                    <input type="number" min="1" class="form-control" id="inputNum" v-model="address.StreetNumber" disabled="disabled">
+                    <input type="number" min="1" class="form-control" id="inputNum" v-model="address.streetNumber" disabled="disabled">
                 </div>
                 <div class="form-group col-md-3">
                     <label>Grad:</label>
-                    <input type="text" class="form-control" id="inputCity" v-model="address.City" disabled="disabled">
+                    <input type="text" class="form-control" id="inputCity" v-model="address.city" disabled="disabled">
                 </div>
                 <div class="form-group col-md-3">
                     <label>Poštanski broj:</label>
@@ -81,15 +83,15 @@ Vue.component("editApartment", {
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Cena po noći:</label>
-                    <input type="number" id="inputPrice" class="form-control" min="0" v-model="apartment.PricePerStayingNight" disabled="disabled">
+                    <input type="number" id="inputPrice" class="form-control" min="0" v-model="apartment.pricePerStayingNight" disabled="disabled">
                 </div>
                 <div class="form-group col-md-4 mt-4">
                     <label>Vreme za prijavu:</label>
-                    <input type="time" id ="checkIn" v-model="apartment.CheckInTime" disabled="disabled"> 
+                    <input type="time" id ="checkIn" v-model="apartment.checkInTime" disabled="disabled"> 
                 </div>
                 <div class="form-group col-md-4 mt-4">
                     <label>Vreme za odjavu:</label>
-                    <input type="time" id = "checkOut"v-model="apartment.CheckOutTime" disabled="disabled">
+                    <input type="time" id = "checkOut"v-model="apartment.checkOutTime" disabled="disabled">
                 </div>
                 
             </div>
@@ -121,11 +123,12 @@ Vue.component("editApartment", {
         },
         save: function(){
             axios
-            .post('rest/apartment/update/' + this.id)
+            .post('rest/apartment/add',this.apartment)
             .then(response =>{
-                this.apartment=response.data
-                this.address=response.data.ApartmentAddress
-                this.location=response.data.LocationOfApartment
+                this.ret=response.data
+            })
+            .catch(e=>{
+                alert('greska')
             })
         }
     }

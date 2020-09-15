@@ -2,6 +2,7 @@ const Search={template: '<search></search>'}
 const SideBar={template: '<side-bar></side-bar>'}
 const ApartmentView={template: '<apartment></apartment>'}
 const AddAparment={template: '<addApartment></addApartment>'}
+const HostApartments={template: '<host-apartments></host-apartments>'}
 const EditApartment={template: '<editApartment></editApartment>'}
 const Registration={template: '<reg-page></reg-page>'}
 const Profile={template: '<user-info></user-info>'}
@@ -14,6 +15,7 @@ const router = new VueRouter({
 	   { path: '/profile', component: Profile},
 	   { path: '/users', component: Users},
 	   { path: '/addapartment', component: AddAparment},
+	   { path: '/hostapartments', component: HostApartments},
 	   { path: '/editapartment/:id', component: EditApartment},
 	   { path: '/allapartments', component: SideBar, name:"allApartments"},
 	   { path: '/apartment/:id', component:ApartmentView},
@@ -40,6 +42,7 @@ var app = new Vue({
 				success: function(product) {
 					$('#userInfo').show();
 					$('#users').show();
+					$('#myApartments').show();
 					$('#apartments').show();
 					$('#rez').show();
 					$('#prijava').hide();
@@ -60,6 +63,8 @@ var app = new Vue({
 		.then(response => {
 			$('#userInfo').hide();
 			$('#users').hide();
+			$('#apartments').hide();
+			$('#myApartments').hide();
 			$('#rez').hide();
 			$('#odj').hide();
 			$('#registr').show();
@@ -70,11 +75,15 @@ var app = new Vue({
 	Provera: function(){
 		axios
 		.get("rest/users/getRole")
-		.then(response => {
-
-			
+		.then(response => {			
 			if(response.data!="Administrator"){
 				$('#users').hide();
+			}
+			if(response.data=="Host"){
+				$('#myApartments').show();
+			 	$('#apartments').hide();
+			} else{
+				$('#myApartments').hide();
 			}
 		})
 	}
@@ -82,6 +91,7 @@ var app = new Vue({
 mounted() {
 	$('#userInfo').hide();
 	$('#apartments').hide();
+	$('#myApartments').hide();
 	$('#users').hide();
 	$('#rez').hide();
 	$('#odj').hide();

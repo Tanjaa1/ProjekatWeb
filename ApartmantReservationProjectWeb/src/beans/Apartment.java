@@ -22,7 +22,7 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 	public double PricePerStayingNight;
 	public String CheckInTime;
 	public String CheckOutTime;
-	public boolean isActive; //status => aktivno = true; neaktivno = false
+	public ActiveApartment isActive = ActiveApartment.inactive;
 	public List<Amenities> AmenitiesList;
 	public List<Reservations> ListOfReservations;
 	
@@ -30,7 +30,7 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 	public Apartment() { }	
 		
 	public Apartment(String nameOfApartment, ApartmentType type, int numberOfRooms, int numberOfGuests, int numberOfKids, Location locationOfApartment, Address address, Host apartmentHost, Comment postedComments, double pricePerStayingNight,
-			String checkInTime, String checkOutTime, boolean isActive) {
+			String checkInTime, String checkOutTime) {
 		super();
 		NameOfApartment = nameOfApartment;
 		Type = type;
@@ -46,7 +46,6 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 		PricePerStayingNight = pricePerStayingNight;
 		CheckInTime = checkInTime;
 		CheckOutTime = checkOutTime;
-		this.isActive = isActive;
 		AmenitiesList = new ArrayList<Amenities>();
 		ListOfReservations = new ArrayList<Reservations>();
 	}
@@ -163,11 +162,11 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 		CheckOutTime = checkOutTime;
 	}
 
-	public boolean isActive() {
+	public ActiveApartment isActive() {
 		return isActive;
 	}
 
-	public void setActive(boolean isActive) {
+	public void setActive(ActiveApartment isActive) {
 		this.isActive = isActive;
 	}
 
@@ -204,7 +203,7 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 
 	@Override
 	public void setDeleted(boolean b) {
-		Deleted=b;
+		Deleted = b;
 	}
 	
 }

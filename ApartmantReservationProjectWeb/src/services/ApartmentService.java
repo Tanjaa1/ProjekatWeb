@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonIOException;
 
 import app.App;
+import beans.ActiveApartment;
 import beans.Apartment;
 import dao.ApartmentDAO;
 
@@ -61,14 +62,31 @@ public class ApartmentService {
 		return  apartmentDao.getAll().values();
 	}
 	
-	@POST
-	@Path("/update/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@GET
+	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void update(@PathParam("id")Long id) throws JsonIOException, IOException{
+	public void delete(@PathParam("id")Long id) throws JsonIOException, IOException {
 		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
-		Apartment a = apartmentDao.getById(id);
-		apartmentDao.update(a);
-		
+		apartmentDao.deleteLogical(id);
+	}
+	
+	@GET
+	@Path("/activate/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void activate(@PathParam("id")Long id) throws JsonIOException, IOException {
+		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
+		Apartment apartment = apartmentDao.getById(id);
+		apartment.setActive(ActiveApartment.active);
+		apartmentDao.save(apartment);
+	}
+	
+	@GET
+	@Path("/deactivate/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void deactivate(@PathParam("id")Long id) throws JsonIOException, IOException {
+		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
+		Apartment apartment = apartmentDao.getById(id);
+		apartment.setActive(ActiveApartment.inactive);
+		apartmentDao.save(apartment);
 	}
 }
