@@ -9,9 +9,7 @@ import java.util.Map;
 
 import com.google.gson.reflect.TypeToken;
 
-import beans.Gender;
 import beans.Reservations;
-import beans.User;
 import dao.sequencer.LongSequencer;
 
 public class ReservationsDAO extends AbstractLongDAO<Reservations> {

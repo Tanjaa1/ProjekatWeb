@@ -18,13 +18,10 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonIOException;
 
 import app.App;
-import beans.Comment;
 import beans.Gender;
-import beans.Reservations;
 import beans.Roles;
 import beans.User;
 import dao.AdministratorDAO;
-import dao.ReservationsDAO;
 import dao.UserDAO;
 
 

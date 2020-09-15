@@ -12,21 +12,16 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.JsonIOException;
 
 import app.App;
-import beans.Apartment;
 import beans.Guest;
 import beans.ReservationStatus;
 import beans.Reservations;
-import beans.User;
-import dao.ApartmentDAO;
 import dao.ReservationsDAO;
-import dao.UserDAO;
 
 @Path("/reservations")
 public class ReservationService {

@@ -14,7 +14,6 @@ import app.App;
 import beans.Reservations;
 import beans.User;
 import dao.GuestDAO;
-import dao.HostDAO;
 import dao.ReservationsDAO;
 
 @Path("/guest")

@@ -1,6 +1,5 @@
 package services;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -8,24 +7,18 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import com.google.gson.JsonIOException;
 
 import app.App;
-import beans.Gender;
 import beans.Reservations;
-import beans.Roles;
 import beans.User;
-import dao.AdministratorDAO;
 import dao.HostDAO;
 import dao.ReservationsDAO;
-import dao.UserDAO;
 
 @Path("/host")
 public class HostService {
