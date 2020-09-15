@@ -18,89 +18,46 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonIOException;
 
 import app.App;
-import beans.Comment;
 import beans.Gender;
 import beans.Reservations;
 import beans.Roles;
 import beans.User;
 import dao.AdministratorDAO;
+import dao.HostDAO;
 import dao.ReservationsDAO;
 import dao.UserDAO;
 
-
-@Path("/admin")
-public class AdministratorService {
+@Path("/host")
+public class HostService {
 	@Context
 	ServletContext ctx;
 	
-	public AdministratorService() {
+	public HostService() {
 		
 	}
 	
 	@PostConstruct
 	public void init() {
-		if (ctx.getAttribute("adminDAO") == null) {
-			ctx.setAttribute("adminDAO", new AdministratorDAO(App.USERS_PATH));
-		}
-		if (ctx.getAttribute("userDAO") == null) {
-			ctx.setAttribute("userDAO", new UserDAO(App.USERS_PATH));
+		if (ctx.getAttribute("hostDAO") == null) {
+			ctx.setAttribute("hostDAO", new HostDAO(App.USERS_PATH));
 		}
 		
 	}
-	
+	@GET
+	@Path("/resrvations")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection <Reservations> getAll(User user) {
+		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		return  reservationsDao.getMyReservatiions(user.getUsername());
+	}
 
-	
-	@POST
-	@Path("/add")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String add(User user,@QueryParam("gender") String gender) throws JsonIOException, IOException{
-		user.setGender(Gender.getGenderS(gender));
-		user.setRole(Roles.Host);
-		user.setBlock("no");
-		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		if(userDao.find(user.getUsername(),user.getPassword())!=null){	
-			return "Veæ postoji";
-		}
-		userDao.save(user);
-		return "Usepsno dodato";
-		
-	}
-	
-	@GET
-	@Path("/block")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public void block(@QueryParam("username") String username,@QueryParam("password") String password) throws JsonIOException, IOException{
-		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		User u=userDao.find(username,password);
-		if(u!=null){
-			User user=userDao.block(u);
-			userDao.update(user);
-		}
-		
-	}
-	
-	@GET
-	@Path("/unblock")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public void unblock(@QueryParam("username") String username,@QueryParam("password") String password) throws JsonIOException, IOException{
-		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		User u=userDao.find(username,password);
-		if(u!=null){
-			User user=userDao.unblock(u);
-			userDao.update(user);
-		}
-		
-	}
 	@GET
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<User> search(@QueryParam("search") String search){
 		
-		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
+		HostDAO userDao = (HostDAO) ctx.getAttribute("hostDAO");
 		Collection<User> listapretraga= new ArrayList<User>();
 		Collection<User> svi=userDao.findAll();
 		try {
@@ -151,15 +108,5 @@ public class AdministratorService {
 			}
 			return listapretraga;
 		}
-	}
-	
-	@GET
-	@Path("/delete")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public void delete(@QueryParam("username") String username) throws JsonIOException, IOException {
-		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		userDao.deleteLogical(username);
-		
 	}
 }
