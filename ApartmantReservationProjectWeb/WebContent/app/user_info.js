@@ -163,7 +163,7 @@ methods:{
 			document.getElementById("radio1").checked=true;
 		else
 			document.getElementById("radio2").checked=true;
-		
+		this.bool=true;
 		ime.style.borderColor ="grey";
 		document.getElementById("nemaIme").style.visibility = "hidden";
 		prezime.style.borderColor ="grey";

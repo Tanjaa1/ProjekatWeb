@@ -14,7 +14,7 @@ Vue.component("users", {
 		.get("rest/users/getRole")
 		.then(response=>{
 			if(response.data!="Administrator"){
-				this.$router.push('forbidden');
+				//this.$router.push('forbidden');
 			}
 		})
 	},
@@ -60,24 +60,28 @@ Vue.component("users", {
 <br>
 	<table id="table" class="table table-bordered" border="1">
 	<tr>
-		<th class="bg-light" colspan="6" style="text-align:center"><h1><b>Korisnici<b></h1></th>
+		<th class="bg-light" colspan="6" style="text-align:center"><h1><b>Korisnici</b></h1></th>
 	</tr>
 	<tr class="bg-light">
-		<td><b>Korisničko ime</b></th>
-		<td><b>Ime</b></th>
-		<td><b>Prezime</b></th>
-		<td><b>Pol</b></th>
-		<td><b>Uloga</b></th>
-		<td><b>Blokiran</b></th>
+		<th><b>Korisničko ime</b></th>
+		<th><b>Ime</b></th>
+		<th><b>Prezime</b></th>
+		<th><b>Pol</b></th>
+		<th><b>Uloga</b></th>
+		<th><b>Blokiran</b></th>
 	</tr>
 		
 	<tr v-for="u in users" v-on:click="selectUser(u)" v-bind:class="{selected : selectedUser.username===u.username}">
 		<td>{{u.username }}</td>
 		<td>{{u.name}}</td>
 		<td>{{u.surname}}</td>
-		<td>{{u.gender}}</td>
-		<td>{{u.role}}</td>
-		<td>{{u.block}}</td>
+		<td v-if="u.gender=='Male'">Muški</td>
+		<td v-if="u.gender!='Male'">Ženski</td>
+		<td v-if="u.role=='Administrator'">{{u.role}}</td>
+		<td v-if="u.role=='Guest'">Gost</td>
+		<td v-if="u.role=='Host'">Domaćin</td>
+		<td v-if="u.block=='no'">ne</td>
+		<td v-if="u.block!='no'">da</td>
 	</tr>
 </table>
 

@@ -143,7 +143,7 @@ methods:{
 			axios
 				.get("rest/users/getRole")
 				.then(response=>{
-						if(response.data!="Administrator" && response.data!=""){
+						if(response.data!="Administrator" || response.data.name!=null){
 							$('#userInfo').show();
 							$('#users').show();
 							$('#rez').show();
