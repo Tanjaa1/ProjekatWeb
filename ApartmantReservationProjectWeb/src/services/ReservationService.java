@@ -52,12 +52,13 @@ public class ReservationService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Reservations saveData(Reservations reservations) throws JsonIOException, IOException {
+		ReservationsDAO reservationDAO = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		
 		User curuser=(User) request.getSession().getAttribute("user");
 		reservations.setGuestWhoStays(curuser);
 		reservations.setDeleted(false);
 		reservations.setStatus(ReservationStatus.Created);
-		reservations.setTotalPrise(reservations.getReservatedApartment().getPricePerStayingNight()*reservations.getNumberOfStayingNights());
-		ReservationsDAO reservationDAO = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		reservations.setTotalPrise(reservationDAO.getCost(reservations.getNumberOfStayingNights(), reservations.getStartDate(), reservations.getReservatedApartment()));
 		
 		ApartmentDAO apDAO = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
 		Apartment ap=apDAO.getById(reservations.ReservatedApartment.getId());

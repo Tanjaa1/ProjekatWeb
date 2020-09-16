@@ -7,12 +7,11 @@ Vue.component("apartment", {
 				location : Object
 		}
 	},
-	beforeMount(){	
-		$('#rezervacija').hide();
+	beforeMount(){
 		axios
 		.get("rest/users/currentUser")
 		.then(response=>{
-			if(response.data.name==null || response.data.role!="Guest"){
+			if(response.data==null || response.data.role!="Guest"){
 				$('#rezervacija').hide();
 			}
 		})
@@ -65,7 +64,7 @@ Vue.component("apartment", {
 			document.getElementById("poruka").value=""
 			document.getElementById("cena").innerHTML="";
 		}
-	}},
+	},
 	mounted(){
 		var d=new Date();
 		var day = d.getDate();
