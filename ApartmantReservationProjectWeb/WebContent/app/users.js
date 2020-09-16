@@ -13,8 +13,8 @@ Vue.component("users", {
 		axios
 		.get("rest/users/getRole")
 		.then(response=>{
-			if(response.data!="Administrator"){
-				//this.$router.push('forbidden');
+			if(response.data=="Guest"){
+				this.$router.push('forbidden');
 			}
 		})
 	},
