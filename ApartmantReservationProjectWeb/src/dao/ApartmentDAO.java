@@ -1,7 +1,16 @@
 package dao;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+
+import javax.print.attribute.standard.DateTimeAtCompleted;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -23,6 +32,24 @@ public class ApartmentDAO extends AbstractLongDAO<Apartment> {
 		}
 		
 	}
+
+	public Collection<String> getAvailableDate(Apartment apartment) {
+		  DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss"); 
+
+			Collection<Date> availableDate=(ArrayList<Date>) apartment.getAvailableDates();
+
+			Collection<String> availableDateString=new ArrayList<String>();
+			if(availableDate==null)
+				return null;
+			for(Date d:availableDate){
+				String strDate = dateFormat.format(d);
+				String[] s=strDate.split(" ");
+				availableDateString.add(s[0]);
+			}
+			return availableDateString;
+	}
+
+
 
 
 

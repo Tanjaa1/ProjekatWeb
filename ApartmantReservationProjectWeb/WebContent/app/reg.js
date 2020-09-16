@@ -80,7 +80,7 @@ methods:{
 		if(prezime.value==""){
 			prezime.style.borderColor ="red";
 			document.getElementById("nemaPrez").style.visibility = "visible";
-			document.getElementById("nemaPrez").innerHTML="Morate uneti prezime";
+			document.getElementById("nemaPrez").innerHTML="Morate uneti prezime!";
 		}else if(prezime.value.length<2){
 			ime.style.borderColor ="red";
 			document.getElementById("nemaPrez").style.visibility = "visible";
@@ -104,7 +104,7 @@ methods:{
 		if(lozinka.value==""){
 			lozinka.style.borderColor ="red";
 			document.getElementById("nemaPass").style.visibility = "visible";
-			document.getElementById("nemaPass").innerHTML="Morate uneti lozinku";
+			document.getElementById("nemaPass").innerHTML="Morate uneti lozinku!";
 		}else if(lozinka.value.length<5){
 			ime.style.borderColor ="red";
 			document.getElementById("nemaPass").style.visibility = "visible";
@@ -116,7 +116,7 @@ methods:{
 		if(kontrolna_lozinka.value==""){
 			lozinka.style.borderColor ="red";
 			document.getElementById("nemaPassC").style.visibility = "visible";
-			document.getElementById("nemaPassC").innerHTML="Morate uneti kontrolnu lozinku";
+			document.getElementById("nemaPassC").innerHTML="Morate uneti kontrolnu lozinku!";
 		}else{
 			if(lozinka.value!=kontrolna_lozinka.value){
 				lozinka.style.borderColor ="red";

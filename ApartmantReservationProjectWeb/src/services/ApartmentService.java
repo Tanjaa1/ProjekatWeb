@@ -1,7 +1,12 @@
 package services;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -88,5 +93,17 @@ public class ApartmentService {
 		Apartment apartment = apartmentDao.getById(id);
 		apartment.setActive(ActiveApartment.inactive);
 		apartmentDao.save(apartment);
+	}
+	
+	@GET
+	@Path("/dates/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<String> availableDate(@PathParam("id")Long id) throws JsonIOException, IOException {
+		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
+		Apartment apartment = apartmentDao.getById(id);
+
+		Collection<String> availableDateString=apartmentDao.getAvailableDate(apartment);
+         
+		return availableDateString;
 	}
 }
