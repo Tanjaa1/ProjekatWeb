@@ -11,7 +11,7 @@ public class Reservations implements IIdentifiable<Long>, IDelete{
 	public int NumberOfStayingNights;
 	public double TotalPrise;
 	public String Message;
-	public Guest GuestWhoStays;
+	public User GuestWhoStays;
 	public ReservationStatus Status;
 	
 	
@@ -70,11 +70,11 @@ public class Reservations implements IIdentifiable<Long>, IDelete{
 		Message = message;
 	}
 
-	public Guest getGuestWhoStays() {
+	public User getGuestWhoStays() {
 		return GuestWhoStays;
 	}
 
-	public void setGuestWhoStays(Guest guestWhoStays) {
+	public void setGuestWhoStays(User guestWhoStays) {
 		GuestWhoStays = guestWhoStays;
 	}
 

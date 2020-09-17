@@ -8,6 +8,7 @@ const Registration={template: '<reg-page></reg-page>'}
 const Profile={template: '<user-info></user-info>'}
 const Users={template: '<users></users>'}
 const Amenities={template: '<amenities></amenities>'}
+const Reservations={template: '<reservations></reservations>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
@@ -21,6 +22,7 @@ const router = new VueRouter({
 	   { path: '/allapartments', component: SideBar, name:"allApartments"},
 	   { path: '/apartment/:id', component:ApartmentView},
 	   { path: '/amenities', component:Amenities},
+	   { path: '/reservations', component:Reservations},
 	   { path: '/forbidden',name:"forbidden"}
 
 	  ]

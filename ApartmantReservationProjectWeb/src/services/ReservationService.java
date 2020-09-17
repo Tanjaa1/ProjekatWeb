@@ -1,6 +1,7 @@
 package services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
@@ -18,9 +19,11 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonIOException;
 
 import app.App;
-import beans.Guest;
+import beans.Apartment;
 import beans.ReservationStatus;
 import beans.Reservations;
+import beans.User;
+import dao.ApartmentDAO;
 import dao.ReservationsDAO;
 
 @Path("/reservations")
@@ -47,12 +50,29 @@ public class ReservationService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Reservations saveData(Reservations reservations) throws JsonIOException, IOException {
-		reservations.setGuestWhoStays((Guest) request.getSession().getAttribute("user"));
+		ReservationsDAO reservationDAO = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		
+		User curuser=(User) request.getSession().getAttribute("user");
+		reservations.setGuestWhoStays(curuser);
 		reservations.setDeleted(false);
 		reservations.setStatus(ReservationStatus.Created);
-		reservations.setTotalPrise(reservations.getReservatedApartment().getPricePerStayingNight()*reservations.getNumberOfStayingNights());
-		ReservationsDAO reservationDAO = (ReservationsDAO)ctx.getAttribute("reservationDAO");
-		return reservationDAO.save(reservations);
+		reservations.setTotalPrise(reservationDAO.getCost(reservations.getNumberOfStayingNights(), reservations.getStartDate(), reservations.getReservatedApartment()));
+		
+		ApartmentDAO apDAO = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
+		Apartment ap=apDAO.getById(reservations.ReservatedApartment.getId());
+		ArrayList<Long> reservationsApartment=ap.getListOfReservations();
+		if(reservationsApartment==null)
+			reservationsApartment=new ArrayList<Long>();
+
+		Reservations r= reservationDAO.save(reservations);
+		reservationsApartment.add(r.getId());
+		ap.setListOfReservations(reservationsApartment);
+		
+		//apDAO.newlistDays(reservations.getNumberOfStayingNights(),reservations.getStartDate());
+		
+		apDAO.update(ap);
+		
+		return r;
 	}
 	
 	@GET
@@ -69,6 +89,16 @@ public class ReservationService {
 	public Collection <Reservations> getAll() {
 		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
 		return  reservationsDao.getAll().values();
+	}
+	
+	
+	@POST
+	@Path("/cost")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Double cost(Reservations reservations) throws JsonIOException, IOException {
+		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		return reservationsDao.getCost(reservations.getNumberOfStayingNights(), reservations.getStartDate(), reservations.getReservatedApartment());
 	}
 	
 }

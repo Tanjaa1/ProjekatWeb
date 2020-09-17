@@ -89,4 +89,16 @@ public class ApartmentService {
 		apartment.setActive(ActiveApartment.inactive);
 		apartmentDao.save(apartment);
 	}
+	
+	@GET
+	@Path("/dates/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<String> availableDate(@PathParam("id")Long id) throws JsonIOException, IOException {
+		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
+		Apartment apartment = apartmentDao.getById(id);
+
+		Collection<String> availableDateString=apartmentDao.getAvailableDate(apartment);
+         
+		return availableDateString;
+	}
 }

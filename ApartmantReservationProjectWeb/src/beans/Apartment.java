@@ -24,7 +24,7 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 	public String CheckOutTime;
 	public ActiveApartment isActive = ActiveApartment.inactive;
 	public List<Amenities> AmenitiesList;
-	public List<Reservations> ListOfReservations;
+	public ArrayList<Long> ListOfReservations;
 	
 	
 	public Apartment() { }	
@@ -47,7 +47,7 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 		CheckInTime = checkInTime;
 		CheckOutTime = checkOutTime;
 		AmenitiesList = new ArrayList<Amenities>();
-		ListOfReservations = new ArrayList<Reservations>();
+		ListOfReservations = new ArrayList<Long>();
 	}
 	
 	public String getNameOfApartment() {
@@ -178,11 +178,11 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 		AmenitiesList = amenitiesList;
 	}
 
-	public List<Reservations> getListOfReservations() {
+	public ArrayList<Long> getListOfReservations() {
 		return ListOfReservations;
 	}
 
-	public void setListOfReservations(List<Reservations> listOfReservations) {
+	public void setListOfReservations(ArrayList<Long> listOfReservations) {
 		ListOfReservations = listOfReservations;
 	}
 

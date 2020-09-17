@@ -7,40 +7,64 @@ Vue.component("apartment", {
 				location : Object
 		}
 	},
-	beforeMount(){	
-		$('#rezervacija').hide();
+	beforeMount(){
 		axios
 		.get("rest/users/currentUser")
 		.then(response=>{
-			if(response.data.name==null || response.data.role=="Guest"){
-				//$('#rezervacija').hide();
+			if(response.data==null || response.data.role!="Guest"){
+				$('#rezervacija').hide();
 			}
 		})
 
 	},
 	methods:{
 		Cena: function(){
-			document.getElementById("cena").innerHTML="Ukupna cena iznosi "+document.getElementById("noc").value*this.apartment.pricePerStayingNight+"RSD";
-		},
-		Rezervisi: function(){
-			var nights=document.getElementById("noc").value;
+
+			var night=document.getElementById("noc").value;
 			var date=document.getElementById("start").value;
 			var poruka=document.getElementById("poruka").value;
 			var noci=parseInt(night);
-			if(noc==Nan)
+			if(isNaN(noci)){
 				document.getElementById("noc").value="";
-			else
+				document.getElementById("nemaNoc").innerHTML="Morate uneti broj noćenja(minimalan broj noćenja je 1)!";
+			}else{
 				document.getElementById("noc").value=noci;
-			var reservation={reservatedApartment : this.apartment, numberOfStayingNights: noci, startDate: date, message: poruka};
-		    
-		    axios
-			.post("rest/reservations/add",reservation)
-			.then(response => {
+				var reservation={reservatedApartment : this.apartment, numberOfStayingNights: noci, startDate: date, message: poruka};
+			    
+			    axios
+				.post("rest/reservations/cost",reservation)
+				.then(response => {
+					var cena=response.data;
+					document.getElementById("cena").innerHTML="Ukupna cena iznosi "+cena+" RSD";
+				})
+			}
+		},
+		Rezervisi: function(){
+			var night=document.getElementById("noc").value;
+			var startDate=document.getElementById("start").value;
+			var poruka=document.getElementById("poruka").value;
+			var noci=parseInt(night);
+			if(isNaN(noci)){
 				document.getElementById("noc").value="";
-				document.getElementById("poruka").value=""
-				document.getElementById("cena").innerHTML="";
-			})
-	}},
+				document.getElementById("nemaNoc").innerHTML="Morate uneti broj noćenja(minimalan broj noćenja je 1)!";
+			}else{
+				document.getElementById("noc").value=noci;
+				var reservation={reservatedApartment : this.apartment, numberOfStayingNights: night, startDate: startDate, message: poruka};
+			    axios
+				.post("rest/reservations/add",reservation)
+				.then(response => {
+					document.getElementById("noc").value="";
+					document.getElementById("poruka").value=""
+					document.getElementById("cena").innerHTML="";
+				})
+			}
+		},
+		Odustani: function(){
+			document.getElementById("noc").value="";
+			document.getElementById("poruka").value=""
+			document.getElementById("cena").innerHTML="";
+		}
+	},
 	mounted(){
 		var d=new Date();
 		var day = d.getDate();
@@ -151,7 +175,7 @@ Vue.component("apartment", {
 	            <div class="form-group">
 					<label>Broj noćenja:</label>
 					<input id="noc" type="text" class="form-control"/>
-					<span id="nemaNoc" style="color:red; visibility:hidden">Morate uneti broj(minimalan broj noćenja je 1)!</span><br>
+					<span id="nemaNoc" style="color:red;"></span><br>
 					<button class="search-btn" type="button" v-on:click="Cena()">Izračunaj cenu</button>&nbsp<label id="cena"></label>
 				</div><br/>
 	            <div class="form-group">
@@ -159,6 +183,7 @@ Vue.component("apartment", {
 					<textarea id="poruka" name="w3review" rows="4" cols="50"> </textarea>
 				</div><br/>
 				<button class="search-btn" type="button" v-on:click="Rezervisi()">Rezerviši apartman</button>
+				<button class="search-btn" type="button" v-on:click="Odustani()">Odustani</button>
 			</div>
             </div>
         </div>
