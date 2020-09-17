@@ -1,7 +1,8 @@
 Vue.component("addApartment", {
 	data:function(){
 		return{
-            selected : "",
+            selectedAmenities : [],
+            selected : '',
             object : null,
             name : '',
             rooms : '',
@@ -15,8 +16,17 @@ Vue.component("addApartment", {
             zipCode : '',
             price : '',
             checkInTime : '14:00',
-            checkOutTime : '10:00'
+            checkOutTime : '10:00',
+            amenities : []
 		}
+    },
+    mounted(){
+		axios
+		.get('rest/amenities')
+		.then(response => {
+			this.amenities = response.data
+		})
+		
 	},
     template: ` 
     <div class="add">
@@ -96,6 +106,15 @@ Vue.component("addApartment", {
                 </div>
                 
             </div>
+            <div class="form-row">
+				<label>Izaberite sadržaj apartmana:</label>
+				    <div class="form-check mx-4" v-for="am in amenities" v-if="!am.deleted">
+						<input class="form-check-input" type="checkbox" :value="am" v-model="selectedAmenities" >
+						<label class="form-check-label">
+							{{am.amenitiesName}}
+						</label>
+					</div>
+            </div>
             <button type="submit" class="btn btn-primary" v-on:click="checkForm()">Kreiraj</button>
             
         </form>
@@ -123,13 +142,15 @@ Vue.component("addApartment", {
                                                     City : this.city,
                                                     PostalCode : this.zipCode                                                    
                                                 },
-                                               
+                                                AmenitiesList : this.selectedAmenities
+                                                
                                                 })
                .then(response=>{
-                	this.object=response.data;
+                    this.object=response.data;
+                    alert('Uspešno ste kreirali apartman!')
                 })
                 .catch(e=>{
-                    alert('greska')
+                    alert('Greška prilikom kreiranja apartmana!')
                 })
         }
         

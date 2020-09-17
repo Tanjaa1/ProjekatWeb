@@ -8,5 +8,7 @@ public class App extends Application {
 	public static final String USERS_PATH = "C:/DB/usersDb.json";
 	public static final String APARTMENTS_PATH = "C:/DB/apartmentsDb.json";
 	public static final String RESERVATION_PATH = "C:/DB/reservationsDb.json";
+	public static final String AMENITIES_PATH = "C:/DB/amenitiesDb.json";
+
 
 }

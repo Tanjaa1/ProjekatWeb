@@ -1,7 +1,8 @@
 Vue.component("side-bar", {
 	data: function () {
 		return {
-			apartments : []
+			apartments : [],
+			amenities : []
 		}
 	},
 	mounted(){
@@ -9,6 +10,12 @@ Vue.component("side-bar", {
 		.get('rest/apartment')
 		.then(response => {
 			this.apartments = response.data
+		})
+
+		axios
+		.get('rest/amenities')
+		.then(response => {
+			this.amenities = response.data
 		})
 		
 	},
@@ -54,28 +61,20 @@ Vue.component("side-bar", {
 							</div>
 						</div>
 					</div>
-					<p class="mb-1">Izaberite broj soba u objektu</p>
-					<select class="custom-select col-sm-11 col-sm-offset-12"">
-						<option selected>Izaberite</option>
-						<option value="1">Jedna soba</option>
-						<option value="2">Dve sobe</option>
-						<option value="3">Tri sobe</option>
-						<option value="4">Četiri sobe</option>
-						<option value="5">Pet soba</option>
-						<option value="6">Šest soba</option>
-						<option value="7">Sedam soba</option>
-					</select>
-					<p class="mb-1">Izaberite broj osoba u koje mogu da odsednu objektu</p>
-					<select class="custom-select col-sm-11 col-sm-offset-12 mb-2">
-						<option selected>Izaberite</option>
-						<option value="1">Jedna osoba</option>
-						<option value="2">Dve osobe</option>
-						<option value="3">Tri osobe</option>
-						<option value="4">Četiri osobe</option>
-						<option value="5">Pet osoba</option>
-						<option value="6">Šest osoba</option>
-						<option value="7">Sedam osoba</option>
-                  	</select>
+					<p class="mb-1">Broj soba u objektu</p>
+					<input type="number" class="form-control">
+					<p class="mb-1">Broj osoba koje mogu da odsednu u objektu</p>
+					<div class="row mb-2">
+						<div class="col md-6">
+							<p class="mb-1">Deca</p>
+							<input type="number" class="form-control">
+						</div>
+						<div class="col md-6">
+							<p class="mb-1">Odrasli</p>
+							<input type="number" class="form-control">
+						</div>
+					
+					</div>
 				</div>
 				<div class="border ml-2
 				 mt-2">
@@ -114,16 +113,10 @@ Vue.component("side-bar", {
 					</div>
 					<div class="border ml-4 mr-4 mt-2 mb-2">
 						<p class="mb-1 mx-2">Sadržaj apartmana</p>
-						<div class="form-check mx-4">
-							<input class="form-check-input" type="checkbox" value="">
+						<div class="form-check mx-4" v-for="am in amenities" v-if="!am.deleted">
+							<input class="form-check-input" type="checkbox" value="" >
 							<label class="form-check-label">
-								WiFi
-							</label>
-						</div>
-						<div class="form-check mx-4">
-							<input class="form-check-input" type="checkbox" value="">
-							<label class="form-check-label">
-								TV
+								{{am.amenitiesName}}
 							</label>
 						</div>
 					</div>
@@ -133,7 +126,7 @@ Vue.component("side-bar", {
 			<div class="col-md-1"></div>
 
 			<div class="col-md-5 col-sm-12"> 
-				<div class="border mt-2" v-for="a in apartments">
+				<div class="border mt-2" v-for="a in apartments" v-if="!a.deleted">
 					<div class="row">
 						<div class="ml-4 mr-4 mt-4">
 							<div class="gallery">

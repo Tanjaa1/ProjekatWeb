@@ -126,9 +126,10 @@ Vue.component("editApartment", {
             .post('rest/apartment/add',this.apartment)
             .then(response =>{
                 this.ret=response.data
+                alert('Uspešno ste izmenili podatake o apartmanu!')
             })
             .catch(e=>{
-                alert('greska')
+                alert('Greška prilikom izmene podataka o apartmanu!')
             })
         }
     }

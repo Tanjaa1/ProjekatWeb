@@ -32,7 +32,7 @@ Vue.component("host-apartments", {
     },
 
 	template: ` 
-	<div class = "sidebar" >
+	<div id = "sidebar">
 		<div class="row">
 			<div class="col-md-3 col-sm-12"></div>
             
@@ -131,6 +131,9 @@ Vue.component("host-apartments", {
                 alert("Apartman je uspešno obrisan!");
             } )
             location.reload()
+            .catch(e=>{
+                alert('Greška prilikom brisanja apartmana!')
+            })
         },
         aktiviraj : function(id){           
             axios
@@ -139,6 +142,9 @@ Vue.component("host-apartments", {
                 alert("Apartman je uspešno aktiviran!");
             })
             location.reload()
+            .catch(e=>{
+                alert('Greška prilikom aktivacije apartmana!')
+            })
         },
         deaktiviraj : function(id){
             axios
@@ -147,6 +153,9 @@ Vue.component("host-apartments", {
                 alert("Apartman je uspešno deaktiviran!");
             })
             location.reload()
+            .catch(e=>{
+                alert('Greška prilikom izmene deaktivacije apartmana!')
+            })
         }
     }
 });

@@ -7,6 +7,7 @@ const EditApartment={template: '<editApartment></editApartment>'}
 const Registration={template: '<reg-page></reg-page>'}
 const Profile={template: '<user-info></user-info>'}
 const Users={template: '<users></users>'}
+const Amenities={template: '<amenities></amenities>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
@@ -19,6 +20,7 @@ const router = new VueRouter({
 	   { path: '/editapartment/:id', component: EditApartment},
 	   { path: '/allapartments', component: SideBar, name:"allApartments"},
 	   { path: '/apartment/:id', component:ApartmentView},
+	   { path: '/amenities', component:Amenities},
 	   { path: '/forbidden',name:"forbidden"}
 
 	  ]
