@@ -12,7 +12,7 @@ Vue.component("apartment", {
 		axios
 		.get("rest/users/currentUser")
 		.then(response=>{
-			if(response.data==null || response.data.role!="Guest"){
+			if(response.data.role==undefined){
 				$('#rezervacija').hide();
 			}else{
 				$('#rezervacija').show();

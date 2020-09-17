@@ -11,9 +11,9 @@ Vue.component("users", {
 	},
 	beforeMount(){
 		axios
-		.get("rest/users/getRole")
+		.get("rest/users/currentUser")
 		.then(response=>{
-			if(response.data=="Guest"){
+			if(response.data.role=="Guest" || response.data.role==undefined){
 				this.$router.push('forbidden');
 			}
 		})

@@ -11,7 +11,9 @@ import java.util.Map;
 import com.google.gson.reflect.TypeToken;
 
 import beans.Apartment;
+import beans.ReservationStatus;
 import beans.Reservations;
+import beans.User;
 import dao.sequencer.LongSequencer;
 
 public class ReservationsDAO extends AbstractLongDAO<Reservations> {
@@ -31,7 +33,6 @@ public class ReservationsDAO extends AbstractLongDAO<Reservations> {
 	}
 
 	public Collection<Reservations> findAll() {
-		System.out.println("ljkjv");
 		return reservations.values();
 	}
 
@@ -121,6 +122,27 @@ public class ReservationsDAO extends AbstractLongDAO<Reservations> {
 			}
 		}
 		return resStat;
+	}
+
+	public Collection<Reservations> getHost(User user,Collection<Reservations> collection) {
+		Collection<Reservations> res=new ArrayList<Reservations>();
+			for(Reservations r:collection){
+				if(r.getReservatedApartment().getApartmentHost().equals(user.getUsername())){
+					res.add(r);
+				}
+			}
+		return res;
+	}
+
+	public Collection<Reservations> getGuest(User user,Collection<Reservations> collection) {
+		Collection<Reservations> res=new ArrayList<Reservations>();
+		for(Reservations r:collection){
+			System.out.println(user);
+			if(r.getGuestWhoStays().getUsername().equals(user.getUsername())){
+				res.add(r);
+			}
+		}
+		return res;
 	}
 	
 }

@@ -8,10 +8,23 @@ Vue.component("user-info", {
 	},	
 	beforeMount(){
 		axios
-		.get("rest/users/getRole")
+		.get("rest/users/currentUser")
 		.then(response=>{
-			if(response.data==null){
-				this.$router.push('forbidden');
+			if(response.data.role==undefined){
+					this.$router.push('forbidden');
+			}else{
+				var ime=document.getElementById("ime"),prezime=document.getElementById("prezime"),pol="";
+				
+				document.getElementById("sacuvaj").className="search-btn-dis";
+				document.getElementById("otkazi").className="search-btn-dis";
+					this.currentUser=response.data;
+					this.kime=response.data.username;
+					ime.value=response.data.name;
+					prezime.value=response.data.surname;
+					if(response.data.gender=="Male")
+						document.getElementById("radio1").checked=true;
+					else
+						document.getElementById("radio2").checked=true;
 			}
 		})
 	},
@@ -239,27 +252,5 @@ methods:{
 			app.Odjava()
 		} )
 	}
-},
-	mounted() {
-		var ime=document.getElementById("ime"),prezime=document.getElementById("prezime"),pol="";
-		
-		document.getElementById("sacuvaj").className="search-btn-dis";
-		document.getElementById("otkazi").className="search-btn-dis";
-		axios
-		.get('rest/users/currentUser')
-		.then(response => {
-			this.currentUser=response.data;
-			this.kime=response.data.username;
-			ime.value=response.data.name;
-			prezime.value=response.data.surname;
-			if(response.data.gender=="Male")
-				document.getElementById("radio1").checked=true;
-			else
-				document.getElementById("radio2").checked=true;
-				
-		})
-		.catch(error =>{
-			alert("Doslo je do greske");
-		})
-    }
+}
 });

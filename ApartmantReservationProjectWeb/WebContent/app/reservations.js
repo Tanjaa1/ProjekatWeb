@@ -3,23 +3,49 @@ Vue.component("reservations", {
 		return{
 			reservations:null,
 			original:null,
-			user:null
+			user:{}
 		}
 	},
 	beforeMount(){
 		axios
-		.get("rest/reservations/all")
-		.then(response=>{
-				this.reservations=response.data;
-				for(var s of this.reservations){
-					s.startDate=new Date(parseInt(s.startDate));
-				}
-				this.reservations=this.reservations;
-		})
-		axios
 		.get("rest/users/currentUser")
 		.then(response=>{
 			this.user=response.data;
+			if(this.user.role==undefined){
+				this.$router.push('forbidden');
+			}else{
+				if(this.user.role=='Administrator'){
+					axios
+					.get("rest/reservations/all")
+					.then(response=>{
+							this.reservations=response.data;
+							for(var s of this.reservations){
+								s.startDate=new Date(parseInt(s.startDate));
+							}
+							this.reservations=this.reservations;
+					})
+				}else if(this.user.role=="Guest"){
+					axios
+					.get("rest/reservations/guest")
+					.then(response=>{
+							this.reservations=response.data;
+							for(var s of this.reservations){
+								s.startDate=new Date(parseInt(s.startDate));
+							}
+							this.reservations=this.reservations;
+					})
+				}else{
+					axios
+					.get("rest/reservations/host")
+					.then(response=>{
+							this.reservations=response.data;
+							for(var s of this.reservations){
+								s.startDate=new Date(parseInt(s.startDate));
+							}
+							this.reservations=this.reservations;
+					})
+				}
+			}
 		})
 	},
 	template: `
@@ -99,7 +125,6 @@ Vue.component("reservations", {
 				stat="Finalized";
 			else
 				stat="Rejected";
-
 			axios
 			.get("rest/reservations/stat",{params:{stat: stat}})
 			.then(response=>{

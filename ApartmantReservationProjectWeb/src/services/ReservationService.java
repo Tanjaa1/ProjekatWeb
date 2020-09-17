@@ -70,12 +70,11 @@ public class ReservationService {
 		reservationsApartment.add(r.getId());
 		ap.setListOfReservations(reservationsApartment);
 		
-		ArrayList<Date> newD=(ArrayList<Date>) reservationDAO.availableDaysNew(ap.getAvailableDates(),reservations.getNumberOfStayingNights(),reservations.getStartDate());
-		ap.setAvailableDatesForRent(newD);
+		//ArrayList<Date> newD=(ArrayList<Date>) reservationDAO.availableDaysNew(ap.getAvailableDates(),reservations.getNumberOfStayingNights(),reservations.getStartDate());
+		///ap.setAvailableDatesForRent(newD);
 		apDAO.update(ap);
-		System.out.println(newD);
-		if(newD==null)
-			return null;
+//		if(newD==null)
+//			return null;
 		return r;
 	}
 	
@@ -93,6 +92,24 @@ public class ReservationService {
 	public Collection <Reservations> getAll() {
 		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
 		return  reservationsDao.getAll().values();
+	}
+	
+	@GET
+	@Path("/host")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection <Reservations> getHost() {
+		User user= (User) request.getSession().getAttribute("user");
+		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		return  reservationsDao.getHost(user,reservationsDao.getAll().values());
+	}
+	
+	@GET
+	@Path("/guest")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection <Reservations> getGuest() {
+		User user= (User) request.getSession().getAttribute("user");
+		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		return  reservationsDao.getGuest(user,reservationsDao.getAll().values());
 	}
 	
 	@GET
