@@ -96,6 +96,7 @@ Vue.component("reservations", {
 		<th><b>Datum početka</b></th>
 		<th><b>Ukupna cena u RSD</b></th>
 		<th><b>Status</b></th>
+		<th v-if="role!='Administrator'">Promeni status</th>
 	</tr>
 	<tr v-for="r in reservations">
 		<td>{{r.reservatedApartment.nameOfApartment}}</td>
@@ -107,7 +108,11 @@ Vue.component("reservations", {
 		<td v-if="r.status=='Accepted'">Prihvaćena</td>
 		<td v-if="r.status=='DropedOut'">Odbijena</td>
 		<td v-if="r.status=='Finalized'">Završena</td>
-		<td v-if="r.status=='Rejected'">Odustao</td>
+		<td v-if="r.status=='Rejected'">Odustao</td>		
+		<td v-if="role=='Guest'"><button v-if="r.status=='Created' || r.status=='Accepted'" v-on:click="odustajem(r)">Odustajem</button></td>
+		<td v-if="role==='Host'"><button v-if="r.status=='Created' || r.status=='Accepted'" v-on:click="odbijam(r)">Odbijam</button></td>
+		<td v-if="role==='Host'"><button v-if=" r.status=='Created'" v-on:click="prihvatam(r)">Prihvatam &nbsp/&nbsp<button><button v-on:click="odbijam(r)">Odbijam</button></td>
+	
 	</tr>
 </table>
 </div>		  
@@ -140,6 +145,42 @@ Vue.component("reservations", {
 			var sort=document.getElementById("sort").value;
 			axios
 			.get("rest/reservations/sort",{params:{sort: sort}})
+			.then(response=>{
+				this.original=response.data;
+				for(var s of this.original){
+					s.startDate=new Date(parseInt(s.startDate));
+				}
+				this.reservations=null;
+				this.reservations=this.original;
+			})
+		},
+		prihvatam:function(r){
+			axios
+			.get("rest/reservations/prihv",{params:{res: r.id}})
+			.then(response=>{
+				this.original=response.data;
+				for(var s of this.original){
+					s.startDate=new Date(parseInt(s.startDate));
+				}
+				this.reservations=null;
+				this.reservations=this.original;
+			})
+		},
+		odbijam:function(r){
+			axios
+			.get("rest/reservations/odb",{params:{res: r.id}})
+			.then(response=>{
+				this.original=response.data;
+				for(var s of this.original){
+					s.startDate=new Date(parseInt(s.startDate));
+				}
+				this.reservations=null;
+				this.reservations=this.original;
+			})
+		},
+		odustajem:function(r){
+			axios
+			.get("rest/reservations/odust",{params:{res: r.id}})
 			.then(response=>{
 				this.original=response.data;
 				for(var s of this.original){

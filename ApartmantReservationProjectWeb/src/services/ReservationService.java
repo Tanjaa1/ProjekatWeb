@@ -138,5 +138,49 @@ public class ReservationService {
 		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
 		return reservationsDao.getCost(reservations.getNumberOfStayingNights(), reservations.getStartDate(), reservations.getReservatedApartment());
 	}
+	@GET
+	@Path("/odb")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Reservations> odbijam(@QueryParam("res") String res) throws JsonIOException, IOException {
+		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		Collection<Reservations> reserv=getAll();
+		Reservations reservations=reservationsDao.find(res,reserv,ReservationStatus.DropedOut);
+		reservationsDao.update(reservations);
+		return  reservationsDao.getAll().values();
+	}
 	
+	@GET
+	@Path("/odust")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Reservations> odustajem(@QueryParam("res") String res) throws JsonIOException, IOException {
+		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		Collection<Reservations> reserv=getAll();
+		Reservations reservations=reservationsDao.find(res,reserv,ReservationStatus.Rejected);
+		reservationsDao.update(reservations);
+		return  reservationsDao.getAll().values();
+	}
+	@GET
+	@Path("/prihv")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Reservations> prihvatam(@QueryParam("res") String res) throws JsonIOException, IOException {
+		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		Collection<Reservations> reserv=getAll();
+		Reservations reservations=reservationsDao.find(res,reserv,ReservationStatus.Accepted);
+		reservationsDao.update(reservations);
+		return  reservationsDao.getAll().values();
+	}
+	
+	@GET
+	@Path("/search")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<User> moji(){
+		User user= (User) request.getSession().getAttribute("user");
+		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		Collection<Reservations> reserv=getAll();
+		return  reservationsDao.getMy(user.getUsername(),reserv);
+	}
 }

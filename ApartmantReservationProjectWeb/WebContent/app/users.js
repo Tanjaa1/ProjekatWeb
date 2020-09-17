@@ -15,6 +15,24 @@ Vue.component("users", {
 		.then(response=>{
 			if(response.data.role=="Guest" || response.data.role==undefined){
 				this.$router.push('forbidden');
+			}else if(response.data.role=="Administrator"){
+				var search="";
+			    axios
+			    .get('rest/admin/search',{params :{search: search}})
+			    .then(response => {
+			    	this.users = response.data;
+			    	})
+			}else{
+			    axios
+			    .get('rest/reservations/search')
+			    .then(response => {
+			    	this.users = response.data;
+			    	})
+
+					document.getElementById("b1").style.display = "none";
+					document.getElementById("b2").style.display = "none";
+					document.getElementById("b3").style.display = "none";
+					document.getElementById("b4").style.display = "none";
 			}
 		})
 	},
@@ -85,11 +103,11 @@ Vue.component("users", {
 	</tr>
 </table>
 
-<button v-on:click="blokiraj()" v-bind:disabled="!can1" class="btn btn-primary">Blokiraj korisnika</button>&nbsp
-<button v-on:click="odblokiraj()" v-bind:disabled="!can2" class="btn btn-primary">Odblokiraj korisnika</button>
+<button id="b1" v-on:click="blokiraj()" v-bind:disabled="!can1" class="btn btn-primary">Blokiraj korisnika</button>&nbsp
+<button id="b2" v-on:click="odblokiraj()" v-bind:disabled="!can2" class="btn btn-primary">Odblokiraj korisnika</button>
 <br/><br/>
-<button  v-bind:disabled="!can" v-on:click="obrisi()" class="btn btn-primary">Obrisi korisnika</button>&nbsp
-<button v-on:click="dodaj()" onclick="location.href='#/reg'" class="btn btn-primary">Registruj domaćina</button>
+<button id="b3"  v-bind:disabled="!can" v-on:click="obrisi()" class="btn btn-primary">Obrisi korisnika</button>&nbsp
+<button id="b4" v-on:click="dodaj()" onclick="location.href='#/reg'" class="btn btn-primary">Registruj domaćina</button>
 </div>		  
 `,
 methods:{
@@ -164,13 +182,5 @@ methods:{
 		    	this.users = response.data;
 		    })
 	}
-},
-mounted() {
-	var search="";
-    axios
-    .get('rest/admin/search',{params :{search: search}})
-    .then(response => {
-    	this.users = response.data;
-    	})
 }
 });

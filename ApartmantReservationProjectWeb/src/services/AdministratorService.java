@@ -96,7 +96,6 @@ public class AdministratorService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<User> search(@QueryParam("search") String search){
-		
 		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
 		Collection<User> listapretraga= new ArrayList<User>();
 		Collection<User> svi=userDao.findAll();
@@ -104,7 +103,7 @@ public class AdministratorService {
 			String[] splits = search.split(";");
 			if(!splits[0].equals(" ") && !splits[1].equals(" ") && !splits[2].equals(" ")){
 				for(User u:svi){
-					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[1]) && u.getRoleString().contains(splits[2]) && !u.getDeleted())
+					if(u.getUsername().toUpperCase().contains(splits[0].toUpperCase()) && u.getGenderString().contains(splits[1]) && u.getRoleString().contains(splits[2]) && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else if(!splits[0].equals(" ") && !splits[1].equals(" ")){
@@ -114,17 +113,17 @@ public class AdministratorService {
 				}
 			}else if(!splits[1].equals(" ") && !splits[2].equals(" ")){
 				for(User u:svi){
-					if(u.getUsername().contains(splits[1]) && u.getGenderString().contains(splits[2])  && !u.getDeleted())
+					if(u.getUsername().toUpperCase().contains(splits[1].toUpperCase()) && u.getGenderString().contains(splits[2])  && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else if(!splits[0].equals(" ") && !splits[2].equals(" ")){
 				for(User u:svi){
-					if(u.getUsername().contains(splits[0]) && u.getGenderString().contains(splits[2])  && !u.getDeleted())
+					if(u.getUsername().toUpperCase().contains(splits[0].toUpperCase()) && u.getGenderString().contains(splits[2])  && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else if(!splits[0].equals(" ")){
 				for(User u:svi){
-					if(u.getUsername().contains(splits[0])  && !u.getDeleted())
+					if(u.getUsername().toUpperCase().contains(splits[0].toUpperCase())  && !u.getDeleted())
 						listapretraga.add(u);
 				}
 			}else if(!splits[1].equals(" ")){

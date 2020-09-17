@@ -137,12 +137,32 @@ public class ReservationsDAO extends AbstractLongDAO<Reservations> {
 	public Collection<Reservations> getGuest(User user,Collection<Reservations> collection) {
 		Collection<Reservations> res=new ArrayList<Reservations>();
 		for(Reservations r:collection){
-			System.out.println(user);
 			if(r.getGuestWhoStays().getUsername().equals(user.getUsername())){
 				res.add(r);
 			}
 		}
 		return res;
+	}
+
+	public Reservations find(String parseLong,Collection<Reservations> collection,ReservationStatus status) {
+		
+		for(Reservations r:collection){
+			String id=r.getId().toString();
+			if(id.equals(parseLong)){
+				r.setStatus(status);
+				return r;
+			}
+		}
+		return null;
+	}
+
+	public Collection<User> getMy(String username, Collection<Reservations> reserv) {
+		Collection<User> my=new ArrayList<User>();
+		for(Reservations r:reserv){
+			if(r.getReservatedApartment().getApartmentHost().equals(username))
+				my.add(r.getGuestWhoStays());
+		}
+		return my;
 	}
 	
 }
