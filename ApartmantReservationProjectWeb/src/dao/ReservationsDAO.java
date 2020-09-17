@@ -37,7 +37,7 @@ public class ReservationsDAO extends AbstractLongDAO<Reservations> {
 	public Collection<Reservations> getMyReservatiions(String username) {
 		Collection<Reservations> res=new ArrayList<Reservations>();
 			for(Reservations r:reservations.values()){
-				String u=r.getReservatedApartment().getApartmentHost().getUsername();
+				String u=r.getReservatedApartment().getApartmentHost();
 				if(u.equals(username)){
 					res.add(r);
 				}

@@ -1,16 +1,13 @@
 package dao;
 
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import javax.print.attribute.standard.DateTimeAtCompleted;
 
 import com.google.gson.reflect.TypeToken;
 

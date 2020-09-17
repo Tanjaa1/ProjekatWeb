@@ -1,6 +1,7 @@
 Vue.component("addApartment", {
 	data:function(){
 		return{
+            currentUser:Object,
             selectedAmenities : [],
             selected : '',
             object : null,
@@ -20,11 +21,29 @@ Vue.component("addApartment", {
             amenities : []
 		}
     },
+    beforeMount(){
+		axios
+		.get("rest/users/getRole")
+		.then(response=>{
+			if(response.data==null){
+				this.$router.push('forbidden');
+			}
+		})
+	},
     mounted(){
 		axios
 		.get('rest/amenities')
 		.then(response => {
 			this.amenities = response.data
+        })
+        
+        axios
+		.get('rest/users/currentUser')
+		.then(response => {
+			this.currentUser=response.data;				
+		})
+		.catch(error =>{
+			alert("Doslo je do greske");
 		})
 		
 	},
@@ -122,7 +141,7 @@ Vue.component("addApartment", {
     `,
     methods: {
         checkForm: function(){
-           
+           alert(this.currentUser.name)
             axios
                 .post("rest/apartment/add", {   NameOfApartment : this.name,
                                                 Type : this.selected,
@@ -132,6 +151,7 @@ Vue.component("addApartment", {
                                                 PricePerStayingNight : this.price,
                                                 CheckInTime : this.checkInTime,
                                                 CheckOutTime : this.checkOutTime,
+                                                ApartmentHost : this.currentUser.username,
                                                 LocationOfApartment : {
                                                 	Longitude : this.long,
                                                 	Latitude : this.lat

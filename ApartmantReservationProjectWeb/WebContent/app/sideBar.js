@@ -126,7 +126,7 @@ Vue.component("side-bar", {
 			<div class="col-md-1"></div>
 
 			<div class="col-md-5 col-sm-12"> 
-				<div class="border mt-2" v-for="a in apartments" v-if="!a.deleted">
+				<div class="border mt-2" v-for="a in apartments" v-if="!a.deleted && a.isActive != inactive">
 					<div class="row">
 						<div class="ml-4 mr-4 mt-4">
 							<div class="gallery">

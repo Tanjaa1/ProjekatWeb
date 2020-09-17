@@ -4,7 +4,8 @@ Vue.component("apartment", {
 				id : this.$route.params.id,
 				apartment : Object,
 				address : Object,
-				location : Object
+				location : Object,
+				amenities : Object
 		}
 	},
 	beforeMount(){
@@ -83,6 +84,7 @@ Vue.component("apartment", {
 			this.apartment=response.data;
 			this.address=response.data.ApartmentAddress;
 			this.location=response.data.LocationOfApartment;
+			this.amenities = response.AmenitiesList;
 		})
 	},
 	computed:
@@ -160,7 +162,13 @@ Vue.component("apartment", {
                     
                     <p class="ml-2">Vreme za prijavu: {{apartment.CheckInTime}}</p>
                     <p class="ml-2">Vreme za odjavu: {{apartment.CheckOutTime}}</p>
-                    </p>
+					
+					<p class="ml-2">Sadržaj apartmana:</p>
+					<div class="form-check mx-4">
+						<label class="form-check-label">
+							{{amenities}}
+						</label>
+					</div>
                 </div>
             </div>
 

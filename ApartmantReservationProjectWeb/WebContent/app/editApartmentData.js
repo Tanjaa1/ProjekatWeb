@@ -6,17 +6,34 @@ Vue.component("editApartment", {
 			address : Object,
             location : Object,
             selected : "",
-            ret:Object
+            ret:Object,
+            calendar : null,
+			calendarRendered: false
 		}
     },
     mounted(){
+    	this.calendar = new ej.calendars.Calendar({
+			isMultiSelection: true,
+			values: [],
+			min: new Date(),
+			showTodayButton: false,
+		});
 		axios
 		.get('rest/apartment/' + this.id)
 		.then(response=>{
 			this.apartment=response.data
 			this.address=response.data.ApartmentAddress
 			this.location=response.data.LocationOfApartment
+			this.calendar.values = [];
+			this.apartment.availableDates.forEach(date=> { this.calendar.values.push(new Date(date)) });
 		})
+		
+	},
+	updated: function () {
+		if (this.calendarRendered == false) {
+			this.calendar.appendTo('#calendar');
+			this.calendarRendered = true;
+		}	
 	},
     template: ` 
     <div class="edit">
@@ -24,6 +41,16 @@ Vue.component("editApartment", {
             <h3>
                 Izmena podataka o apartmanu
             </h3>
+            <div>
+					<h5>Dodavanje slobodnih datuma</h5>
+					<div class="row ml-4">
+						<div id="calendar" style="max-width: 40%"></div>
+						<div class="col">
+							<button class="btn btn-info" v-on:click="submitCalendar">Sačuvaj</button>
+							<button class="btn btn-secondary" v-on:click="cancelCalendar">Odustani</button>
+						</div>
+					</div>
+				</div>
             <div class="form-row mt-4">
                 <div class="form-group col-md-6">
                     <label>Naziv objekta:</label>
@@ -131,7 +158,30 @@ Vue.component("editApartment", {
             .catch(e=>{
                 alert('Greška prilikom izmene podataka o apartmanu!')
             })
-        }
+        },
+        submitCalendar() {
+			this.apartment.availableDates = [];
+			this.calendar.values.forEach(date => this.apartment.availableDates.push(date.getTime()));
+			 axios
+	            .post('rest/apartment/add',this.apartment)
+	            .then(response =>{
+	                this.ret=response.data
+	                alert('Uspešno ste izmenili podatake o apartmanu!')
+	            })
+	            .catch(e=>{
+	                alert('Greška prilikom izmene podataka o apartmanu!')
+	            })
+		},
+		cancelCalendar() {
+			axios
+			.get('rest/apartments/search/' + this.id)
+			.then(response => {
+				this.apartment = response.data;
+				this.calendar.values =[]
+				this.apartment.availableDates.forEach(date=> { this.calendar.values.push(new Date(date)) });
+			});
+		},
+		
     }
 	
 	

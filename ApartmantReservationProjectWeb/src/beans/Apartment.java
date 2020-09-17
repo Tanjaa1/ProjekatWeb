@@ -17,8 +17,8 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 	public Address ApartmentAddress;
 	public List<Date> AvailableDatesForRent;
 	public List<Date> AvailableDates;
-	public Host ApartmentHost;
-	public Comment PostedComments;
+	public String ApartmentHost;
+	public List<Comment> PostedComments;
 	public double PricePerStayingNight;
 	public String CheckInTime;
 	public String CheckOutTime;
@@ -27,9 +27,13 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 	public ArrayList<Long> ListOfReservations;
 	
 	
-	public Apartment() { }	
+	public Apartment() {
+		this.AmenitiesList=new ArrayList<Amenities>();
+		this.AvailableDates=new ArrayList<Date>();
+		this.PostedComments=new ArrayList<Comment>();
+	}	
 		
-	public Apartment(String nameOfApartment, ApartmentType type, int numberOfRooms, int numberOfGuests, int numberOfKids, Location locationOfApartment, Address address, Host apartmentHost, Comment postedComments, double pricePerStayingNight,
+	public Apartment(String nameOfApartment, ApartmentType type, int numberOfRooms, int numberOfGuests, int numberOfKids, Location locationOfApartment, Address address, String apartmentHost,List <Comment> postedComments, double pricePerStayingNight,
 			String checkInTime, String checkOutTime) {
 		super();
 		NameOfApartment = nameOfApartment;
@@ -122,19 +126,19 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 		AvailableDates = availableDates;
 	}
 
-	public Host getApartmentHost() {
+	public String getApartmentHost() {
 		return ApartmentHost;
 	}
 
-	public void setApartmentHost(Host apartmentHost) {
+	public void setApartmentHost(String apartmentHost) {
 		ApartmentHost = apartmentHost;
 	}
 
-	public Comment getPostedComments() {
+	public List<Comment> getPostedComments() {
 		return PostedComments;
 	}
 
-	public void setPostedComments(Comment postedComments) {
+	public void setPostedComments(List<Comment> postedComments) {
 		PostedComments = postedComments;
 	}
 
