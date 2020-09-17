@@ -15,7 +15,7 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 	public int NumberOfKids;
 	public Location LocationOfApartment;
 	public Address ApartmentAddress;
-	public List<Date> AvailableDatesForRent;
+	public ArrayList<Date> AvailableDatesForRent;
 	public List<Date> AvailableDates;
 	public String ApartmentHost;
 	public List<Comment> PostedComments;
@@ -110,11 +110,11 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 		LocationOfApartment = locationOfApartment;
 	}
 
-	public List<Date> getAvailableDatesForRent() {
+	public ArrayList<Date> getAvailableDatesForRent() {
 		return AvailableDatesForRent;
 	}
 
-	public void setAvailableDatesForRent(List<Date> availableDatesForRent) {
+	public void setAvailableDatesForRent(ArrayList<Date> availableDatesForRent) {
 		AvailableDatesForRent = availableDatesForRent;
 	}
 

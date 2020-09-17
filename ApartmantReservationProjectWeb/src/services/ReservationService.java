@@ -1,6 +1,7 @@
 package services;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -13,6 +14,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -68,10 +70,12 @@ public class ReservationService {
 		reservationsApartment.add(r.getId());
 		ap.setListOfReservations(reservationsApartment);
 		
-		//apDAO.newlistDays(reservations.getNumberOfStayingNights(),reservations.getStartDate());
-		
+		ArrayList<Date> newD=(ArrayList<Date>) reservationDAO.availableDaysNew(ap.getAvailableDates(),reservations.getNumberOfStayingNights(),reservations.getStartDate());
+		ap.setAvailableDatesForRent(newD);
 		apDAO.update(ap);
-		
+		System.out.println(newD);
+		if(newD==null)
+			return null;
 		return r;
 	}
 	
@@ -91,6 +95,23 @@ public class ReservationService {
 		return  reservationsDao.getAll().values();
 	}
 	
+	@GET
+	@Path("/stat")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection <Reservations> getStat(@QueryParam("stat") String stat) {
+		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		return  reservationsDao.getStat(stat,reservationsDao.getAll().values());
+	}
+	
+	@GET
+	@Path("/sort")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Reservations> getSort(@QueryParam("sort") String sort) {
+		ReservationsDAO reservationsDao = (ReservationsDAO)ctx.getAttribute("reservationDAO");
+		reservationsDao.Opadajuce();
+		return  null;
+	}
 	
 	@POST
 	@Path("/cost")

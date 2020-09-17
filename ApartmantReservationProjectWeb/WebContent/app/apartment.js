@@ -14,6 +14,8 @@ Vue.component("apartment", {
 		.then(response=>{
 			if(response.data==null || response.data.role!="Guest"){
 				$('#rezervacija').hide();
+			}else{
+				$('#rezervacija').show();
 			}
 		})
 
@@ -54,6 +56,12 @@ Vue.component("apartment", {
 			    axios
 				.post("rest/reservations/add",reservation)
 				.then(response => {
+					if(response.data==""){
+						alert("dsf");
+						document.getElementById("error").innerHTML="Nema slobodnih datuma u tom terminu!";				
+					}else{
+						document.getElementById("error").innerHTML="";	
+					}
 					document.getElementById("noc").value="";
 					document.getElementById("poruka").value=""
 					document.getElementById("cena").innerHTML="";
@@ -192,6 +200,8 @@ Vue.component("apartment", {
 				</div><br/>
 				<button class="search-btn" type="button" v-on:click="Rezervisi()">Rezerviši apartman</button>
 				<button class="search-btn" type="button" v-on:click="Odustani()">Odustani</button>
+				<br/>
+				<span id="error" style="color:red;"></span><br>
 			</div>
             </div>
         </div>

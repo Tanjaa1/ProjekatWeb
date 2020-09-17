@@ -31,6 +31,7 @@ public class ReservationsDAO extends AbstractLongDAO<Reservations> {
 	}
 
 	public Collection<Reservations> findAll() {
+		System.out.println("ljkjv");
 		return reservations.values();
 	}
 
@@ -70,8 +71,8 @@ public class ReservationsDAO extends AbstractLongDAO<Reservations> {
 		return cena;
 	}
 	
-	public Collection<Date> newlistDays(int numberOfStayingNights, Date startDate) {
-		Collection<Date> forRes=new ArrayList<Date>();
+	public ArrayList<Date> newlistDays(int numberOfStayingNights, Date startDate) {
+		ArrayList<Date> forRes=new ArrayList<Date>();
 		
 			for(int i=0;i<numberOfStayingNights;i++){
 				forRes.add(startDate);
@@ -79,4 +80,47 @@ public class ReservationsDAO extends AbstractLongDAO<Reservations> {
 			}
 			return forRes;
 	}
+	
+	public List<Date> availableDaysNew(List<Date> list,int numberOfStayingNights, Date startDate) {
+		ArrayList<Date> dates=newlistDays(numberOfStayingNights, startDate);
+		int indeks=-1;
+		for(int i=0;i<list.size();i++){
+			if(list.get(i)==startDate){
+				indeks=i;
+				for(Date d:dates){
+					if(d!=list.get(i)){
+						return null;
+					}
+					i++;
+				}
+			}
+		}
+		if(indeks==-1)
+			return null;
+		for(int i=indeks;i<numberOfStayingNights;i++){
+			list.remove(i);
+		}
+		return list;
+	}
+	
+	public void Opadajuce(){
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void Ratuce() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Collection<Reservations> getStat(String status,Collection<Reservations> collection) {
+		Collection<Reservations> resStat=new ArrayList<Reservations>();
+		for(Reservations res:collection){
+			if(res.getStatusS().equals(status)){
+				resStat.add(res);
+			}
+		}
+		return resStat;
+	}
+	
 }

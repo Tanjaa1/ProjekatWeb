@@ -30,7 +30,7 @@ Vue.component("reservations", {
                     <div class="row">
                         <div class="col-lg-3 col-md-3 col-sm-12 p-1">
                         <a>Sortiraj cenu:</a>
-	                        <select class="form-control search-slt" id="sort">
+	                        <select class="form-control search-slt" id="sort"  @change="onChangeSort()">
 		                        <option>Sortiranje</option>
 		                        <option>Rastucće</option>
 		                        <option>Opadajuće</option>
@@ -38,7 +38,7 @@ Vue.component("reservations", {
                         </div>
                          <div class="col-lg-3 col-md-3 col-sm-12 p-1">
                          <a>Filtritaj po statusu:</a>
-                          <select class="form-control search-slt" id="status">
+                          <select class="form-control search-slt" id="status"  @change="onChangeStatus()">
 	                          <option>Status</option>
 	                          <option>Kreirana</option>
 	                          <option>Prihvaćena</option>
@@ -81,5 +81,34 @@ Vue.component("reservations", {
 	</tr>
 </table>
 </div>		  
-	`
+	`,
+	methods:{
+		onChangeStatus:function(){
+			var stat=document.getElementById("status").value;
+			if(stat=="Odbijena")
+				stat="DropedOut";
+			else if(stat=="Kreirana")
+				stat="Created";
+			else if(stat=="Prihvaćena")
+				stat="Accepted";
+			else if(stat=="Završena")
+				stat="Finalized";
+			else
+				stat="Rejected";
+
+			axios
+			.get("rest/reservations/stat",{params:{stat: stat}})
+			.then(response=>{
+				this.reservations=response.data;
+			})
+		},
+		onChangeSort:function(){
+			var sort=document.getElementById("sort").value;
+			axios
+			.get("rest/reservations/sort",{params:{sort: sort}})
+			.then(response=>{
+				this.reservations=response.data;
+			})
+		}
+	}
 });

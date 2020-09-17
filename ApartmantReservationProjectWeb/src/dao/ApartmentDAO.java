@@ -30,12 +30,12 @@ public class ApartmentDAO extends AbstractLongDAO<Apartment> {
 		
 	}
 
-	public Collection<String> getAvailableDate(Apartment apartment) {
+	public ArrayList<String> getAvailableDate(Apartment apartment) {
 		  DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss"); 
 
-			Collection<Date> availableDate=(ArrayList<Date>) apartment.getAvailableDates();
+		  ArrayList<Date> availableDate=(ArrayList<Date>) apartment.getAvailableDates();
 
-			Collection<String> availableDateString=new ArrayList<String>();
+		  ArrayList<String> availableDateString=new ArrayList<String>();
 			if(availableDate==null)
 				return null;
 			for(Date d:availableDate){
