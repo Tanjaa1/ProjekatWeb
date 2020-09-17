@@ -2,6 +2,7 @@ Vue.component("reservations", {
 	data: function(){
 		return{
 			reservations:null,
+			original:null,
 			user:null
 		}
 	},
@@ -10,12 +11,15 @@ Vue.component("reservations", {
 		.get("rest/reservations/all")
 		.then(response=>{
 				this.reservations=response.data;
+				for(var s of this.reservations){
+					s.startDate=new Date(parseInt(s.startDate));
+				}
+				this.reservations=this.reservations;
 		})
-		
 		axios
 		.get("rest/users/currentUser")
 		.then(response=>{
-			this.user=response.data
+			this.user=response.data;
 		})
 	},
 	template: `
@@ -71,7 +75,7 @@ Vue.component("reservations", {
 		<td>{{r.reservatedApartment.nameOfApartment}}</td>
 		<td>{{r.guestWhoStays.name}} {{r.guestWhoStays.surname}}</td>
 		<td>{{r.NumberOfStayingNights}}</td>
-		<td>{{r.startDate}}</td>
+		<td>{{r.startDate.getDate()}}.{{r.startDate.getDay()}}.{{r.startDate.getFullYear()}}</td>
 		<td>{{r.totalPrise}}</td>
 		<td v-if="r.status=='Created'">Kreirana</td>
 		<td v-if="r.status=='Accepted'">Prihvaćena</td>
@@ -99,7 +103,12 @@ Vue.component("reservations", {
 			axios
 			.get("rest/reservations/stat",{params:{stat: stat}})
 			.then(response=>{
-				this.reservations=response.data;
+				this.original=response.data;
+				for(var s of this.original){
+					s.startDate=new Date(parseInt(s.startDate));
+				}
+				this.reservations=null;
+				this.reservations=this.original;
 			})
 		},
 		onChangeSort:function(){
@@ -107,7 +116,12 @@ Vue.component("reservations", {
 			axios
 			.get("rest/reservations/sort",{params:{sort: sort}})
 			.then(response=>{
-				this.reservations=response.data;
+				this.original=response.data;
+				for(var s of this.original){
+					s.startDate=new Date(parseInt(s.startDate));
+				}
+				this.reservations=null;
+				this.reservations=this.original;
 			})
 		}
 	}
