@@ -132,7 +132,7 @@ methods:{
 		}else{
 			document.getElementById("nemaPol").style.visibility = "hidden";
 		}
-		if(ime.value!="" && prezime.value!="" && korisnicko_ime!="" && lozinka!="" && this.regInformation.gender!=null && ime.value.length>1 && prezime.value.length>1  && korisnicko_ime.value.length>4 && lozinka.value.length>4){		
+		if(ime.value!="" && prezime.value!="" && korisnicko_ime!="" && lozinka!="" && this.regInformation.gender!=null && ime.value.length>1 && prezime.value.length>1  && korisnicko_ime.value.length>4 && lozinka.value.length>4 && lozinka.value==kontrolna_lozinka.value){		
 			
 			var user = {username : regInformation.username, password : regInformation.password, name : regInformation.name, surname : regInformation.surname};
 			axios
@@ -141,9 +141,10 @@ methods:{
 				.then(response => {
 				})
 			axios
-				.get("rest/users/getRole")
+				.get("rest/users/currentUser")
 				.then(response=>{
-						if(response.data!="Administrator" || response.data.name!=null){
+					alert(response.data);
+						if(response.data!="Administrator" && response.data!=""){
 							$('#userInfo').show();
 							$('#users').show();
 							$('#rez').show();
@@ -151,11 +152,14 @@ methods:{
 							$('#registr').hide();
 							$('#odj').show();
 							$('#users').hide();
+							$('#allApartments').show();
 							this.$router.push('allapartments');
+							document.getElementById("nemaKIme").innerHTML = "";
+							location.reload()
 						}else if(response.data==""){
 							korisnicko_ime.style.borderColor ="red";
 							document.getElementById("nemaKIme").innerHTML = "Korisničko ime postoji!";
-							document.getElementById("nemaKIme").style.visibility = "visible";						
+							document.getElementById("nemaKIme").style.visibility = "visible";				
 						}else{
 							this.$router.push('users');
 						}

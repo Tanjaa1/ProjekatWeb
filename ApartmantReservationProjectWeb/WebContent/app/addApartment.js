@@ -141,7 +141,6 @@ Vue.component("addApartment", {
     `,
     methods: {
         checkForm: function(){
-           alert(this.currentUser.name)
             axios
                 .post("rest/apartment/add", {   NameOfApartment : this.name,
                                                 Type : this.selected,

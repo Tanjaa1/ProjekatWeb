@@ -57,11 +57,11 @@ Vue.component("apartment", {
 				.post("rest/reservations/add",reservation)
 				.then(response => {
 					if(response.data==""){
-						alert("dsf");
 						document.getElementById("error").innerHTML="Nema slobodnih datuma u tom terminu!";				
 					}else{
 						document.getElementById("error").innerHTML="";	
 					}
+					alert("Rezervacija je uspešno izvršena!");
 					document.getElementById("noc").value="";
 					document.getElementById("poruka").value=""
 					document.getElementById("cena").innerHTML="";

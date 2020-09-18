@@ -36,13 +36,9 @@ public class AdministratorService {
 	
 	@PostConstruct
 	public void init() {
-		if (ctx.getAttribute("adminDAO") == null) {
-			ctx.setAttribute("adminDAO", new AdministratorDAO(App.USERS_PATH));
-		}
-		if (ctx.getAttribute("userDAO") == null) {
-			ctx.setAttribute("userDAO", new UserDAO(App.USERS_PATH));
-		}
-		
+//		if (ctx.getAttribute("adminDAO") == null) {
+//			ctx.setAttribute("adminDAO", new AdministratorDAO(App.USERS_PATH));
+//		}
 	}
 	
 
