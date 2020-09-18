@@ -72,16 +72,19 @@ Vue.component("amenities", {
     `,
     methods:{
 		kreiraj:function(){
-            axios
-            .post("rest/amenities/add",{ AmenitiesName : this.name })
-            .then(response => {
-                this.object = response.data;
-                alert('Uspešno ste dodali sadržaj!')
-                location.reload()
-            })
-            .catch(e => {
-                alert('Došlo je do greške pri kreiranju sadržaja!')
-            })
+            if(this.name != ""){
+                axios
+                .post("rest/amenities/add",{ AmenitiesName : this.name })
+                .then(response => {
+                    this.object = response.data;
+                    alert('Uspešno ste dodali sadržaj!')
+                    location.reload()
+                })
+                .catch(e => {
+                    alert('Došlo je do greške pri kreiranju sadržaja!')
+                })
+            }
+            
         },
         obrisi : function(id){
             axios

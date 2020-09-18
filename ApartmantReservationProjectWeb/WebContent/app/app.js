@@ -116,7 +116,7 @@ var app = new Vue({
 				$('#myApartments').hide();
 			} else {
 				$('#userInfo').show();
-				$('#users').show();
+				$('#users').hide();
 				$('#apartments').show();
 				$('#allApartments').hide();
 				$('#myApartments').show();
