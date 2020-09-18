@@ -3,7 +3,8 @@ Vue.component("reservations", {
 		return{
 			reservations:null,
 			original:null,
-			user:{}
+			user:{},
+			role:""
 		}
 	},
 	beforeMount(){
@@ -45,6 +46,7 @@ Vue.component("reservations", {
 							this.reservations=this.reservations;
 					})
 				}
+				this.role=this.user.role;
 			}
 		})
 	},
