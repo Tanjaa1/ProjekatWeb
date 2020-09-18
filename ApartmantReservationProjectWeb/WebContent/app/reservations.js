@@ -62,7 +62,7 @@ Vue.component("reservations", {
                         <a>Sortiraj cenu:</a>
 	                        <select class="form-control search-slt" id="sort"  @change="onChangeSort()">
 		                        <option>Sortiranje</option>
-		                        <option>Rastucće</option>
+		                        <option>Rastuće</option>
 		                        <option>Opadajuće</option>
 	                        </select>
                         </div>
@@ -96,7 +96,7 @@ Vue.component("reservations", {
 		<th><b>Datum početka</b></th>
 		<th><b>Ukupna cena u RSD</b></th>
 		<th><b>Status</b></th>
-		<th v-if="role!='Administrator'">Promeni status</th>
+		<th v-if="role=='Guest' || role=='Host'">Promeni status</th>
 	</tr>
 	<tr v-for="r in reservations">
 		<td>{{r.reservatedApartment.nameOfApartment}}</td>
@@ -143,16 +143,31 @@ Vue.component("reservations", {
 		},
 		onChangeSort:function(){
 			var sort=document.getElementById("sort").value;
-			axios
-			.get("rest/reservations/sort",{params:{sort: sort}})
-			.then(response=>{
-				this.original=response.data;
-				for(var s of this.original){
-					s.startDate=new Date(parseInt(s.startDate));
-				}
-				this.reservations=null;
-				this.reservations=this.original;
-			})
+
+			this.original=this.reservations;
+			if(sort=="Rastuće"){
+				for(var i=0;i<this.original.length;i++){
+					for(var j=i+1;j<this.original.length;j++){
+						if(this.original[i].totalPrise > this.original[j].totalPrise){
+							let tmp=this.original[i];
+							this.original[i]=this.original[j];
+							this.original[j]=tmp;
+						}
+						}
+					}
+			}else if(sort=="Opadajuće"){
+				for(var i=0;i<this.original.length;i++){
+					for(var j=i+1;j<this.original.length;j++){
+						if(this.original[i].totalPrise < this.original[j].totalPrise){
+							let tmp=this.original[i];
+							this.original[i]=this.original[j];
+							this.original[j]=tmp;
+						}
+						}
+					}
+			}
+			this.reservations=null;
+			this.reservations=this.original;
 		},
 		prihvatam:function(r){
 			axios
