@@ -11,7 +11,9 @@ import java.util.Map;
 import com.google.gson.reflect.TypeToken;
 
 import beans.Apartment;
+import beans.ReservationStatus;
 import beans.Reservations;
+import beans.User;
 import dao.sequencer.LongSequencer;
 
 public class ReservationsDAO extends AbstractLongDAO<Reservations> {
@@ -70,8 +72,8 @@ public class ReservationsDAO extends AbstractLongDAO<Reservations> {
 		return cena;
 	}
 	
-	public Collection<Date> newlistDays(int numberOfStayingNights, Date startDate) {
-		Collection<Date> forRes=new ArrayList<Date>();
+	public ArrayList<Date> newlistDays(int numberOfStayingNights, Date startDate) {
+		ArrayList<Date> forRes=new ArrayList<Date>();
 		
 			for(int i=0;i<numberOfStayingNights;i++){
 				forRes.add(startDate);
@@ -79,4 +81,88 @@ public class ReservationsDAO extends AbstractLongDAO<Reservations> {
 			}
 			return forRes;
 	}
+	
+	public List<Date> availableDaysNew(List<Date> list,int numberOfStayingNights, Date startDate) {
+		ArrayList<Date> dates=newlistDays(numberOfStayingNights, startDate);
+		int indeks=-1;
+		for(int i=0;i<list.size();i++){
+			if(list.get(i)==startDate){
+				indeks=i;
+				for(Date d:dates){
+					if(d!=list.get(i)){
+						return null;
+					}
+					i++;
+				}
+			}
+		}
+		if(indeks==-1)
+			return null;
+		for(int i=indeks;i<numberOfStayingNights;i++){
+			list.remove(i);
+		}
+		return list;
+	}
+	
+	public void Opadajuce(){
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void Ratuce() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Collection<Reservations> getStat(String status,Collection<Reservations> collection) {
+		Collection<Reservations> resStat=new ArrayList<Reservations>();
+		for(Reservations res:collection){
+			if(res.getStatusS().equals(status)){
+				resStat.add(res);
+			}
+		}
+		return resStat;
+	}
+
+	public Collection<Reservations> getHost(User user,Collection<Reservations> collection) {
+		Collection<Reservations> res=new ArrayList<Reservations>();
+			for(Reservations r:collection){
+				if(r.getReservatedApartment().getApartmentHost().equals(user.getUsername())){
+					res.add(r);
+				}
+			}
+		return res;
+	}
+
+	public Collection<Reservations> getGuest(User user,Collection<Reservations> collection) {
+		Collection<Reservations> res=new ArrayList<Reservations>();
+		for(Reservations r:collection){
+			if(r.getGuestWhoStays().getUsername().equals(user.getUsername())){
+				res.add(r);
+			}
+		}
+		return res;
+	}
+
+	public Reservations find(String parseLong,Collection<Reservations> collection,ReservationStatus status) {
+		
+		for(Reservations r:collection){
+			String id=r.getId().toString();
+			if(id.equals(parseLong)){
+				r.setStatus(status);
+				return r;
+			}
+		}
+		return null;
+	}
+
+	public Collection<User> getMy(String username, Collection<Reservations> reserv) {
+		Collection<User> my=new ArrayList<User>();
+		for(Reservations r:reserv){
+			if(r.getReservatedApartment().getApartmentHost().equals(username))
+				my.add(r.getGuestWhoStays());
+		}
+		return my;
+	}
+	
 }

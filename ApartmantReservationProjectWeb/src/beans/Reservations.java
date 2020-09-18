@@ -81,7 +81,18 @@ public class Reservations implements IIdentifiable<Long>, IDelete{
 	public ReservationStatus getStatus() {
 		return Status;
 	}
-
+	public String getStatusS(){
+		if(Status==ReservationStatus.DropedOut)
+			return "DropedOut";
+		else if(Status==ReservationStatus.Created)
+			return "Created";
+		else if(Status==ReservationStatus.Accepted)
+			return "Accepted";
+		else if(Status==ReservationStatus.Finalized)
+			return "Finalized";
+		else
+			return "Rejected";
+	}
 	public void setStatus(ReservationStatus status) {
 		Status = status;
 	}
