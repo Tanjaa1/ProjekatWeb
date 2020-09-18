@@ -6,6 +6,15 @@ Vue.component("amenities", {
             name : ''
         }
     },
+    beforeMount(){
+		axios
+		.get("rest/users/getRole")
+		.then(response=>{
+			if(response.data!="Administrator"){
+				this.$router.push('forbidden');
+			}
+		})
+	},
     mounted(){
 		axios
 		.get('rest/amenities')

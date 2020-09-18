@@ -89,4 +89,9 @@ public abstract class AbstractDAO<T extends IIdentifiable<ID> & IDelete, ID> imp
 		return EntityMap.get(id);
 		
 	}
+
+	
+	
+	
+	
 }

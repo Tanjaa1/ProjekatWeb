@@ -1,24 +1,30 @@
-Vue.component("host-apartments", {
+Vue.component("admin-apartments", {
 	data: function () {
 		return {
             apartments : [],
             apartmentsBackUp: [],
             checkedActive:[],
-            checkedApType:[]
+            checkedApType:[],
+            grad : '',
+            minCena : '',
+            maxCena : '',
+            adults : '',
+            kids : '',
+            sobe : ''
 		}
     },
     beforeMount(){
 		axios
 		.get("rest/users/getRole")
 		.then(response=>{
-			if(response.data!="Host"){
+			if(response.data!="Administrator"){
 				this.$router.push('forbidden');
 			}
 		})
 	},
 	mounted(){
 		axios
-		.get('rest/apartment/byHost')
+		.get('rest/apartment')
 		.then(response => {
             this.apartments = response.data;
             this.apartmentsBackUp = this.apartments;
@@ -30,10 +36,54 @@ Vue.component("host-apartments", {
 	template: ` 
 	<div id = "sidebar">
 		<div class="row">
-			<div class="col-md-3 col-sm-12"></div>
+            <div class="col-md-3 col-sm-12">
+            <div class="border ml-2 mt-2 text-center">
+                <h3 style="color:#5c6ac4;">Pretraga objekata</h3>
+                    
+                <p class="mb-1">Datum prijavljivanja </p>
+                <input type="date" class="search-field checkin col-sm-11 col-sm-offset-12">
+                <p class="mb-1">Datum odjavljivanja </p>
+                <input type="date" class="search-field checkout col-sm-11 col-sm-offset-12"">
+                <p class="mb-1">Lokacija objekta </p>
+                <input type="text" class="form-control col-sm-11 col-sm-offset-12" placeholder="Unesite naziv grada" v-model="grad" v-on:change="pretragaGrad">
+                <p class="mb-1">Odredite opseg budžeta </p>
+                <div class="col-sm-12 col-sm-offset-12 mb-1">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">RSD</span>
+                            <span class="input-group-text">0</span>
+                        </div>
+                        <input type="number" class="form-control" placeholder="Minimalna cena objekta" v-model="minCena" v-on:change="cena">                    
+                    </div>
+                </div>
+                <div class="col-sm-12 col-sm-offset-12">
+                    <div class="input-group">
+                        <input type="number" class="form-control" placeholder="Maksimalna cena objekta" v-model="maxCena" v-on:change="cena">
+                        <div class="input-group-append">
+                            <span class="input-group-text">RSD</span>
+                            <span class="input-group-text">+50 000</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-1">Broj soba u objektu</p>
+                <input type="number" class="form-control" class="form-control" v-model="sobe" v-on:change="brSoba">
+                <p class="mb-1">Broj osoba koje mogu da odsednu u objektu</p>
+                <div class="row mb-2">
+                    <div class="col md-6">
+                        <p class="mb-1">Odrasli</p>
+                        <input type="number" class="form-control" v-model="adults" v-on:change="brOsoba">
+                    </div>
+                    <div class="col md-6">
+                        <p class="mb-1">Deca</p>
+                        <input type="number" class="form-control" v-model="kids" v-on:change="brOsoba">
+                    </div>
+                
+                </div>
+            </div>
+            </div>
             
             <div class="col-md-7 col-sm-12"> 
-                <h3 style="color:#5c6ac4;">Svi moji objekti</h3>
+                <h3 style="color:#5c6ac4;">Svi objekti</h3>
                 
                 <div class="row mt-4 mb-4">
                     <div class="col">
@@ -57,9 +107,6 @@ Vue.component("host-apartments", {
                             <input class="form-check-input" id="apartman" type="checkbox" value="ClassicApartment" v-model='checkedApType' v-on:change="apType">
                             <label class="form-check-label">Ceo apartman</label>
                         </div>  
-                    </div>
-                    <div class="col">
-                        <button class="search-btn mx-10" type="button" v-on:click="kreiraj()">Kreiraj novi objekat</button>
                     </div>          
                 </div>
 				<div class="border mt-2" v-for="a in apartments" v-if="!a.deleted">
@@ -128,9 +175,6 @@ Vue.component("host-apartments", {
         izmena : function(id){
             window.location.href = "#/editapartment/" + id
         },
-        kreiraj : function(){
-            window.location.href = "#/addapartment"
-        },
         obrisi : function(id){
             axios
             .get("rest/apartment/delete/" + id)
@@ -175,10 +219,21 @@ Vue.component("host-apartments", {
                 if(a.isActive == this.checkedActive[0]){
                     list.push(a);
                 }
-
+            }
+            this.apartments = list;
+        },
+        pretragaGrad : function(){
+            if(this.grad == "") {
+                this.apartments = this.apartmentsBackUp;
+                return;
             }
 
-
+            var list= [];
+            for(a of this.apartmentsBackUp){
+                if(a.apartmentAddress.city.toLowerCase() == this.grad.toLowerCase()){
+                    list.push(a);
+                }
+            }
             this.apartments = list;
         },
         apType : function(){
@@ -192,11 +247,50 @@ Vue.component("host-apartments", {
                 if(a.type == this.checkedApType[0]){
                     list.push(a);
                 }
-
             }
-
-
             this.apartments = list;
         },
+        cena : function(){
+            if(this.minCena == "" || this.maxCena == "") {
+                this.apartments = this.apartmentsBackUp;
+                return;
+            }
+
+            var list= [];
+            for(a of this.apartmentsBackUp){
+                if(a.pricePerStayingNight >= this.minCena && a.pricePerStayingNight <= this.maxCena){
+                    list.push(a);
+                }
+            }
+            this.apartments = list;
+        },
+        brOsoba : function(){
+            if(this.kids == "" || this.adults == "") {
+                this.apartments = this.apartmentsBackUp;
+                return;
+            }
+
+            var list= [];
+            for(a of this.apartmentsBackUp){
+                if(a.numberOfAdultGuests == this.adults && a.numberOfKids == this.kids){
+                    list.push(a);
+                }
+            }
+            this.apartments = list;
+        },
+        brSoba : function(){
+            if(this.sobe == "") {
+                this.apartments = this.apartmentsBackUp;
+                return;
+            }
+
+            var list= [];
+            for(a of this.apartmentsBackUp){
+                if(a.numberOfRooms == this.sobe){
+                    list.push(a);
+                }
+            }
+            this.apartments = list;
+        }
     }
 });

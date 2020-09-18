@@ -4,6 +4,7 @@ const ApartmentView={template: '<apartment></apartment>'}
 const AddAparment={template: '<addApartment></addApartment>'}
 const HostApartments={template: '<host-apartments></host-apartments>'}
 const EditApartment={template: '<editApartment></editApartment>'}
+const AdminApartments={template: '<admin-apartments></admin-apartments>'}
 const Registration={template: '<reg-page></reg-page>'}
 const Profile={template: '<user-info></user-info>'}
 const Users={template: '<users></users>'}
@@ -12,6 +13,7 @@ const Reservations={template: '<reservations></reservations>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
+		  
 	   { path: '/', component: Search},
 	   { path: '/reg', component: Registration},
 	   { path: '/profile', component: Profile},
@@ -20,6 +22,7 @@ const router = new VueRouter({
 	   { path: '/hostapartments', component: HostApartments},
 	   { path: '/editapartment/:id', component: EditApartment},
 	   { path: '/allapartments', component: SideBar, name:"allApartments"},
+	   { path: '/adminapartments', component : AdminApartments},
 	   { path: '/apartment/:id', component:ApartmentView},
 	   { path: '/amenities', component:Amenities},
 	   { path: '/reservations', component:Reservations},
@@ -33,31 +36,29 @@ var app = new Vue({
 	el: '#app',
 	data:{
 		regg:false,
-		loginInformation:{},
+		username:'',
+		password:'',
 		user:null
 	},
 	
 	methods:{
 		login: function(loginInformation){
-			$.post({
-				url: 'rest/users/login',
-				data: JSON.stringify({username: this.loginInformation.username, password: this.loginInformation.password}),
-				contentType: 'application/json',
-				success: function(product) {
-					$('#userInfo').show();
-					$('#users').show();
-					$('#myApartments').show();
-					$('#apartments').show();
-					$('#rez').show();
-					$('#prijava').hide();
-					$('#registr').hide();
-					$('#odj').show();
-					//this.$router.push('allapartments');
-				},
-				error: function(message) {
-					alert("Pogrešno ime ili lozinka!");
+			axios
+			.post('rest/users/login',{
+				Username:this.username,
+				Password:this.password
+			})
+			.then(responese=>{
+				this.user=response.data
+				
+			})
+			.catch(e=>{
+				if(e.response.status==400){
+					alert("Pogresni login podaci")
 				}
-			});
+			})
+			location.reload()
+			
 
 			this.Provera();
 		},
@@ -69,36 +70,90 @@ var app = new Vue({
 			$('#users').hide();
 			$('#apartments').hide();
 			$('#myApartments').hide();
+			$('#allApartments').hide();
+			$('#sadrzaj').hide();
 			$('#rez').hide();
 			$('#odj').hide();
 			$('#registr').show();
 			$('#prijava').show();
 		})
-		this.$router.push('/');
 	},
 	Provera: function(){
 		axios
 		.get("rest/users/getRole")
 		.then(response => {			
+			if(response.data!="Guest"){
+				$('#userInfo').hide();
+				$('#users').hide();
+				$('#apartments').hide();
+				$('#myApartments').hide();
+				$('#allApartments').hide();
+				$('#rez').hide();
+				$('#sadrzaj').hide();
+			} else {
+				$('#userInfo').show();
+				$('#users').hide();
+				$('#apartments').show();
+				$('#allApartments').hide();
+				$('#myApartments').hide();
+				$('#rez').show();
+				$('#sadrzaj').hide();
+			}
 			if(response.data!="Administrator"){
 				$('#users').hide();
-			}
-			if(response.data=="Host"){
-				$('#myApartments').show();
-			 	$('#apartments').hide();
-			} else{
+				$('#sadrzaj').hide();
+				$('#allApartments').hide();
+			} else {
+				$('#userInfo').show();
+				$('#users').show();
+				$('#apartments').hide();
+				$('#allApartments').show();
 				$('#myApartments').hide();
+				$('#rez').show();
+				$('#sadrzaj').show();
+			}
+			if(response.data!="Host"){
+				$('#myApartments').hide();
+			} else {
+				$('#userInfo').show();
+				$('#users').show();
+				$('#apartments').show();
+				$('#allApartments').hide();
+				$('#myApartments').show();
+				$('#rez').show();
+				$('#sadrzaj').hide();
 			}
 		})
 	}
 },
 mounted() {
-	$('#userInfo').hide();
-	$('#apartments').hide();
-	$('#myApartments').hide();
-	$('#users').hide();
-	$('#rez').hide();
-	$('#odj').hide();
+	axios
+	.get('rest/users/currentUser')
+	.then(response=>{
+		
+		if(response.data!=""){
+			this.user=response.data
+			$('#prijava').hide();
+			$('#registr').hide();
+			$('#odj').show();
+			this.Provera();
+			
+		}else {
+			$('#prijava').show();
+			$('#registr').show();
+			$('#odj').hide();
+			$('#userInfo').hide();
+			$('#users').hide();
+			$('#apartments').hide();
+			$('#myApartments').hide();
+			$('#allApartments').hide();
+			$('#rez').hide();
+			$('#sadrzaj').hide();
+			}
+	})
+
+	
+	
 }
 });
 

@@ -1,10 +1,12 @@
 package services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -19,6 +21,7 @@ import com.google.gson.JsonIOException;
 import app.App;
 import beans.ActiveApartment;
 import beans.Apartment;
+import beans.User;
 import dao.ApartmentDAO;
 
 
@@ -27,6 +30,10 @@ public class ApartmentService {
 	
 	@Context
 	ServletContext ctx;
+	
+	@Context
+	HttpServletRequest request;
+	
 	
 	public ApartmentService(){}
 	
@@ -60,6 +67,40 @@ public class ApartmentService {
 	public Collection <Apartment> getAll() {
 		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
 		return  apartmentDao.getAll().values();
+	}
+	
+	@GET
+	@Path("/active")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection <Apartment> getAllActive() {
+		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
+		
+		Collection<Apartment> list = new ArrayList<Apartment>();
+		for(Apartment a : apartmentDao.getAll().values()) {
+			if(a.isActive == ActiveApartment.active) {
+				list.add(a);
+			}
+		}
+				
+		return list;
+	}
+	
+	
+	@GET
+	@Path("/byHost")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection <Apartment> getAllByHost() {
+		ApartmentDAO apartmentDao = (ApartmentDAO)ctx.getAttribute("apartmentDAO");
+		User u= (User) request.getSession().getAttribute("user");
+		
+		Collection<Apartment> a = new ArrayList<Apartment>();
+		for (Apartment ap : apartmentDao.getAll().values()) {
+			if(ap.getApartmentHost().equals(u.getUsername())) {
+				a.add(ap);
+			}
+		}
+		
+		return a;
 	}
 	
 	@GET

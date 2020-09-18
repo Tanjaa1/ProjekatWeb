@@ -45,21 +45,23 @@
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<a href="#/" class="navbar-brand">Rezervacije<b>Apartmana</b></a>			
 			<a href="#/users" id="users"><i class="fas fa-fw fa-users"> </i>  &nbsp Korisnici &nbsp &nbsp</a>
-			<a href="#/allapartments" id="apartments"><i class="fas fa-fw fa-bed"> </i>  &nbsp Apartmani &nbsp &nbsp </a>
+			<a href="#/allapartments" id="apartments"><i class="fas fa-fw fa-bed"> </i>  &nbsp Svi apartmani &nbsp &nbsp </a>
 			<a href="#/hostapartments" id="myApartments"><i class="fas fa-fw fa-bed"> </i>  &nbsp Moji objekti &nbsp &nbsp </a>
-			<a href="#/reservations" id="rez"><i class="fas fa-fw fa-flag"> </i> &nbsp  Rezervacije &nbsp &nbsp</a>
-			<a href="#/profile" id="userInfo"><i class="fas fa-fw fa-user-circle"></i> &nbsp Profil &nbsp &nbsp</a>
+			<a href="#/adminapartments" id="allApartments"><i class="fas fa-fw fa-bed"> </i>  &nbsp Objekti &nbsp &nbsp </a>
+			<a href="#/reservations" id="rez"><i class="fas fa-fw fa-flag"> </i> &nbsp  Rezervacije &nbsp &nbsp </a>
+			<a href="#/amenities" id="sadrzaj"><i class="fas fa-fw fa-table"> </i> &nbsp Sadržaj apartmana &nbsp &nbsp </a>
+			<a href="#/profile" id="userInfo"><i class="fas fa-fw fa-user-circle"></i> &nbsp Profil &nbsp &nbsp </a>
 				<div class="navbar-nav action-buttons ml-auto" >
 					<a id="prijava" href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle mr-3" >Prijavi se</a>
 					<div class="dropdown-menu login-form">
 						<form id="login">
 							<div class="form-group">
-								<input type="text" class="form-control"  placeholder="Korisničko ime" required="required" name="korisnicko_ime" v-model="loginInformation.username">
+								<input type="text" class="form-control"  placeholder="Korisničko ime" required="required" name="korisnicko_ime" v-model="username">
 							</div>
 							<div class="form-group">                      
-								<input type="password" class="form-control" placeholder="Lozinka" required="required" name="lozinka" v-model="loginInformation.password">
+								<input type="password" class="form-control" placeholder="Lozinka" required="required" name="lozinka" v-model="password">
 							</div>
-							<button type="button" class="search-btn" v-on:click="login(loginInformation)">Prijava</button>
+							<button type="button" class="search-btn" v-on:click="login()">Prijava</button>
 						</form>					
 					</div>	
 					<a href="#/reg" id="registr" class="btn btn-primary" v-if="!regg">Regustruj se</a>	
@@ -85,6 +87,7 @@
 	<script src="app/sideBar.js"></script> 
 	<script src="app/apartment.js"></script> 
 	<script src="app/hostApartments.js"></script> 
+	<script src="app/adminApartments.js"></script>
 	<script src="app/amenities.js"></script>	
 	<script src="app/reg.js"></script>
 	<script src="app/user_info.js"></script>

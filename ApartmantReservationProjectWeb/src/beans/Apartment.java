@@ -46,7 +46,7 @@ public class Apartment implements IIdentifiable<Long>, IDelete{
 		AvailableDatesForRent = new ArrayList<Date>();
 		AvailableDates = new ArrayList<Date>();
 		ApartmentHost = apartmentHost;
-		PostedComments = postedComments;
+		PostedComments = new ArrayList<Comment>();
 		PricePerStayingNight = pricePerStayingNight;
 		CheckInTime = checkInTime;
 		CheckOutTime = checkOutTime;

@@ -8,7 +8,9 @@ Vue.component("editApartment", {
             selected : "",
             ret:Object,
             calendar : null,
-			calendarRendered: false
+            calendarRendered: false,
+            amenities : [],
+            selectedAmenities : []
 		}
     },
     mounted(){
@@ -21,12 +23,19 @@ Vue.component("editApartment", {
 		axios
 		.get('rest/apartment/' + this.id)
 		.then(response=>{
-			this.apartment=response.data
-			this.address=response.data.ApartmentAddress
-			this.location=response.data.LocationOfApartment
+			this.apartment=response.data;
+			this.address=response.data.ApartmentAddress;
+            this.location=response.data.LocationOfApartment;
+            this.amenities = response.data.AmenitiesList;
 			this.calendar.values = [];
 			this.apartment.availableDates.forEach(date=> { this.calendar.values.push(new Date(date)) });
-		})
+        })
+        
+        axios
+		.get('rest/amenities')
+		.then(response => {
+			this.amenities = response.data
+        })
 		
 	},
 	updated: function () {
@@ -120,7 +129,17 @@ Vue.component("editApartment", {
                     <label>Vreme za odjavu:</label>
                     <input type="time" id = "checkOut"v-model="apartment.checkOutTime" disabled="disabled">
                 </div>
-                
+            </div>
+            <div class="form-row">
+            <div class="form-group col-md-8 mt-4">
+                <label>Izaberite sadržaj apartmana:</label>
+                <div class="form-check mx-4" v-for="am in amenities" v-if="!am.deleted">
+                    <input class="form-check-input" type="checkbox" :value="am" v-model="apartment.amenitiesList"  >
+                    <label class="form-check-label">
+                        {{am.amenitiesName}}
+                    </label>
+                </div>
+                </div>
             </div>
             <button id="edit" type="submit" class="btn btn-primary" v-on:click="edit()">Izmeni podatke</button>
             <button  id="save" type="submit" disabled="disabled" class="btn btn-primary" v-on:click="save()">Sačuvaj izmene</button>

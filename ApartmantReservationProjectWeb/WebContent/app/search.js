@@ -1,13 +1,15 @@
 Vue.component("search", {
 	data:function(){
 		return{
-			startDate:'',
-			endDate:''
+			grad : '',
+            adults : '',
+            kids : '',
+            sobe : ''
 		}
 	},
 	methods:{
 		prikaz:function(){
-			this.$router.push("allApartments")
+			window.location.href = '/ApartmantReservationProjectWeb/#/allApartments?grad='+this.grad+'&sobe='+this.sobe+'&adults='+this.adults+'&kids='+this.kids;
 		}
 	},
     template: ` 
@@ -17,12 +19,12 @@ Vue.component("search", {
 					Pretražite apartmane
 				</h1>
 				<div class="form-box">
-					<input type="text" class="search-field location" required placeholder="Naziv apartmana..">
-					<input type="date" class="search-field checkin" required v-model='startDate' placeholder="Datum prijave.." >
-					<input type="date" class="search-field checkout" placeholder="Datum odjave.." required v-model='endDate'>
-					<input type="number" class="search-field rooms" min="0" required placeholder="Broj soba..">
-					<input type="number" class="search-field adults"min="0" required placeholder="Broj odraslih..">
-					<input type="number" class="search-field rooms" min="0" required placeholder="Broj dece..">
+					<input type="text" class="search-field" placeholder="Grad.." v-model="grad">
+					<input type="date" class="search-field checkin" placeholder="Datum prijave.." >
+					<input type="date" class="search-field checkout" placeholder="Datum odjave.." >
+					<input type="number" class="search-field" min="0" placeholder="Broj soba.." v-model="sobe">
+					<input type="number" class="search-field" min="0" placeholder="Broj odraslih.." v-model="adults">
+					<input type="number" class="search-field" min="0" placeholder="Broj dece.." v-model="kids">
 					
 					<button v-on:click="prikaz" class="search-btn" type="button">Pretraga</button>				
 

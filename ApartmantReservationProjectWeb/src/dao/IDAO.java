@@ -24,4 +24,5 @@ public interface IDAO<T, ID> {
 	
 	public T deleteLogical(ID id) throws JsonIOException, IOException;
 
+
 }
